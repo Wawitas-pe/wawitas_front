@@ -1,0 +1,27 @@
+:root {
+  --color-bg: #FFF8E7;      /* Crema de fondo */
+  --color-card: #DDE2E5;    /* Gris de las tarjetas */
+  --color-green: #3C8D40;   /* Verde botón */
+  --color-text: #000000;
+  --font-main: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  font-family: var(--font-main);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Reset básico para que no haya márgenes raros */
+h1, h2, h3, p {
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}

@@ -1,0 +1,40 @@
+/* src/App.css */
+
+/* Aseguramos que el contenedor principal ocupe toda la altura */
+.App {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* El color de fondo ya viene de index.css, pero por seguridad: */
+  background-color: #FFF8E7; 
+}
+
+/* Estilos para el logo del footer */
+.footer-logo {
+  max-width: 150px; /* Tamaño por defecto para pantallas grandes */
+  height: auto;
+  transition: max-width 0.3s ease; /* Transición suave al cambiar de tamaño */
+}
+
+/* Media query para pantallas medianas (tablets) */
+@media (max-width: 768px) {
+  .footer-logo {
+    max-width: 120px; /* Tamaño reducido para tablets */
+  }
+}
+
+/* Media query para pantallas pequeñas (móviles) */
+@media (max-width: 480px) {
+  .footer-logo {
+    max-width: 100px; /* Tamaño más pequeño para móviles */
+  }
+}
+
+/* Opcional: Si quieres centrar todo el contenido en pantallas muy grandes */
+/* .App {
+  max-width: 1440px;
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+} 
+*/

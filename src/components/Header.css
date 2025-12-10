@@ -1,0 +1,102 @@
+/* --- HEADER STYLES --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5%;
+  background-color: transparent; /* O blanco si prefieres */
+  position: relative;
+  z-index: 100;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  min-width: 0; 
+}
+
+.logo-img { 
+  width: 50px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  transition: width 0.3s ease;
+}
+
+/* Enlaces de Navegación */
+.nav-links {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.nav-item {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.nav-item:hover, .nav-item.active {
+  color: #000;
+  border-bottom: 2px solid #3C8D40; /* Línea verde al pasar el mouse */
+}
+
+/* Botón Registrar del Header */
+.header-btn {
+  /* Hereda estilos de btn-green global si existe, o definimos aquí */
+  background-color: #3C8D40;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+  white-space: nowrap;
+}
+.header-btn:hover { transform: scale(1.05); }
+
+/* Botón Hamburguesa (Oculto en PC) */
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* --- RESPONSIVE HEADER --- */
+@media (max-width: 768px) {
+  .logo-img {
+    width: 40px;
+  }
+
+  .menu-toggle {
+    display: block; /* Mostrar hamburguesa en móvil */
+    order: 3; /* Ponerlo a la derecha */
+  }
+
+  .header-btn {
+    display: none; /* Opcional: Ocultar botón registrar en móvil para ahorrar espacio o moverlo al menú */
+  }
+
+  /* Menú desplegable en móvil */
+  .nav-links {
+    display: none; /* Oculto por defecto */
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background-color: #FFF8E7; /* Mismo color de fondo */
+    padding: 20px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    gap: 15px;
+  }
+
+  .nav-links.open {
+    display: flex; /* Mostrar cuando está abierto */
+  }
+}
