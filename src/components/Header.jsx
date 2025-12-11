@@ -32,10 +32,14 @@ export const Header = () => {
         <a href="/" className="nav-item active">Home</a>
         <a href="#" className="nav-item">Tu Zona</a>
         <a href="#" className="nav-item">Ayuda a encontrarlos</a>
-        <a href="/PantallaPerdidos" className="nav-item">Perdidos</a> {/* Puedes usar rutas reales luego */}
+        
+        {/* CORRECCIÓN: Nos aseguramos de que lleve a /PantallaPerdidos */}
+        <a href="/perdidos" className="nav-item">Perdidos</a>
       </nav>
 
-      <button className="btn-green header-btn">Registrar</button>
+      <a href="/registrar">
+  <button className="btn-green header-btn">Registrar</button>
+</a>
     </header>
   );
 };

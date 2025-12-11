@@ -1,153 +1,128 @@
+/* Variables locales para este componente */
+:root {
+  --green: #3C8D40;
+  --red: #D44638;
+  --card-bg: #DDE2E5;
+}
+
 /* Contenedor principal */
 .pagina-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-top: 20px;
+  background-color: #FFF8E7; /* Fondo Crema */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* --- HEADER --- */
-.header {
+/* Título */
+.title-container {
   text-align: center;
-  padding: 0 20px;
-  margin-bottom: 20px;
-}
-
-.header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.logo img {
-  width: 40px;
-  height: 40px;
-}
-
-.brand-name {
-  font-size: 1.8rem;
-  font-weight: 900;
-  font-style: italic;
-  letter-spacing: -1px;
-}
-
-.btn-registrar {
-  background-color: #3C8D40;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 0.9rem;
+  margin: 20px 0 40px 0;
 }
 
 .page-title {
-  font-size: 2rem;
+  font-size: clamp(2rem, 4vw, 2.5rem); /* Responsive font size */
   font-weight: 400;
   letter-spacing: 1px;
+  color: #000;
+  text-transform: uppercase;
+  margin: 0;
 }
 
-/* --- GRID DE TARJETAS --- */
+/* --- GRID RESPONSIVO --- */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas exactas como la foto */
-  gap: 15px;
-  padding: 0 20px;
-  max-width: 500px; /* Para simular ancho móvil si lo ves en PC */
-  margin: 0 auto;   /* Centrar */
+  /* PC: 3 columnas */
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 30px;
+  padding: 0 5%;
+  max-width: 1000px;
+  margin: 0 auto;   /* Centrado */
   flex: 1;          /* Empuja el footer hacia abajo */
+  margin-bottom: 60px;
 }
 
+/* TABLETS: 2 Columnas */
+@media (max-width: 900px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* MÓVILES: 1 Columna */
+@media (max-width: 600px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    max-width: 350px; /* Controla el ancho en móvil */
+  }
+}
+
+/* --- TARJETA DE CADA PERRITO --- */
 .pet-card {
-  background-color: #DDE2E5; /* Gris de la tarjeta */
-  border-radius: 30px;       /* Bordes muy redondos */
-  padding: 15px 10px;
+  background-color: #DDE2E5; /* Gris suave */
+  border-radius: 40px;       /* Bordes muy curvos */
+  padding: 20px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.pet-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
 .pet-image-wrapper {
   width: 100%;
-  aspect-ratio: 1 / 1; /* Cuadrado */
+  aspect-ratio: 1 / 1; /* Cuadrado perfecto */
+  border-radius: 30px;
   overflow: hidden;
-  border-radius: 20px;
-  margin-bottom: 8px;
+  margin-bottom: 15px;
 }
 
 .pet-image-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Mix-blend-mode ayuda si la foto tiene fondo blanco y la tarjeta es gris */
-  mix-blend-mode: multiply; 
+  /* mix-blend-mode: multiply; <--- Descomenta esto si tus fotos tienen fondo blanco y quieres que se fusionen con el gris */
 }
 
 .pet-name {
+  font-size: 1.5rem;
   font-weight: 900;
   font-style: italic;
-  font-size: 1.1rem;
+  color: #000;
+  margin: 0 0 8px 0;
 }
 
-/* --- FOOTER CURVO --- */
-.footer-curve {
-  background-color: black;
-  color: white;
-  border-top-left-radius: 40px;
-  border-top-right-radius: 40px;
-  padding: 30px 20px;
-  margin-top: 40px;
-  text-align: center;
-}
-
-.social-icons {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 25px;
-}
-
-.icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.facebook { background: white; color: black; }
-.mail { background: #D44638; color: white; } /* Rojo Gmail */
-.linkedin { background: #0077B5; color: white; }
-.twitter { background: #1DA1F2; color: white; }
-
-.help-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 25px;
-  flex-wrap: wrap;
-}
-
-.btn-outline {
-  background: transparent;
-  border: 1px solid white;
-  color: white;
+/* --- ETIQUETAS (BADGES) --- */
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
   border-radius: 20px;
-  padding: 8px 15px;
-  font-size: 0.7rem;
-  letter-spacing: 1px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
-.contact-info p {
-  font-weight: bold;
-  margin-bottom: 5px;
+.status-badge.perdido {
+  background-color: #D44638; /* Rojo */
 }
 
-.contact-info small {
-  color: #aaa;
-  font-size: 0.8rem;
+.status-badge.adopcion {
+  background-color: #3C8D40; /* Verde */
+}
+
+/* Texto de carga o error */
+.loading-text {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 40px;
 }

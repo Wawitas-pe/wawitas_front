@@ -1,0 +1,106 @@
+/* --- LAYOUT GENERAL --- */
+.registro-main {
+  flex: 1; /* Ocupa el espacio disponible */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* --- TARJETA DEL FORMULARIO --- */
+.registro-card {
+  background-color: #F9EFD8; /* Un tono crema un poco más oscuro que el fondo */
+  border-radius: 50px;       /* Bordes muy redondeados como tu imagen */
+  padding: 50px;
+  width: 100%;
+  max-width: 600px;          /* Ancho máximo para escritorio */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Sombra suave */
+  text-align: center;
+}
+
+.registro-title {
+  font-size: 2rem;
+  font-weight: 900;
+  font-style: italic;
+  color: #000;
+  margin-bottom: 30px;
+}
+
+/* --- FORMULARIO --- */
+.registro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinear etiquetas a la izquierda */
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+  margin-left: 10px; /* Un poco de sangría visual */
+}
+
+.form-input {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 25px; /* Inputs redondeados estilo píldora */
+  border: none;
+  background-color: #DDE2E5; /* Gris suave de tus inputs */
+  font-size: 1rem;
+  color: #333;
+  outline: none;
+  transition: box-shadow 0.2s;
+  box-sizing: border-box; /* Para que el padding no rompa el ancho */
+}
+
+.form-input:focus {
+  box-shadow: 0 0 0 3px rgba(60, 141, 64, 0.2); /* Brillo verde al escribir */
+  background-color: #fff;
+}
+
+/* --- BOTÓN --- */
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-registrar-form {
+  background-color: #3C8D40; /* Verde Wawitas */
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 12px 50px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-registrar-form:hover {
+  transform: scale(1.05);
+  background-color: #2e6b30;
+}
+
+/* --- RESPONSIVE (MÓVIL) --- */
+@media (max-width: 600px) {
+  .registro-card {
+    padding: 30px 20px;
+    border-radius: 30px;
+  }
+  
+  .registro-title {
+    font-size: 1.5rem;
+  }
+
+  .form-input {
+    padding: 12px 15px;
+  }
+}
