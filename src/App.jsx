@@ -3,13 +3,12 @@ import { PantallaInicio } from './components/PantallaInicio';
 import { PantallaPerdidos } from './components/PantallaPerdidos';
 import { PantallaRegistro } from './components/PantallaRegistro';
 import { TuZona } from './components/TuZona';
-import {AyudaEncontrarlo} from './components/AyudaEncontrarlo'
-
+import { AyudaEncontrarlo } from './components/AyudaEncontrarlo';
 
 import './App.css';
 
 function App() {
-  // Estado para la ruta actual
+  // Estado con la ruta actual
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
   useEffect(() => {
@@ -17,7 +16,7 @@ function App() {
       setCurrentPath(window.location.pathname);
     };
 
-    // Escuchar cambios de historial (atrás/adelante)
+    // Detecta atrás/adelante del navegador
     window.addEventListener('popstate', handleLocationChange);
 
     return () => {
@@ -25,26 +24,22 @@ function App() {
     };
   }, []);
 
-  // Normalizamos la ruta para evitar problemas con slash final (ej: "/perdidos/")
-  const path = currentPath.endsWith('/') && currentPath.length > 1 
-    ? currentPath.slice(0, -1) 
-    : currentPath;
+  // Normaliza rutas: evita "/" al final
+  const path =
+    currentPath !== '/' && currentPath.endsWith('/')
+      ? currentPath.slice(0, -1)
+      : currentPath;
 
+  // Render basado en la ruta
   return (
-  <div className="App">
-    {path === '/perdidos' ? (
-      <PantallaPerdidos />
-    ) : path === '/registrar' ? (
-      <PantallaRegistro />
-    ) : path === '/tuzona' ? ( // <-- Nueva condición
-      <TuZona/>
-    ) : path === '/ayuda'?(
-      <AyudaEncontrarlo/>
-    ) : (
-      <PantallaInicio /> // <-- Condición final (Home)
-    )}
-  </div>
-);
+    <div className="App">
+      {path === '/' && <PantallaInicio />}
+      {path === '/perdidos' && <PantallaPerdidos />}
+      {path === '/registrar' && <PantallaRegistro />}
+      {path === '/Tuzona' && <TuZona />}
+      {path === '/ayuda' && <AyudaEncontrarlo />}
+    </div>  
+  );
 }
 
 export default App;

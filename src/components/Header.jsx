@@ -30,7 +30,7 @@ export const Header = () => {
       {/* Navegación - Clase condicional para mostrar/ocultar en móvil */}
       <nav className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
         <a href="/" className="nav-item active">Home</a>
-        <a href="/tuzona" className="nav-item">Tu Zona</a>
+        <a href="/Tuzona" className="nav-item">Tu Zona</a>
         <a href="/ayuda" className="nav-item">Ayuda a encontrarlos</a>
         
         {/* CORRECCIÓN: Nos aseguramos de que lleve a /PantallaPerdidos */}

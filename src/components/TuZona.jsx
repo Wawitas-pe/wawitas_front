@@ -5,7 +5,7 @@ import './PantallaInicio.css';
 import { Header } from './Header';
 
 
-export const Tuzona = () =>{
+export const TuZona = () =>{
     return(
         <div className="inicio-container">
                     
