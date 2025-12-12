@@ -165,11 +165,13 @@
 .tip-icon { font-size: 3rem; }
 
 /* --- STATS BAR (Barra Negra) --- */
+.divider { width: 1px; height: 50px; background-color: #555; display: block; }
 .stats-bar-wrapper {
     padding: 0 5%;
     margin-bottom: 80px;
 }
 
+/* Barra de estadísticas (Stats Bar) */
 .stats-bar {
     background-color: #000;
     border-radius: 30px;
@@ -183,43 +185,100 @@
     gap: 20px;
 }
 
-.stat-item { flex: 1; min-width: 150px; }
-.divider { width: 1px; height: 50px; background-color: #555; display: block; }
+/* Elementos dentro de la barra de estadísticas */
+.stat-item {
+    flex: 1;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra el contenido verticalmente */
+    align-items: center; /* Centra el contenido horizontalmente */
+    text-align: center; /* Centra el texto */
+}
 
-/* REGLAS CORREGIDAS PARA LA TARJETA AMARILLA INTEGRADA */
+/* El contenedor de la tarjeta amarilla */
 .yellow-card-integrated {
     background-color: #F2B94A;
     color: white;
-    
-    /* PROPIEDADES CLAVE PARA ALTURA Y CENTRADO */
     height: 100%; /* Ocupa el 100% de la altura de la barra */
     display: flex;
     flex-direction: column;
     justify-content: center; /* Centra el contenido verticalmente */
-    
-    /* Padding reducido para no obligar a la barra a crecer */
-    padding: 10px 15px; 
-    
+    align-items: center; /* Centra el contenido horizontalmente */
+    padding: 10px 15px;
     border-radius: 20px;
     text-align: center;
-    flex: 1; 
-    min-width: 180px; 
-    
-    /* Efecto Hover */
+    flex: 1;
+    min-width: 180px;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     cursor: pointer;
     position: relative;
-    z-index: 10; 
+    z-index: 10;
 }
 
-/* Efecto Hover: Agrandar la tarjeta para que sobresalga */
+/* Imagen dentro de la tarjeta amarilla */
+.yellow-card-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px; /* Espaciado debajo de la imagen */
+}
+
+/* Efecto Hover de la tarjeta amarilla */
 .yellow-card-integrated:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 30px rgba(242, 185, 74, 0.7);
     z-index: 11; /* Asegura que la tarjeta que se agranda esté por encima */
 }
 
-.yellow-card-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; }
+/* Ajuste para el número con + */
+.number {
+    font-size: 30px; /* Ajuste para mayor visibilidad */
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+/* Contenedor del ícono circular verde */
+.green-circle {
+    background-color: #3C8D40;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos para el texto en el número rescatado */
+.label {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 16px; /* Ajuste para que encaje mejor */
+    text-align: center;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 900px) {
+    .stats-bar {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 30px;
+    }
+
+    .stat-item {
+        width: 100%;
+        border-bottom: 1px solid #333;
+        padding-bottom: 20px;
+    }
+
+    .yellow-card-integrated {
+        width: 100%;
+        margin-top: 20px;
+        height: auto;
+    }
+
+    .stat-counter { margin-top: 20px; }
+}
 
 /* AJUSTES MÓVILES ESPECÍFICOS PARA LA BARRA */
 @media (max-width: 900px) {
@@ -247,8 +306,8 @@
 
 .green-circle {
     background-color: #3C8D40;
-    width: 90px;
-    height: 90px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
@@ -356,4 +415,15 @@
     border-radius: 20px;
     padding: 8px 15px;
     font-size: 0.7rem;
+}
+.label {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 20px;
+}
+.number{
+    font-size: 20px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+.Textone{
+    font-size: 25px;
 }

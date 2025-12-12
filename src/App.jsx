@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { PantallaInicio } from './components/PantallaInicio';
 import { PantallaPerdidos } from './components/PantallaPerdidos';
 import { PantallaRegistro } from './components/PantallaRegistro';
+import { TuZona } from './components/TuZona';
+import {AyudaEncontrarlo} from './components/AyudaEncontrarlo'
+
+
 import './App.css';
 
 function App() {
@@ -27,17 +31,20 @@ function App() {
     : currentPath;
 
   return (
-    <div className="App">
-      {/* Router Simple y Limpio */}
-      {path === '/perdidos' ? (
-        <PantallaPerdidos />
-      ) : path === '/registrar' ? (
-        <PantallaRegistro />
-      ) : (
-        <PantallaInicio />
-      )}
-    </div>
-  );
+  <div className="App">
+    {path === '/perdidos' ? (
+      <PantallaPerdidos />
+    ) : path === '/registrar' ? (
+      <PantallaRegistro />
+    ) : path === '/tuzona' ? ( // <-- Nueva condición
+      <TuZona/>
+    ) : path === '/ayuda'?(
+      <AyudaEncontrarlo/>
+    ) : (
+      <PantallaInicio /> // <-- Condición final (Home)
+    )}
+  </div>
+);
 }
 
 export default App;

@@ -63,27 +63,22 @@ export const PantallaInicio = () => {
                     </div>
 
                     <div className="divider"></div>
-
+{/*RECTANGULO NARANJA*/}
                     <div className="stat-item yellow-card-integrated">
                         <img src="https://placedog.net/80/80" alt="Golden" className="yellow-card-img" />
-                        <h3>Pet's Old</h3>
-                        <p>Ellos esperan un nuevo dueño</p>
+                        <h3 className='Textone'>Pet's Old</h3>
+                        <p className='Textone'>Ellos esperan un nuevo dueño</p>
                     </div>
                     
                     <div className="divider"></div>
-
+{/*ICONO CIRCULAR VERDE*/}
                     <div className="stat-counter">
                         <div className="green-circle">
-                            <CountUp 
-                                to={55} 
-                                className="number" 
-                                duration={3} 
-                                separator="," 
-                            />
-                            
+                            <span className="number"><CountUp to={55} className="number" duration={4} separator="," />+</span>
                             <span className="label">Rescatados</span>
                         </div>
                     </div>
+
                 </div>
             </section>
 
