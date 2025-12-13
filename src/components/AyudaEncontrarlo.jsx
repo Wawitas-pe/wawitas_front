@@ -1,155 +1,106 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Header } from './Header'; 
 import { Footer } from './Footer'; 
-import './PantallaInicio.css'; // Asumo que usas este CSS para el layout
-import './AyudaEncontrarlo.css'; // ¡Importamos el nuevo CSS!
-import { Header } from './Header';
-import TextType from './TextType'; 
+import './PantallaPerdidos.css';
 
-// --- Datos de Perros Perdidos de Ejemplo ---
-const lostDogs = [
-    {
-        id: 1,
-        name: "Max",
-        lostDate: "Hace 3 días",
-        age: "2 años",
-        breed: "Labrador Retriever",
-        gender: "Macho",
-        location: "Parque Central",
-        imageUrl: "https://images.pexels.com/photos/733416/pexels-photo-733416.jpeg" // Placeholder
-    },
-    {
-        id: 2,
-        name: "Luna",
-        lostDate: "Hace 1 semana",
-        age: "5 meses",
-        breed: "Beagle",
-        gender: "Hembra",
-        location: "Calle 15",
-        imageUrl: "https://images.pexels.com/photos/33100775/pexels-photo-33100775.jpeg" // Placeholder
-    },
-    {
-        id: 3,
-        name: "Rocky",
-        lostDate: "Ayer",
-        age: "4 años",
-        breed: "Pastor Alemán",
-        gender: "Macho",
-        location: "Colonia Roma",
-        imageUrl: "https://images.pexels.com/photos/12646676/pexels-photo-12646676.jpeg" // Placeholder
-    },
-    {
-        id: 4,
-        name: "Coco",
-        lostDate: "Hace 2 semanas",
-        age: "7 años",
-        breed: "French Poodle",
-        gender: "Hembra",
-        location: "Zona Residencial",
-        imageUrl: "https://images.pexels.com/photos/7704620/pexels-photo-7704620.jpeg" // Placeholder
-    },
-    {
-        id: 5,
-        name: "Toby",
-        lostDate: "Hace 5 días",
-        age: "1 año",
-        breed: "Golden Retriever",
-        gender: "Macho",
-        location: "Cerca del lago",
-        imageUrl: "https://images.pexels.com/photos/10392555/pexels-photo-10392555.jpeg" // Placeholder
-    },
-    {
-        id: 6,
-        name: "Nala",
-        lostDate: "Hace 10 días",
-        age: "3 años",
-        breed: "Chihuahua",
-        gender: "Hembra",
-        location: "Sector Industrial",
-        imageUrl: "https://images.pexels.com/photos/1191000/pexels-photo-1191000.jpeg" // Placeholder
-    },
-];
+export const AyudaEncontrarlo = () => {
+  const [perros, setPerros] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-// --- Componente de la Card (Para reutilizar) ---
-const DogCard = ({ dog }) => (
-    <div className="dog-card">
-        <img src={dog.imageUrl} alt={`Foto de ${dog.name}`} className="dog-image" />
-        <div className="dog-info">
-            <h3 className="dog-name">{dog.name}</h3>
-            <p><strong>Raza:</strong> {dog.breed}</p>
-            <p><strong>Edad:</strong> {dog.age}</p>
-            <p><strong>Género:</strong> {dog.gender}</p>
-            <p className="lost-details">
-                <span className="lost-status">¡Perdido!</span>
-                <span className="lost-time">{dog.lostDate}</span>
+  // Datos de respaldo (solo si falla la API)
+  const perrosMock = [
+    { id: 101, nombre: 'Bobby', situacion: 'perdido', fotoUrl: 'https://placedog.net/500/500?id=1', ubicacion: 'Parque Kennedy' },
+    { id: 102, nombre: 'Max', situacion: 'adopcion', fotoUrl: 'https://placedog.net/500/500?id=2', raza: 'Labrador' },
+  ];
+
+  const obtenerPerros = async () => {
+    try {
+      // Conexión a la API (Puerto 5000)
+      const response = await fetch("http://localhost:5000/api/perro");
+      
+      if (!response.ok) throw new Error('Error al conectar con API');
+      
+      const data = await response.json();
+      
+      // Ordenamos por ID descendente para ver los nuevos primero
+      const perrosOrdenados = data.sort((a, b) => b.id - a.id);
+
+      // Si la API responde con datos, los usamos
+      if (data.length > 0) {
+        setPerros(perrosOrdenados);
+      } else {
+        setPerros([]); // Lista vacía real
+      }
+
+    } catch (error) {
+      console.warn("⚠️ API no disponible. Usando datos de prueba.");
+      setPerros(perrosMock); 
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    obtenerPerros();
+  }, []);
+
+  return (
+    <div className="pagina-container">
+      <Header />
+
+      <div className="title-container">
+          <h2 className="page-title">GALERÍA DE WAWITAS</h2>
+      </div>
+
+      <main className="gallery-grid">
+        {loading ? (
+          <p className="loading-text">Cargando peluditos... 🐾</p>
+        ) : perros.length > 0 ? (
+          perros.map((perro) => (
+            <div key={perro.id} className="pet-card">
+              <div className="pet-image-wrapper">
+                <img 
+                  src={perro.fotoUrl && perro.fotoUrl.startsWith('http') ? perro.fotoUrl : 'https://placedog.net/500/500'} 
+                  alt={perro.nombre}
+                  onError={(e) => e.target.src = 'https://placedog.net/500/500'} 
+                />
+                
+                {/* Badge de estado sobre la foto */}
+                <span className={`status-badge-overlay ${perro.situacion}`}>
+                  {perro.situacion ? perro.situacion.toUpperCase() : 'DESCONOCIDO'}
+                </span>
+              </div>
+
+              <div className="pet-info">
+                <h3 className="pet-name">{perro.nombre}</h3>
+                
+                {/* Detalles adicionales si existen */}
+                {perro.raza && <p className="pet-detail">🐶 {perro.raza}</p>}
+                {perro.ubicacion && <p className="pet-detail">📍 {perro.ubicacion}</p>}
+                
+                {/* Badge de Herido (solo si es true) */}
+                {perro.estaHerido && (
+                  <span className="badge-herido">🚑 HERIDO</span>
+                )}
+                
+                {/* Cantidad si es mayor a 1 */}
+                {perro.cantidad > 1 && (
+                  <span className="badge-cantidad">+{perro.cantidad} vistos</span>
+                )}
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="loading-text" style={{gridColumn: '1 / -1', marginTop: '50px'}}>
+            <p style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#888'}}>
+              No hay perritos registrados 🐶
             </p>
-            <p><strong>Ubicación:</strong> {dog.location}</p>
-            <button className="contact-button">Ver Detalles / Contactar</button>
-        </div>
+            <small style={{color: '#aaa'}}>Sé el primero en registrar uno.</small>
+          </div>
+        )}
+      </main>
+
+      <Footer />
     </div>
-);
-
-
-export const AyudaEncontrarlo = () =>{
-    
-    // Define las líneas de texto que TextType animará
-    const heroTextLines = [
-        "¿Necesitas ayuda para encontrar a tu mascota?", 
-        "¡Estamos aquí para ayudarte!",
-        "Dinos qué estás buscando..."
-    ];
-    
-    return(
-        <div className="inicio-container">
-            
-            <Header />
-
-            <section className="hero-ayuda">
-                <h1 className="ayuda-title">
-                    <TextType
-                        text={heroTextLines}
-                        typingSpeed={70}
-                        pauseDuration={1500}
-                        loop={true}
-                        showCursor={true}
-                        cursorCharacter="|"
-                    />
-                </h1>
-                
-                <p>Completa el formulario a continuación para reportar una mascota perdida o encontrada.</p>
-                {/* Aquí puedes añadir un formulario o filtros de búsqueda */}
-                <div className="search-filters">
-                    {/* Filtros o barra de búsqueda irían aquí */}
-                    <input type="text" placeholder="Buscar por nombre o raza..." />
-                    <select><option>Todas las razas</option></select>
-                </div>
-            </section>
-            
-            {/* --- SECCIÓN PRINCIPAL DE CARDS --- */}
-            <main className="ayuda-main-content">
-                <h2>🐕 Perros Reportados Perdidos Recientemente 💔</h2>
-                
-                <div className="cards-grid">
-                    {/* Mapeamos el array para renderizar todas las cards */}
-                    {lostDogs.map(dog => (
-                        <DogCard key={dog.id} dog={dog} />
-                    ))}
-                    
-                    {/* Repetimos para simular muchas cards */}
-                    {lostDogs.map(dog => (
-                        <DogCard key={`r1-${dog.id}`} dog={{...dog, id: `r1-${dog.id}`}} />
-                    ))}
-                    {lostDogs.map(dog => (
-                        <DogCard key={`r2-${dog.id}`} dog={{...dog, id: `r2-${dog.id}`}} />
-                    ))}
-                </div>
-            </main>
-            {/* ---------------------------------- */}
-            
-            <Footer />
-            
-        </div>
-    );
+  );
 };
-
-// Exportamos AyudaEncontrarlo al final del archivo si es necesario.
-// export default AyudaEncontrarlo;
