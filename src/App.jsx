@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { PantallaInicio } from './components/PantallaInicio';
-import { PantallaPerdidos } from './components/PantallaPerdidos';
-import { PantallaRegistro } from './components/PantallaRegistro';
+import { PantallaInicio } from './pages/PantallaInicio.jsx';
+import { PantallaPerdidos } from './pages/PantallaPerdidos.jsx';
+import { PantallaRegistro } from './pages/PantallaRegistro.jsx';
 import { TuZona } from './components/TuZona';
-import { AyudaEncontrarlo } from './components/AyudaEncontrarlo';
+import { AyudaEncontrarlo } from './pages/AyudaEncontrarlo.jsx';
 
 import './App.css';
 

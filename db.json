@@ -1,0 +1,103 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "nombre": "Kira 💔 (Perdida hace 3 días)",
+      "situacion": "perdido",
+      "fotoUrl": "https://placedog.net/500/500?id=10",
+      "raza": "Poodle Toy",
+      "descripcion": "Kira se escapó por el Parque de la Amistad en Surco. Tiene un collar rojo. Es muy asustadiza, por favor, no la persigan.",
+      "fecha": "10/12/2025",
+      "likes": 154,
+      "comentarios": [
+        {
+          "user": "MariaG",
+          "text": "¡La vi esta mañana cerca del cruce de Av. Benavides! Estaba corriendo hacia el Mercado.",
+          "ubicacion": "Benavides, Surco"
+        },
+        {
+          "user": "JuanPerez",
+          "text": "Compartido en mis grupos de WhatsApp. ¡Ánimo!",
+          "ubicacion": null
+        },
+        {
+          "user": "SeguridadLima",
+          "text": "Revisaremos nuestras cámaras en la zona. Mantente atenta.",
+          "ubicacion": null
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "nombre": "Rocky (En Adopción)",
+      "situacion": "adopcion",
+      "fotoUrl": "https://placedog.net/500/500?id=12",
+      "raza": "Mestizo",
+      "descripcion": "Rocky es un perro adulto muy cariñoso, rescatado de la calle. Está castrado y listo para un hogar. ¡Solo adopción responsable!",
+      "fecha": "11/12/2025",
+      "likes": 89,
+      "comentarios": [
+        {
+          "user": "AnaVet",
+          "text": "¡Qué hermoso! ¿Cuántos años tiene aproximadamente?",
+          "ubicacion": null
+        },
+        {
+          "user": "CarlosM",
+          "text": "¿Se lleva bien con otros perros?",
+          "ubicacion": null
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "nombre": "Chispita (Visto y Recogido)",
+      "situacion": "encontrado",
+      "fotoUrl": "https://placedog.net/500/500?id=13",
+      "raza": "Chihuahua",
+      "descripcion": "Encontramos a esta pequeña temblando en un paradero de Miraflores. La tenemos a salvo. Buscamos a su dueño.",
+      "fecha": "09/12/2025",
+      "likes": 210,
+      "comentarios": [
+        {
+          "user": "DueñoOriginal",
+          "text": "¡Dios mío, esa es mi Chispita! Soy su dueño. ¿Podemos coordinar la entrega? ¡Mil gracias!",
+          "ubicacion": null
+        },
+        {
+          "user": "Voluntario",
+          "text": "¡Qué gran noticia! ¡Final feliz!",
+          "ubicacion": null
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "nombre": "Luna 🌙",
+      "situacion": "perdido",
+      "fotoUrl": "https://placedog.net/500/500?id=14",
+      "raza": "Pastor Alemán",
+      "descripcion": "Perdida en Pueblo Libre. Es grande y lleva un arnés azul. Recompensa ofrecida.",
+      "fecha": "12/12/2025",
+      "likes": 73,
+      "comentarios": [
+        {
+          "user": "VecinoPL",
+          "text": "Vi un perro grande corriendo anoche por la Plaza de la Bandera. ¡Parecía asustado!",
+          "ubicacion": "Plaza de la Bandera"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "nombre": "Pelusa (Busca Casa)",
+      "situacion": "adopcion",
+      "fotoUrl": "https://placedog.net/500/500?id=15",
+      "raza": "Shih Tzu",
+      "descripcion": "Rescatada de un criadero. Necesita un hogar tranquilo sin niños pequeños.",
+      "fecha": "13/12/2025",
+      "likes": 56,
+      "comentarios": []
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Header } from './Header';
-import { Footer } from './Footer';
+import { Header } from '../components/organisms/header/Header.jsx';
+import { Footer } from '../components/organisms/footer/Footer.jsx';
 import './PantallaRegistro.css';
 
 export const PantallaRegistro = () => {

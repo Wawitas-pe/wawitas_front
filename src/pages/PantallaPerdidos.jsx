@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Header } from './Header'; 
-import { Footer } from './Footer'; 
+import { Header } from '../components/organisms/header/Header.jsx';
+import { Footer } from '../components/organisms/footer/Footer.jsx';
 import './PantallaPerdidos.css';
-import TextType from './TextType'; 
+import TextType from '../components/TextType.jsx';
 
 // --- Datos de Perros Perdidos de Ejemplo ---
 const lostDogs = [

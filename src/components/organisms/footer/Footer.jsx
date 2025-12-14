@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import LogoLoop from './LogoLoop'; // Importamos el componente de animación
+import LogoLoop from '../../../utils/LogoLoop.jsx'; // Importamos el componente de animación
 import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin, FaYoutube, FaTiktok } from 'react-icons/fa'; // Importamos los iconos
 
 export const Footer = () => {

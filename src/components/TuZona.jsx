@@ -1,8 +1,8 @@
 import React from 'react';
-import { Footer } from './Footer'; 
-import './PantallaInicio.css';
+import { Footer } from './organisms/footer/Footer.jsx';
+import '../pages/PantallaInicio.css';
 import './TuZona.css'; // Importamos el CSS específico
-import { Header } from './Header';
+import { Header } from './organisms/header/Header.jsx';
 import { SimulatedMap } from './SimulatedMap'; // ¡Importamos el nuevo componente de simulación!
 
 // Coordenadas de Lima, Perú
