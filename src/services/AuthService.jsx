@@ -7,17 +7,6 @@ const UserService = {
     // ----------------------------------------------------
     // 1. Obtener una lista de usuarios (GET)
     // ----------------------------------------------------
-    getAllUsers: async () => {
-        try {
-            const response = await apiClient.get('/users');
-            // Axios envuelve la respuesta en un objeto 'data'
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching users:', error);
-            // Podemos lanzar el error para que el componente lo maneje
-            throw error;
-        }
-    },
 
 
     login: async (loginRequest) => {

@@ -21,16 +21,7 @@ export const Footer = () => {
   return (
     <footer className="footer-black">
       <div className="footer-content">
-        
-        {/* Logo con clase responsiva */}
-        <div className="logo-footer">
-          <img 
-            src="https://cdn-icons-png.flaticon.com/512/616/616408.png" 
-            alt="Logo Happy Pet" 
-            className="footer-logo" 
-          />
-        </div>
-        
+
         {/* AQUÍ REEMPLAZAMOS LOS ICONOS ESTÁTICOS POR LA ANIMACIÓN */}
         <div style={{ width: '100%', maxWidth: '400px', margin: '0 auto 30px auto' }}>
             <LogoLoop

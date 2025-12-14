@@ -5,7 +5,7 @@ import './LoginModal.css';
 
 export const LoginModal = ({ isVisible, onClose }) => {
     const [credentials, setCredentials] = useState({
-        username: '',
+        email: '',
         password: ''
     });
     // 🛑 Nuevos estados para manejo de UX
@@ -29,7 +29,7 @@ export const LoginModal = ({ isVisible, onClose }) => {
             console.log("Login exitoso:", authResponse);
 
             // 2. Manejar el éxito: limpiar, cerrar y recargar/redirigir
-            setCredentials({ username: '', password: '' });
+            setCredentials({ email: '', password: '' });
             onClose();
             // 💡 Una buena práctica es recargar la página o redirigir al dashboard
             window.location.reload();
@@ -61,9 +61,9 @@ export const LoginModal = ({ isVisible, onClose }) => {
                 <form className="login-form" onSubmit={handleSubmit}>
 
                     <div className="form-group">
-                        <label htmlFor="username">Correo Electrónico:</label>
-                        <input type="email" id="username" name="username" className="form-input"
-                               value={credentials.username} onChange={handleChange} required disabled={loading}
+                        <label htmlFor="email">Correo Electrónico:</label>
+                        <input type="email" id="email" name="email" className="form-input"
+                               value={credentials.email} onChange={handleChange} required disabled={loading}
                         />
                     </div>
 
