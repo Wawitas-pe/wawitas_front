@@ -1,28 +1,39 @@
 /* --- LAYOUT GENERAL --- */
 .registro-main {
-  flex: 1; /* Ocupa el espacio disponible */
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px;
+  padding: 60px 20px;
+  background-color: #FFF8E7; /* Fondo crema de tu web */
 }
 
 /* --- TARJETA DEL FORMULARIO --- */
 .registro-card {
-  background-color: #F9EFD8; /* Un tono crema un poco más oscuro que el fondo */
-  border-radius: 50px;       /* Bordes muy redondeados como tu imagen */
+  background-color: #ffffff; /* Fondo blanco para resaltar el formulario */
+  border-radius: 40px;      
   padding: 50px;
   width: 100%;
-  max-width: 600px;          /* Ancho máximo para escritorio */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Sombra suave */
+  max-width: 500px;         
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
   text-align: center;
 }
 
+.registro-header-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
 .registro-title {
-  font-size: 2rem;
-  font-weight: 900;
-  font-style: italic;
-  color: #000;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.registro-subtitle {
+  color: #777;
+  font-size: 0.95rem;
   margin-bottom: 30px;
 }
 
@@ -30,77 +41,73 @@
 .registro-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Alinear etiquetas a la izquierda */
-  gap: 8px;
+  align-items: flex-start;
+  gap: 6px;
 }
 
 .form-group label {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #333;
-  margin-left: 10px; /* Un poco de sangría visual */
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #444;
+  margin-left: 5px;
 }
 
 .form-input {
   width: 100%;
-  padding: 15px 20px;
-  border-radius: 25px; /* Inputs redondeados estilo píldora */
-  border: none;
-  background-color: #DDE2E5; /* Gris suave de tus inputs */
+  padding: 14px 20px;
+  border-radius: 15px; 
+  border: 2px solid #eee;
+  background-color: #fafafa;
   font-size: 1rem;
   color: #333;
   outline: none;
-  transition: box-shadow 0.2s;
-  box-sizing: border-box; /* Para que el padding no rompa el ancho */
+  transition: all 0.3s;
+  box-sizing: border-box;
 }
 
 .form-input:focus {
-  box-shadow: 0 0 0 3px rgba(60, 141, 64, 0.2); /* Brillo verde al escribir */
+  border-color: #3C8D40; /* Verde Wawitas */
   background-color: #fff;
+  box-shadow: 0 4px 10px rgba(60, 141, 64, 0.1);
 }
 
 /* --- BOTÓN --- */
 .form-actions {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
+  margin-top: 15px;
 }
 
 .btn-registrar-form {
-  background-color: #3C8D40; /* Verde Wawitas */
+  width: 100%; /* Botón ancho para registro de usuario */
+  background-color: #3C8D40; 
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  padding: 12px 50px;
-  border-radius: 30px;
+  padding: 15px;
+  border-radius: 15px;
   border: none;
   cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: all 0.3s;
 }
 
 .btn-registrar-form:hover {
-  transform: scale(1.05);
-  background-color: #2e6b30;
+  background-color: #2d6a30;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(60, 141, 64, 0.3);
 }
 
-/* --- RESPONSIVE (MÓVIL) --- */
+/* --- RESPONSIVE --- */
 @media (max-width: 600px) {
   .registro-card {
     padding: 30px 20px;
     border-radius: 30px;
   }
-  
   .registro-title {
-    font-size: 1.5rem;
-  }
-
-  .form-input {
-    padding: 12px 15px;
+    font-size: 1.8rem;
   }
 }

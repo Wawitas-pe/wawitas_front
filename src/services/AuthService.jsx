@@ -1,48 +1,55 @@
 import apiClient from "./instance/apiClient.js";
 
-
-let URL_PREFIX = '/api/auth';
-const UserService = {
-
-    // ----------------------------------------------------
-    // 1. Obtener una lista de usuarios (GET)
-    // ----------------------------------------------------
-
-
-    login: async (loginRequest) => {
+const AuthService = {
+    login: async (credentials) => {
         try {
-            const response = await apiClient.post(URL_PREFIX+'/login', loginRequest);
-            return response.data;
+            const response = await apiClient.get(`/users?email=${credentials.email}`);
+            const users = response.data;
+
+            if (users.length === 0) {
+                throw new Error('El correo electrónico no está registrado.');
+            }
+
+            const user = users[0];
+
+            if (user.password !== credentials.password) {
+                throw new Error('La contraseña es incorrecta.');
+            }
+
+            localStorage.setItem("user", JSON.stringify({
+                id: user.id,
+                nombre: user.nombreCompleto,
+                rol: user.rol || "usuario"
+            }));
+
+            return user;
         } catch (error) {
-            console.error('Error login user:', error.response ? error.response.data : error.message);
             throw error;
         }
     },
 
-
-    getUserById: async (id) => {
+    register: async (userData) => {
         try {
-            const response = await apiClient.get(`/users/${id}`);
+            const newUser = {
+                ...userData,
+                rol: "usuario"
+            };
+            const response = await apiClient.post('/users', newUser);
             return response.data;
         } catch (error) {
-            console.error(`Error fetching user ${id}:`, error);
             throw error;
         }
     },
 
-    // ----------------------------------------------------
-    // 3. Crear un nuevo usuario (POST)
-    // ----------------------------------------------------
-    createUser: async (userData) => {
-        try {
-            // POST necesita el endpoint y los datos a enviar
-            const response = await apiClient.post('/users', userData);
-            return response.data;
-        } catch (error) {
-            console.error('Error creating user:', error.response ? error.response.data : error.message);
-            throw error;
-        }
+    logout: () => {
+        localStorage.removeItem("user");
+        window.location.reload();
     },
+
+    getCurrentUser: () => {
+        const user = localStorage.getItem("user");
+        return user ? JSON.parse(user) : null;
+    }
 };
 
-export default UserService;
+export default AuthService;

@@ -1,3 +1,17 @@
+/* --- Estructura para fijar el Footer al fondo --- */
+.inicio-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ocupa todo el alto de la pantalla */
+    background-color: #f5f5f5;
+}
+
+.main-content-wrapper {
+    flex: 1; /* Crece para ocupar el espacio sobrante y empuja al footer */
+    display: flex;
+    flex-direction: column;
+}
+
 /* --- Estilos del Hero y Texto Animado --- */
 .tu-zona-hero {
     background: linear-gradient(135deg, #e0f7fa, #bbdefb);
@@ -28,6 +42,7 @@
     gap: 20px;
     padding: 40px 20px;
     background-color: #f5f5f5;
+    flex: 1; /* Asegura que el área de mapas use el espacio disponible */
 }
 
 /* --- Estilos de la Card de Mapa Individual --- */
@@ -38,18 +53,17 @@
     padding: 15px;
     text-align: center;
     transition: transform 0.3s ease;
-    /* Ajustes de tamaño */
     flex-grow: 1; 
     display: flex;
     flex-direction: column;
 }
 
 .small-map {
-    max-width: 300px; /* Tamaño máximo para mapas secundarios */
+    max-width: 300px;
 }
 
 .main-map {
-    max-width: 550px; /* Tamaño más grande para el mapa principal */
+    max-width: 550px;
 }
 
 .map-title {
@@ -70,7 +84,7 @@
 
 /* --- Contenedor del Mapa (Leaflet) --- */
 .map-container-leaflet {
-    height: 350px; /* Altura del mapa (Aumentada un poco) */
+    height: 350px;
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -93,7 +107,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1000; /* Asegura que esté por encima del mapa */
+    z-index: 1000;
     background-color: rgba(255, 255, 255, 0.95);
     display: flex;
     flex-direction: column;

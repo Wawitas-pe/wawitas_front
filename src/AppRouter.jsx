@@ -1,41 +1,43 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { AyudaEncontrarlo } from './pages/AyudaEncontrarlo.jsx'; // Tu página
+// Importaciones de Páginas
+import { AyudaEncontrarlo } from './pages/AyudaEncontrarlo.jsx';
+import { PantallaInicio } from "./pages/PantallaInicio.jsx";
+import { PantallaPerdidos } from "./pages/PantallaPerdidos.jsx";
+import { PantallaRegistro } from "./pages/PantallaRegistro.jsx"; // IMPORTANTE: Añadir esta
+import { LoginPage } from "./pages/LoginPage.jsx";
 
-import {MainLayout} from "./layout/MainLayout.jsx";
-import {PantallaInicio} from "./pages/PantallaInicio.jsx";
-import {TuZona} from "./components/TuZona.jsx";
-import {LoginPage} from "./pages/LoginPage.jsx";
-import {PantallaPerdidos} from "./pages/PantallaPerdidos.jsx";
+// Importaciones de Componentes y Layout
+import { MainLayout } from "./layout/MainLayout.jsx";
+import { TuZona } from "./components/TuZona.jsx";
 
 const AppRouter = () => {
     return (
         <Routes>
-
-            {/* 🛑 RUTA MADRE: Usa el Layout */}
+            {/* 1. RUTAS CON HEADER Y FOOTER (Usan MainLayout) */}
             <Route path="/" element={<MainLayout />}>
-
-                {/* 1. RUTAS HIJAS (Se inyectan en el <Outlet /> del Layout) */}
-
-                {/* Ruta Home (la ruta por defecto: "/") */}
+                {/* Home: "/" */}
                 <Route index element={<PantallaInicio />} />
 
-                {/* Ruta /Tuzona */}
+                {/* Ayuda: "/ayuda" */}
                 <Route path="ayuda" element={<AyudaEncontrarlo />} />
 
-                {/* Ruta /ayuda */}
+                {/* Tu Zona: "/zona" */}
                 <Route path="zona" element={<TuZona />} />
 
-                {/* Puedes añadir más rutas anidadas aquí, por ejemplo, /perdidos */}
+                {/* Perdidos: "/perdidos" */}
                 <Route path="perdidos" element={<PantallaPerdidos />} />
 
+                {/* 🛑 SOLUCIÓN: Agregamos la ruta "registrar" aquí para que use el Layout */}
+                <Route path="registrar" element={<PantallaRegistro />} />
             </Route>
 
-            {/* 2. RUTAS NO-LAYOUT (Ej: Login, 404, que no usan Header/Footer) */}
+            {/* 2. RUTAS SIN HEADER/FOOTER */}
             <Route path="login" element={<LoginPage />} />
-            <Route path="*" element={<div>404 No Encontrado</div>} />
-
+            
+            {/* Error 404 */}
+            <Route path="*" element={<div style={{padding: "100px", textAlign: "center"}}><h2>404</h2><p>Página no encontrada</p></div>} />
         </Routes>
     );
 };

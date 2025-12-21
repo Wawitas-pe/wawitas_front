@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import DogService from '../services/DogService.jsx';
+import { Footer } from '../components/organisms/footer/Footer.jsx';
+import { Header } from '../components/organisms/header/Header.jsx';
+import { DetailModal } from '../components/molecules/DetailModal.jsx';
 import './PantallaPerdidos.css';
 import TextType from "../components/TextType.jsx";
 
-// --- Componente de la Card ---
-const DogCard = ({ dog }) => (
+const DogCard = ({ dog, onOpenDetail }) => (
     <div className="dog-card">
         <img
             src={dog.imageUrl}
@@ -14,31 +16,30 @@ const DogCard = ({ dog }) => (
         />
         <div className="dog-info">
             <h3 className="dog-name">{dog.name}</h3>
-            {/* ... otros detalles ... */}
-            <p><strong>Ubicación:</strong> {dog.location}</p>
-            <button className="contact-button">Ver Detalles / Contactar</button>
+            <p className="dog-location">📍 {dog.location}</p>
+            {/* Se activa la función al hacer clic */}
+            <button className="contact-button" onClick={() => onOpenDetail(dog)}>
+                Ver Detalles / Contactar
+            </button>
         </div>
     </div>
 );
 
-
-export const PantallaPerdidos = () =>{
-
-    // 🔑 Estados para la lógica de datos
+export const PantallaPerdidos = () => {
     const [dogs, setDogs] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    
+    // Estados para el detalle
+    const [selectedDog, setSelectedDog] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Lógica de carga de datos (queda igual)
     useEffect(() => {
         const fetchDogs = async () => {
             try {
                 const data = await DogService.getLostDogs();
                 setDogs(data);
             } catch (err) {
-                // 🛑 SOLO ASIGNAR EL ERROR, NO ROMPER EL RENDERIZADO
-                setError(err.message || "Ocurrió un error desconocido al cargar los datos.");
-                setDogs([]); // Asegurar que el array esté vacío
+                setDogs([]);
             } finally {
                 setLoading(false);
             }
@@ -46,67 +47,45 @@ export const PantallaPerdidos = () =>{
         fetchDogs();
     }, []);
 
-    const heroTextLines = [
-        "¿Necesitas ayuda para encontrar a tu mascota?",
-        "¡Estamos aquí para ayudarte!",
-        "Dinos qué estás buscando..."
-    ];
+    const handleOpenDetail = (dog) => {
+        setSelectedDog(dog);
+        setIsModalOpen(true);
+    };
 
-    return(
-        <div className="inicio-container">
+    const heroTextLines = ["¿Necesitas ayuda?", "¡Estamos aquí para ayudarte!"];
 
-            {/* 🔑 1. SECCIÓN HERO: RENDERIZADO INCONDICIONAL */}
-            {/* Esta sección siempre se muestra, independientemente del estado de la API */}
+    return (
+        <div className="perdidos-page-wrapper">
+            <Header />
+
             <section className="hero-ayuda">
                 <h1 className="ayuda-title">
-                    <TextType
-                        text={heroTextLines}
-                        typingSpeed={70}
-                        pauseDuration={1500}
-                        loop={true}
-                        showCursor={true}
-                        cursorCharacter="|"
-                    />
+                    <TextType text={heroTextLines} typingSpeed={70} pauseDuration={1500} loop={true} showCursor={true} />
                 </h1>
-
-                <p>Completa el formulario a continuación para reportar una mascota perdida o encontrada.</p>
-
-                <div className="search-filters">
-                    <input type="text" placeholder="Buscar por nombre o raza..." />
-                    <select><option>Todas las razas</option></select>
-                </div>
+                <p>Mural de reportes de la comunidad para encontrar a nuestras wawitas.</p>
             </section>
 
-            {/* --- 2. SECCIÓN PRINCIPAL DE CARDS (Contenido condicional) --- */}
             <main className="ayuda-main-content">
-                <h2> Perros Reportados Perdidos Recientemente </h2>
-
-                {/* 🛑 AHORA MANEJAMOS LOS ESTADOS AQUÍ DENTRO: */}
+                <h2 className="mural-title">Perros Reportados Perdidos Recientemente</h2>
                 {loading ? (
-                    <div className="loading-container">
-                        <p>Cargando reportes de perros perdidos... 🐾</p>
-                    </div>
-                ) : error ? (
-                    // Mostrar solo el mensaje de error en esta sección
-                    <div className="error-container">
-                        <p style={{color: 'red', fontWeight: 'bold'}}>
-                            ¡Error de Conexión! No se pudo cargar la lista de perros: {error}
-                        </p>
-                        <p>Por favor, asegúrate de que el JSON Server esté corriendo.</p>
-                    </div>
-                ) : dogs.length === 0 ? (
-                    <div className="empty-state">
-                        <p>No hay reportes de perros perdidos.</p>
-                    </div>
+                    <div className="loading-container"><p>Cargando reportes... 🐾</p></div>
                 ) : (
-                    // Mostrar la lista si todo está bien
                     <div className="cards-grid">
+                        {/* Se pasa la función al componente DogCard */}
                         {dogs.map(dog => (
-                            <DogCard key={dog.id} dog={dog} />
+                            <DogCard key={dog.id} dog={dog} onOpenDetail={handleOpenDetail} />
                         ))}
                     </div>
                 )}
+                <Footer />
             </main>
+
+            {/* Modal que muestra la info del db.json */}
+            <DetailModal 
+                isVisible={isModalOpen} 
+                dog={selectedDog} 
+                onClose={() => setIsModalOpen(false)} 
+            />
         </div>
     );
 };

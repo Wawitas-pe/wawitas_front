@@ -1,302 +1,224 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PostService from '../services/PostService.jsx';
+import AuthService from '../services/AuthService.jsx';
+import { Header } from '../components/organisms/header/Header.jsx';
+import { Footer } from '../components/organisms/footer/Footer.jsx';
+import { LoginModal } from '../components/molecules/LoginModal.jsx';
 import './AyudaEncontrarlo.css';
+import TextType from "../components/TextType.jsx";
 
-// NOTA: LikeButton recibe una función de actualización del padre
-const LikeButton = ({ post, toggleLike }) => {
-    // Mantener estado local para la apariencia visual (optimista)
+const LikeButton = ({ post, toggleLike, onRestrictedAction }) => {
     const [isLiked, setIsLiked] = useState(false);
-
     const handleToggle = () => {
-        const newLikeStatus = !isLiked;
-        const newLikesCount = newLikeStatus ? post.likes + 1 : post.likes - 1;
-
-        // Llama a la función del padre para interactuar con la API
-        toggleLike(post.id, newLikesCount);
-
-        // Actualiza el estado visual local
-        setIsLiked(newLikeStatus);
+        onRestrictedAction(() => {
+            const newLikeStatus = !isLiked;
+            const newLikesCount = newLikeStatus ? (post.likes || 0) + 1 : (post.likes || 0) - 1;
+            toggleLike(post.id, newLikesCount);
+            setIsLiked(newLikeStatus);
+        });
     };
-
     return (
-        <button
-            className={`like-btn ${isLiked ? 'liked' : ''}`}
-            onClick={handleToggle}
-            title={isLiked ? "Quitar Me Gusta" : "Dar Me Gusta/Upvote"}
-        >
+        <button className={`like-btn ${isLiked ? 'liked' : ''}`} onClick={handleToggle}>
             <span role="img" aria-label="like">{isLiked ? '❤️' : '🤍'}</span>
-            <span className="like-count">{post.likes}</span>
+            <span className="like-count">{post.likes || 0}</span>
         </button>
     );
 };
 
-
-const CommentSection = React.memo(({ post, addComment }) => {
+const CommentSection = React.memo(({ post, addComment, onRestrictedAction }) => {
     const [commentText, setCommentText] = useState('');
-
     const handleAddComment = (e) => {
         e.preventDefault();
-        if (commentText.trim() === '') return;
-
-        const newComment = {
-            user: 'Usuario Simulado',
-            text: commentText.trim(),
-            ubicacion: commentText.toLowerCase().includes('visto en') ? 'Ubicación mencionada' : null
-        };
-
-        // Llama a la función del padre para interactuar con la API
-        addComment(post, newComment);
-        setCommentText('');
+        onRestrictedAction(() => {
+            if (commentText.trim() === '') return;
+            const user = AuthService.getCurrentUser();
+            addComment(post, { user: user.nombre, text: commentText.trim() });
+            setCommentText('');
+        });
     };
-
     return (
         <div className="post-comments-section">
-            <h4 className="comments-title">Comentarios ({post.comentarios.length})</h4>
-            {post.comentarios.map((comment, index) => (
+            <h4 className="comments-title">Comentarios ({(post.comentarios || []).length})</h4>
+            {(post.comentarios || []).map((comment, index) => (
                 <div key={index} className="comment-item">
-                    <p className="comment-text">
-                        <strong>{comment.user}:</strong> {comment.text}
-                    </p>
-                    {comment.ubicacion && (
-                        <span className="comment-location">📍 Visto en: {comment.ubicacion}</span>
-                    )}
+                    <p className="comment-text"><strong>{comment.user}:</strong> {comment.text}</p>
                 </div>
             ))}
-
             <form onSubmit={handleAddComment} className="add-comment-form">
-                <input
-                    type="text"
-                    placeholder="Añadir un comentario/avistamiento..."
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    required
-                />
-                <button type="submit">Responder</button>
+                <input type="text" placeholder="Escribe un comentario..." value={commentText} onChange={(e) => setCommentText(e.target.value)} required />
+                <button type="submit">Enviar</button>
             </form>
         </div>
     );
 });
 
-
-// ... PostModal (El código del Modal queda sin cambios, solo llama a onPublish)
 const PostModal = ({ isVisible, onClose, onPublish }) => {
-    const [formData, setFormData] = useState({
-        nombre: '',
-        situacion: 'perdido',
-        raza: '',
-        descripcion: '',
-        fotoUrl: 'https://placedog.net/500/500?id=25',
-    });
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
+    const [formData, setFormData] = useState({ nombre: '', situacion: 'consejo', descripcion: '', fotoUrl: '', raza: 'General' });
+    if (!isVisible) return null;
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const finalFotoUrl = formData.fotoUrl.trim() === '' ? 'https://placedog.net/500/500?id=25' : formData.fotoUrl;
-        onPublish({...formData, fotoUrl: finalFotoUrl});
-        setFormData({
-            nombre: '', situacion: 'perdido', raza: '', descripcion: '',
-            fotoUrl: 'https://placedog.net/500/500?id=25',
-        });
+        const finalFoto = formData.fotoUrl.trim() || 'https://placedog.net/800/400?id=blog';
+        onPublish({ ...formData, fotoUrl: finalFoto });
+        setFormData({ nombre: '', situacion: 'consejo', descripcion: '', fotoUrl: '', raza: 'General' });
         onClose();
     };
 
-    if (!isVisible) return null;
-
     return (
         <div className="modal-overlay">
-            <div className="modal-content">
-                <button className="modal-close-btn" onClick={onClose}>&times;</button>
-                <h2>Publicar un Reporte</h2>
-                <p>Completa los datos de tu mascota perdida o en adopción.</p>
-
-                <form onSubmit={handleSubmit} className="post-form">
-                    <label>Nombre de la mascota:<input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required /></label>
-                    <label>Situación:
-                        <select name="situacion" value={formData.situacion} onChange={handleChange} required>
-                            <option value="perdido">Perdido 💔</option>
-                            <option value="encontrado">Encontrado 📢</option>
-                            <option value="adopcion">En Adopción 🏡</option>
+            <div className="modal-card">
+                <button className="close-icon-btn" onClick={onClose}>&times;</button>
+                <div className="modal-header-custom">
+                    <h2>📝 Nueva Entrada al Blog</h2>
+                    <p>Comparte historias o consejos con la comunidad.</p>
+                </div>
+                <form onSubmit={handleSubmit} className="modal-form-custom">
+                    <div className="input-group">
+                        <label>Título de la entrada</label>
+                        <input type="text" placeholder="Ej: Mi primera adopción" value={formData.nombre} onChange={(e) => setFormData({...formData, nombre: e.target.value})} required />
+                    </div>
+                    <div className="input-group">
+                        <label>Categoría</label>
+                        <select value={formData.situacion} onChange={(e) => setFormData({...formData, situacion: e.target.value})}>
+                            <option value="consejo">💡 Consejo</option>
+                            <option value="exito">📖 Historia de Éxito</option>
+                            <option value="evento">📅 Evento</option>
+                            <option value="donacion">🤝 Solidaridad</option>
                         </select>
-                    </label>
-                    <label>Raza (ej. Labrador, Mestizo):<input type="text" name="raza" value={formData.raza} onChange={handleChange} /></label>
-                    <label>Descripción / Detalles:<textarea name="descripcion" value={formData.descripcion} onChange={handleChange} required></textarea></label>
-                    <label>URL de la Foto:<input type="url" name="fotoUrl" value={formData.fotoUrl} onChange={handleChange} /></label>
-
-                    <button type="submit" className="submit-post-btn">Publicar Reporte</button>
+                    </div>
+                    <div className="input-group">
+                        <label>Contenido</label>
+                        <textarea placeholder="Escribe aquí..." value={formData.descripcion} onChange={(e) => setFormData({...formData, descripcion: e.target.value})} required></textarea>
+                    </div>
+                    <div className="input-group">
+                        <label>URL de Imagen (Opcional)</label>
+                        <input type="url" placeholder="https://..." value={formData.fotoUrl} onChange={(e) => setFormData({...formData, fotoUrl: e.target.value})} />
+                    </div>
+                    <button type="submit" className="modal-submit-btn">Publicar en el Blog</button>
                 </form>
             </div>
         </div>
     );
 };
-// -------------------------------------------------------------------
+
+const TrendsSidebar = () => {
+    const trends = [
+        { category: "Salud Animal", tag: "#TipsDeHidratación", count: "1.2k" },
+        { category: "Comunidad", tag: "#WawitasFelices", count: "856" },
+        { category: "Eventos", tag: "#VacunaciónLima", count: "640" },
+        { category: "Historias", tag: "#AdoptaUnSenior", count: "420" },
+    ];
+
+    return (
+        <aside className="trends-sidebar">
+            <div className="trends-container">
+                <h3 className="trends-title">Tendencias para ti</h3>
+                {trends.map((trend, index) => (
+                    <div key={index} className="trend-item">
+                        <span className="trend-category">Tendencia en {trend.category}</span>
+                        <p className="trend-tag">{trend.tag}</p>
+                        <span className="trend-count">{trend.count} lecturas</span>
+                    </div>
+                ))}
+            </div>
+            <div className="who-to-follow">
+                <h3 className="trends-title">Quién seguir</h3>
+                <div className="follow-item">
+                    <img src="https://placedog.net/40/40?id=1" alt="Refugio" />
+                    <div className="follow-info">
+                        <p>Refugio Las Patitas</p>
+                        <span>@patitas_ong</span>
+                    </div>
+                    <button className="follow-btn">Seguir</button>
+                </div>
+            </div>
+        </aside>
+    );
+};
 
 export const AyudaEncontrarlo = () => {
-    const [posts, setPosts] = useState([]); // Inicia vacío, se llena con la API
-    const [loading, setLoading] = useState(true); // Se inicia cargando
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [error, setError] = useState(null); // Nuevo estado para errores
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-    // 1. Efecto para obtener las publicaciones al montar
     useEffect(() => {
-        const fetchPosts = async () => {
-            try {
-                // Llama al servicio para obtener los datos
-                const data = await PostService.getAllPosts();
-                // Ordenar por ID descendente (asumiendo que ID más alto es más nuevo)
-                setPosts(data.sort((a, b) => b.id - a.id));
-            } catch (err) {
-                setError("Error al cargar las publicaciones. ¿El JSON Server está encendido?");
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchPosts();
+        PostService.getAllPosts()
+            .then(data => setPosts(data.sort((a, b) => b.id - a.id)))
+            .catch(() => console.error("Error de conexión"))
+            .finally(() => setLoading(false));
     }, []);
 
-    // 2. Función para crear nuevo post (asíncrona)
-    const handleNewPost = async (newPostData) => {
-        setLoading(true);
-        try {
-            const postToCreate = {
-                ...newPostData,
-                fecha: new Date().toLocaleDateString('es-ES'),
-                likes: 0,
-                comentarios: [],
-            };
-
-            // Llama al servicio para crear el post en el backend
-            const createdPost = await PostService.createPost(postToCreate);
-
-            // Añadir el post devuelto por el servidor (ya tiene el ID)
-            setPosts(prevPosts => [createdPost, ...prevPosts]);
-        } catch (error) {
-            setError("No se pudo publicar el reporte.");
-        } finally {
-            setLoading(false);
+    const ejecutarAccionProtegida = (accion) => {
+        const user = AuthService.getCurrentUser();
+        if (user) {
+            accion();
+        } else {
+            setIsLoginModalOpen(true);
         }
     };
 
-    // 3. Función para añadir un comentario (asíncrona)
+    const handleNewPost = async (newPostData) => {
+        try {
+            const created = await PostService.createPost({ 
+                ...newPostData, 
+                fecha: new Date().toLocaleDateString('es-ES'), 
+                likes: 0, 
+                comentarios: [] 
+            });
+            setPosts([created, ...posts]);
+        } catch (e) { alert("Error al publicar"); }
+    };
+
     const addCommentToPost = useCallback(async (post, newComment) => {
-        // Optimista: Actualizar el estado local antes de la respuesta del servidor
-        const updatedPost = {
-            ...post,
-            comentarios: [...post.comentarios, newComment],
-        };
-
-        setPosts(prevPosts =>
-            prevPosts.map(p => p.id === post.id ? updatedPost : p)
-        );
-
-        try {
-            // Llama al servicio para actualizar el array de comentarios en el servidor
-            await PostService.addComment(updatedPost);
-        } catch (error) {
-            console.error("Fallo al añadir comentario:", error);
-            setError("Error al añadir el comentario.");
-            // Aquí podrías revertir el cambio si el error fuera crítico.
-        }
+        const updated = { ...post, comentarios: [...(post.comentarios || []), newComment] };
+        setPosts(prev => prev.map(p => p.id === post.id ? updated : p));
+        await PostService.addComment(updated);
     }, []);
 
-    // 4. Función para manejar likes (asíncrona)
-    const handleToggleLike = useCallback(async (postId, newLikesCount) => {
-
-        // Optimista: Actualizar el estado local inmediatamente para mejor UX
-        setPosts(prevPosts =>
-            prevPosts.map(p => p.id === postId ? { ...p, likes: newLikesCount } : p)
-        );
-
-        try {
-            // Llama al servicio para enviar el nuevo conteo de likes al servidor
-            await PostService.updateLikes(postId, newLikesCount);
-        } catch (error) {
-            console.error("Fallo al actualizar likes:", error);
-            setError("No se pudo actualizar el like.");
-            // Si falla, podrías revertir el posts(prevPosts...)
-        }
-
+    const handleToggleLike = useCallback(async (postId, count) => {
+        setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: count } : p));
+        await PostService.updateLikes(postId, count);
     }, []);
-
 
     return (
         <div className="pagina-container">
-
+            <Header />
             <div className="title-container">
-                <h2 className="page-title">FORO: AYUDA A ENCONTRARLOS 🚨</h2>
-                <p className="page-subtitle">Reportes de mascotas perdidas y en adopción. ¡Comenta si los has visto!</p>
+                <h2 className="page-title">BLOG COMUNITARIO 🐾</h2>
+                <p className="page-subtitle">Historias y consejos para los amantes de las wawitas.</p>
             </div>
-
-            <main className="forum-feed">
-                {error && <p className="error-message">{error}</p>}
-
-                {loading ? (
-                    <p className="loading-text">Cargando publicaciones... 🐾</p>
-                ) : posts.length > 0 ? (
-                    posts.map((post) => (
-                        <div key={post.id} className="forum-post">
-
-                            {/* ... Renderizado del Post ... */}
-                            <div className="post-header">
-                                <div className="post-image-wrapper">
-                                    <img
-                                        src={post.fotoUrl}
-                                        alt={post.nombre}
-                                        onError={(e) => e.target.src = 'https://placedog.net/500/500'}
-                                    />
+            <div className="forum-layout">
+                <main className="forum-feed">
+                    {loading ? <p className="loading-text">Cargando historias... 🐾</p> : 
+                        posts.map(post => (
+                            <div key={post.id} className="blog-card">
+                                <div className="blog-header-image">
+                                    <img src={post.fotoUrl} alt="blog" onError={(e) => e.target.src = 'https://placedog.net/800/400'} />
                                 </div>
-                                <div className="post-info">
-                                    <h3 className="post-name">{post.nombre}</h3>
-                                    <p className="post-detail">🐶 **Raza:** {post.raza || 'Desconocida'}</p>
-                                    <p className="post-detail">📅 **Fecha del Reporte:** {post.fecha}</p>
-                                    <span className={`post-status-badge ${post.situacion}`}>
-                                        {post.situacion.toUpperCase()}
+                                <div className="post-content-area">
+                                    <span className={`post-status-badge status-${post.situacion}`}>
+                                        {(post.situacion || 'BLOG').toUpperCase()}
                                     </span>
+                                    <h3 className="blog-post-title">{post.nombre}</h3>
+                                    <p className="post-detail">📅 {post.fecha} • 🏷️ {post.raza}</p>
+                                    <p className="blog-post-excerpt">{post.descripcion}</p>
                                 </div>
+                                <div className="post-actions">
+                                    <LikeButton post={post} toggleLike={handleToggleLike} onRestrictedAction={ejecutarAccionProtegida} />
+                                    <span className="comment-count">💬 {(post.comentarios || []).length}</span>
+                                </div>
+                                <CommentSection post={post} addComment={addCommentToPost} onRestrictedAction={ejecutarAccionProtegida} />
                             </div>
-
-                            <div className="post-body">
-                                <p className="post-description">{post.descripcion}</p>
-                            </div>
-
-                            <div className="post-actions">
-                                <LikeButton post={post} toggleLike={handleToggleLike} />
-                                <span className="comment-count" title="Cantidad de Comentarios">
-                                    💬 {post.comentarios.length} Comentarios
-                                </span>
-                            </div>
-
-                            <CommentSection
-                                post={post}
-                                addComment={addCommentToPost}
-                            />
-
-                        </div>
-                    ))
-                ) : (
-                    <div className="empty-state">
-                        <p>No hay publicaciones en el foro. ¡Sé el primero en reportar un avistamiento! 🐶</p>
-                    </div>
-                )}
-            </main>
-
-            <button
-                className="floating-publish-btn"
-                onClick={() => setIsModalOpen(true)}
-                title="Publicar nuevo reporte"
-            >
-                ➕ Publica
-            </button>
-
-            <PostModal
-                isVisible={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onPublish={handleNewPost}
-            />
-
+                        ))
+                    }
+                </main>
+                <TrendsSidebar />
+            </div>
+            <button className="floating-publish-btn" onClick={() => ejecutarAccionProtegida(() => setIsModalOpen(true))}>✍️</button>
+            <PostModal isVisible={isModalOpen} onClose={() => setIsModalOpen(false)} onPublish={handleNewPost} />
+            <LoginModal isVisible={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+            <Footer />
         </div>
     );
 };

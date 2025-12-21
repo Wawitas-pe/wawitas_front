@@ -2,102 +2,158 @@
   "posts": [
     {
       "id": "1",
-      "nombre": "Kira 💔 (Perdida hace 3 días)",
-      "situacion": "perdido",
-      "fotoUrl": "https://placedog.net/500/500?id=10",
-      "raza": "Poodle Toy",
-      "descripcion": "Kira se escapó por el Parque de la Amistad en Surco. Tiene un collar rojo. Es muy asustadiza, por favor, no la persigan.",
-      "fecha": "10/12/2025",
-      "likes": 154,
+      "nombre": "Campaña de Vacunación 🏥",
+      "situacion": "evento",
+      "fotoUrl": "https://placedog.net/500/500?id=101",
+      "raza": "Informativo",
+      "descripcion": "Este domingo habrá vacunación gratuita en el Parque de la Reserva. ¡Lleva a tu mascota!",
+      "fecha": "20/12/2025",
+      "likes": 245,
       "comentarios": [
         {
-          "user": "MariaG",
-          "text": "¡La vi esta mañana cerca del cruce de Av. Benavides! Estaba corriendo hacia el Mercado.",
-          "ubicacion": "Benavides, Surco"
-        },
-        {
-          "user": "JuanPerez",
-          "text": "Compartido en mis grupos de WhatsApp. ¡Ánimo!",
-          "ubicacion": null
-        },
-        {
-          "user": "SeguridadLima",
-          "text": "Revisaremos nuestras cámaras en la zona. Mantente atenta.",
-          "ubicacion": null
+          "user": "CarlosP",
+          "text": "¿Aceptan gatos también?",
+          "ubicacion": "Lima"
         }
       ]
     },
     {
       "id": "2",
-      "nombre": "Rocky (En Adopción)",
+      "nombre": "Milo busca hogar 🏠",
       "situacion": "adopcion",
       "fotoUrl": "https://placedog.net/500/500?id=12",
       "raza": "Mestizo",
-      "descripcion": "Rocky es un perro adulto muy cariñoso, rescatado de la calle. Está castrado y listo para un hogar. ¡Solo adopción responsable!",
-      "fecha": "11/12/2025",
-      "likes": 89,
+      "descripcion": "Milo tiene 1 año y está listo para encontrar una familia definitiva. Muy dócil.",
+      "fecha": "19/12/2025",
+      "likes": 121,
       "comentarios": [
         {
-          "user": "AnaVet",
-          "text": "¡Qué hermoso! ¿Cuántos años tiene aproximadamente?",
-          "ubicacion": null
-        },
-        {
-          "user": "CarlosM",
-          "text": "¿Se lleva bien con otros perros?",
-          "ubicacion": null
+          "user": "Juan",
+          "text": "Yo lo quisiera adoptar"
         }
       ]
+    }
+  ],
+  "lostDogs": [
+    {
+      "id": "1",
+      "name": "Kira 💔",
+      "imageUrl": "https://placedog.net/500/500?id=10",
+      "location": "Surco, Parque de la Amistad",
+      "breed": "Poodle Toy",
+      "description": "Se escapó de casa el lunes. Tiene un collar rojo."
+    },
+    {
+      "id": "2",
+      "name": "Luna 🌙",
+      "imageUrl": "https://placedog.net/500/500?id=14",
+      "location": "Pueblo Libre, Plaza de la Bandera",
+      "breed": "Pastor Alemán",
+      "description": "Lleva un arnés azul. Es muy dócil pero asustadiza."
     },
     {
       "id": "3",
-      "nombre": "Chispita (Visto y Recogido)",
-      "situacion": "encontrado",
-      "fotoUrl": "https://placedog.net/500/500?id=13",
-      "raza": "Chihuahua",
-      "descripcion": "Encontramos a esta pequeña temblando en un paradero de Miraflores. La tenemos a salvo. Buscamos a su dueño.",
-      "fecha": "09/12/2025",
-      "likes": 210,
-      "comentarios": [
-        {
-          "user": "DueñoOriginal",
-          "text": "¡Dios mío, esa es mi Chispita! Soy su dueño. ¿Podemos coordinar la entrega? ¡Mil gracias!",
-          "ubicacion": null
-        },
-        {
-          "user": "Voluntario",
-          "text": "¡Qué gran noticia! ¡Final feliz!",
-          "ubicacion": null
-        }
-      ]
+      "name": "Milo",
+      "imageUrl": "https://placedog.net/500/500?id=30",
+      "location": "San Borja, Av. San Luis",
+      "breed": "Beagle",
+      "description": "No tiene collar. Se asusta con los ruidos fuertes de cohetes."
     },
     {
       "id": "4",
-      "nombre": "Luna 🌙",
-      "situacion": "perdido",
-      "fotoUrl": "https://placedog.net/500/500?id=14",
-      "raza": "Pastor Alemán",
-      "descripcion": "Perdida en Pueblo Libre. Es grande y lleva un arnés azul. Recompensa ofrecida.",
-      "fecha": "12/12/2025",
-      "likes": 73,
-      "comentarios": [
-        {
-          "user": "VecinoPL",
-          "text": "Vi un perro grande corriendo anoche por la Plaza de la Bandera. ¡Parecía asustado!",
-          "ubicacion": "Plaza de la Bandera"
-        }
-      ]
+      "name": "Thor",
+      "imageUrl": "https://placedog.net/500/500?id=22",
+      "location": "Miraflores, Parque Kennedy",
+      "breed": "Golden Retriever",
+      "description": "Visto cerca del área de juegos. Tiene microchip."
     },
     {
       "id": "5",
-      "nombre": "Pelusa (Busca Casa)",
-      "situacion": "adopcion",
-      "fotoUrl": "https://placedog.net/500/500?id=15",
-      "raza": "Shih Tzu",
-      "descripcion": "Rescatada de un criadero. Necesita un hogar tranquilo sin niños pequeños.",
-      "fecha": "13/12/2025",
-      "likes": 56,
-      "comentarios": []
+      "name": "Roco",
+      "imageUrl": "https://placedog.net/500/500?id=45",
+      "location": "Chorrillos, Playa Agua Dulce",
+      "breed": "Labrador",
+      "description": "Perro color canela, muy juguetón. Collar verde."
+    },
+    {
+      "id": "6",
+      "name": "Bella",
+      "imageUrl": "https://placedog.net/500/500?id=60",
+      "location": "La Molina, Av. Raúl Ferrero",
+      "breed": "Schnauzer",
+      "description": "Corte de pelo reciente. Responde con entusiasmo a su nombre."
+    },
+    {
+      "id": "7",
+      "name": "Simba",
+      "imageUrl": "https://placedog.net/500/500?id=81",
+      "location": "Lince, Parque del Bombero",
+      "breed": "Chow Chow",
+      "description": "Lengua azulada característica. Muy peludo y algo desconfiado."
+    },
+    {
+      "id": "8",
+      "name": "Nala",
+      "imageUrl": "https://placedog.net/500/500?id=92",
+      "location": "San Isidro, El Olivar",
+      "breed": "Siberian Husky",
+      "description": "Ojos de diferente color (uno azul, uno café). Collar de cuero."
+    },
+    {
+      "id": "9",
+      "name": "Toby",
+      "imageUrl": "https://placedog.net/500/500?id=103",
+      "location": "Magdalena, Malecón Castagnola",
+      "breed": "Cocker Spaniel",
+      "description": "Orejas largas, color café oscuro. Lleva placa de contacto."
+    },
+    {
+      "id": "10",
+      "name": "Oreo",
+      "imageUrl": "https://placedog.net/500/500?id=115",
+      "location": "Barranco, Puente de los Suspiros",
+      "breed": "Dálmata",
+      "description": "Blanco con manchas negras muy definidas. Delgado."
+    },
+    {
+      "id": "11",
+      "name": "Coco",
+      "imageUrl": "https://placedog.net/500/500?id=126",
+      "location": "Jesús María, Campo de Marte",
+      "breed": "Bulldog Francés",
+      "description": "Pequeño, color atigrado. Necesita medicación diaria."
+    },
+    {
+      "id": "12",
+      "name": "Sasha",
+      "imageUrl": "https://placedog.net/500/500?id=137",
+      "location": "San Miguel, Parque de las Leyendas",
+      "breed": "Boxer",
+      "description": "Tiene una mancha blanca en el pecho. Collar marrón de nylon."
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "nombreCompleto": "Admin Wawitas",
+      "email": "admin@wawitas.com",
+      "password": "admin123",
+      "rol": "admin"
+    },
+    {
+      "id": "2",
+      "nombreCompleto": "Juan Perez",
+      "email": "juan@correo.com",
+      "password": "user123",
+      "rol": "usuario"
+    },
+    {
+      "id": "443b",
+      "nombreCompleto": "Juan",
+      "email": "juan@gmail.com",
+      "telefono": "999999999",
+      "password": "1234",
+      "rol": "usuario"
     }
   ]
 }

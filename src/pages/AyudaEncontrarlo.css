@@ -1,403 +1,113 @@
-/* Variables locales */
 :root {
-    --green: #3C8D40;
-    --red: #D44638;
-    --blue: #2980b9;
-    --light-bg: #f7f7f7;
-    --card-bg: #ffffff; 
+    --green-main: #3C8D40;
+    --red-main: #D44638;
+    --blue-main: #2980b9;
+    --orange-main: #e67e22;
+    --creme-bg: #FFF8E7;
 }
 
-/* Contenedor principal */
+* { box-sizing: border-box; }
+
 .pagina-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #FFF8E7; /* Fondo Crema */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Título */
-.title-container {
-    text-align: center;
-    margin: 20px 0 40px 0;
-}
-
-.page-title {
-    font-size: clamp(2rem, 4vw, 2.8rem);
-    font-weight: bold;
-    color: #333;
-    margin: 0;
-}
-
-.page-subtitle {
-    font-size: 1.1rem;
-    color: #555;
-    margin-top: 5px;
-}
-
-/* --- FEED DEL FORO --- */
-.forum-feed {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    padding: 0 5%;
-    max-width: 700px; /* Ancho típico de feed de red social */
-    margin: 0 auto;
-    flex: 1;
-    margin-bottom: 60px;
-}
-
-/* --- PUBLICACIÓN INDIVIDUAL --- */
-.forum-post {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid var(--red); /* Borde por defecto para Perdido */
-}
-
-/* Color de borde basado en el estado (simulación) */
-.forum-post .post-status-badge.adopcion {
-    background-color: var(--green);
-}
-.forum-post .post-status-badge.perdido {
-    background-color: var(--red);
-}
-.forum-post .post-status-badge.encontrado {
-    background-color: var(--blue);
-}
-
-/* Si está en Adopción, cambia el borde principal */
-.forum-post:has(.post-status-badge.adopcion) {
-    border-left-color: var(--green);
-}
-.forum-post:has(.post-status-badge.encontrado) {
-    border-left-color: var(--blue);
-}
-
-
-.post-header {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    align-items: flex-start;
-}
-
-.post-image-wrapper {
-    width: 100px;
-    height: 100px;
-    min-width: 100px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.post-image-wrapper img {
+    background-color: var(--creme-bg);
     width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
-.post-info {
-    flex-grow: 1;
-}
+.title-container { text-align: center; margin: 30px 0; }
+.page-title { font-size: 2.2rem; font-weight: 800; color: #333; }
 
-.post-name {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin: 0 0 5px 0;
-}
-
-.post-detail {
-    font-size: 0.9rem;
-    color: #666;
-    margin: 0 0 3px 0;
-}
-
-.post-status-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 5px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    color: white;
-    margin-top: 5px;
-}
-
-.post-body {
-    padding-left: 115px; /* Alinea con la info de la derecha */
-    margin-bottom: 15px;
-    border-top: 1px dashed var(--light-bg);
-    padding-top: 15px;
-}
-
-/* --- ACCIONES (LIKES) --- */
-.post-actions {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 10px 0;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-}
-
-.like-btn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    background: none;
-    border: 1px solid #ccc;
-    padding: 5px 10px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-weight: 600;
-}
-
-.like-btn:hover {
-    background-color: var(--light-bg);
-}
-
-.like-btn.liked {
-    border-color: var(--red);
-    color: var(--red);
-    background-color: #ffeaea;
-}
-
-.comment-count {
-    font-size: 0.9rem;
-    color: #666;
-}
-
-/* --- COMENTARIOS --- */
-.post-comments-section {
-    margin-top: 15px;
-    padding-top: 10px;
-}
-
-.comments-title {
-    font-size: 1.1rem;
-    color: #333;
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-
-.comment-item {
-    background-color: var(--light-bg);
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-}
-
-.comment-text {
-    font-size: 0.95rem;
-    margin: 0;
-    line-height: 1.4;
-}
-
-.comment-location {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--blue);
-    font-style: italic;
-    margin-top: 4px;
-}
-
-/* Formulario Simulado */
-.add-comment-form {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.add-comment-form input {
-    flex-grow: 1;
-    padding: 10px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-}
-
-.add-comment-form button {
-    background-color: #ccc;
-    color: #666;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 20px;
-    cursor: not-allowed;
-    font-weight: 600;
-}
-
-
-/* --- RESPONSIVIDAD --- */
-@media (max-width: 600px) {
-    .forum-feed {
-        padding: 0 15px;
-    }
-
-    .forum-post {
-        padding: 15px;
-    }
-    
-    .post-header {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .post-image-wrapper {
-        width: 80px;
-        height: 80px;
-        min-width: 80px;
-    }
-
-    .post-body {
-        padding-left: 0; /* Deshacer la alineación en móvil */
-    }
-}
-
-/* --- BOTÓN FLOTANTE ESTÁTICO --- */
-.floating-publish-btn {
-    position: fixed; /* Hace que el botón se quede fijo */
-    bottom: 30px; /* Distancia desde abajo */
-    left: 30px; /* Distancia desde la izquierda */
-    
-    background-color: var(--red); /* Rojo llamativo */
-    color: white;
-    border: none;
-    border-radius: 50px; /* Botón redondo u ovalado */
-    padding: 15px 25px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
-    z-index: 1000; /* Asegura que esté por encima de todo */
-}
-
-.floating-publish-btn:hover {
-    background-color: #A3342E; /* Rojo más oscuro */
-    transform: translateY(-2px);
-}
-
-/* --- MODAL (POPUP) --- */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+.forum-layout {
     display: flex;
     justify-content: center;
-    align-items: center;
-    z-index: 2000; /* Más alto que el botón */
-}
-
-.modal-content {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.modal-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 2rem;
-    cursor: pointer;
-    color: #666;
-}
-
-/* Estilos del Formulario */
-.post-form label {
-    display: block;
-    margin-bottom: 15px;
-    font-weight: 600;
-    color: #333;
-}
-
-.post-form input[type="text"],
-.post-form input[type="url"],
-.post-form select,
-.post-form textarea {
+    gap: 30px;
+    padding: 0 5%;
+    max-width: 1200px;
+    margin: 0 auto 60px;
     width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box; /* Asegura que el padding no desborde */
 }
 
-.post-form textarea {
-    resize: vertical;
-    min-height: 100px;
+.forum-feed { flex: 2; max-width: 700px; display: flex; flex-direction: column; gap: 30px; }
+
+.blog-card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-.submit-post-btn {
-    background-color: var(--red);
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 15px;
-    width: 100%;
-    transition: background-color 0.2s;
-}
+.blog-header-image { width: 100%; height: 260px; }
+.blog-header-image img { width: 100%; height: 100%; object-fit: cover; }
 
-.submit-post-btn:hover {
-    background-color: #A3342E;
-}
+.post-content-area { padding: 20px; }
+.blog-post-title { font-size: 1.6rem; margin: 10px 0; font-weight: 800; color: #222; }
+.blog-post-excerpt { line-height: 1.6; color: #444; font-size: 1rem; }
 
-/* Ajuste del formulario de comentarios para que esté activo */
-.add-comment-form button {
-    background-color: var(--blue);
-    color: white;
-    padding: 10px 15px;
+.post-status-badge {
+    padding: 5px 12px;
     border-radius: 20px;
-    cursor: pointer; /* Lo activamos */
-    font-weight: 600;
-    border: none;
-}
-.add-comment-form button:hover {
-    background-color: #21618c;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: bold;
+    display: inline-block;
 }
 
-/* Moviles: Ajuste del botón flotante a la derecha para no molestar */
-@media (max-width: 600px) {
-    .floating-publish-btn {
-        bottom: 20px;
-        left: auto; 
-        right: 20px; /* Mover a la esquina inferior derecha en móviles */
-        padding: 12px 20px;
-    }
-}
+.status-consejo { background: var(--orange-main); }
+.status-exito { background: var(--green-main); }
+.status-evento { background: var(--blue-main); }
+.status-donacion { background: var(--red-main); }
+.status-adopcion { background: #9b59b6; }
 
-/* --- BOTÓN FLOTANTE ESTÁTICO --- */
+.post-actions { padding: 15px 20px; border-top: 1px solid #eee; display: flex; gap: 20px; align-items: center; }
+.like-btn { background: none; border: 1px solid #ddd; border-radius: 20px; padding: 5px 15px; cursor: pointer; transition: 0.2s; }
+.like-btn.liked { background: #ffeaea; border-color: var(--red-main); color: var(--red-main); }
+
+.trends-sidebar { flex: 1; min-width: 280px; position: sticky; top: 20px; height: fit-content; }
+.trends-container, .who-to-follow { background: #f3eee3; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+.trends-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 15px; }
+
+.trend-item { padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; }
+.trend-item:last-child { border-bottom: none; }
+.trend-category { font-size: 0.75rem; color: #777; }
+.trend-tag { font-weight: bold; color: var(--green-main); margin: 2px 0; }
+.trend-count { font-size: 0.75rem; color: #777; }
+
+.follow-item { display: flex; align-items: center; gap: 10px; margin-top: 15px; }
+.follow-item img { border-radius: 50%; object-fit: cover; }
+.follow-info p { font-size: 0.85rem; font-weight: bold; margin: 0; }
+.follow-info span { font-size: 0.75rem; color: #777; }
+.follow-btn { margin-left: auto; background: #333; color: white; border: none; border-radius: 15px; padding: 5px 12px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
+
 .floating-publish-btn {
-    position: fixed; /* ¡Esto es lo que lo hace flotar! */
-    bottom: 30px; 
-    left: 30px; 
-    
-    background-color: var(--red); 
-    color: white;
-    /* ... (otros estilos) ... */
-    z-index: 1000; 
+    position: fixed; bottom: 30px; left: 30px;
+    background: var(--green-main); color: #fff; border: none;
+    border-radius: 50%; width: 60px; height: 60px; font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; cursor: pointer;
 }
 
-/* --- MODAL (POPUP) --- */
 .modal-overlay {
-    position: fixed;
-    /* ... (otros estilos) ... */
-    z-index: 2000; 
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px); display: flex;
+    justify-content: center; align-items: center; z-index: 3000;
+}
+.modal-card { background: #fff; width: 90%; max-width: 500px; padding: 30px; border-radius: 20px; position: relative; }
+.close-icon-btn { position: absolute; top: 15px; right: 15px; background: #eee; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+.modal-form-custom .input-group { margin-bottom: 15px; }
+.modal-form-custom label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9rem; }
+.modal-form-custom input, .modal-form-custom select, .modal-form-custom textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #eee; background: #fafafa; }
+.modal-form-custom textarea { height: 120px; resize: none; }
+.modal-submit-btn { width: 100%; background: var(--green-main); color: #fff; border: none; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+
+.post-comments-section { padding: 0 20px 20px; }
+.comment-item { background: #f9f9f9; padding: 10px; border-radius: 10px; margin-bottom: 8px; }
+.add-comment-form { display: flex; gap: 8px; margin-top: 10px; }
+.add-comment-form input { flex: 1; border-radius: 20px; padding: 10px 15px; border: 1px solid #ddd; }
+.add-comment-form button { background: var(--blue-main); color: #fff; border: none; border-radius: 20px; padding: 0 20px; cursor: pointer; }
+
+@media (max-width: 900px) {
+    .forum-layout { flex-direction: column; }
+    .trends-sidebar { display: none; }
+    .floating-publish-btn { left: auto; right: 20px; }
 }

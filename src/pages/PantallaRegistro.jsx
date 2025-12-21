@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Header } from '../components/organisms/header/Header.jsx';
 import { Footer } from '../components/organisms/footer/Footer.jsx';
+import AuthService from '../services/AuthService';
 import './PantallaRegistro.css';
 
 export const PantallaRegistro = () => {
-  // Estado para guardar los datos del formulario
   const [form, setForm] = useState({
-    tipoAnimal: '',
-    ubicacion: '',
-    estaHerido: '',
-    cantidad: '',
-    nombre: ''
+    nombreCompleto: '',
+    email: '',
+    telefono: '',
+    password: '',
+    confirmPassword: ''
   });
 
   const handleChange = (e) => {
@@ -18,90 +18,111 @@ export const PantallaRegistro = () => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Datos a registrar:", form);
-    alert("¡Gracias por registrar el avistamiento! (Simulación)");
+    
+    if(form.password !== form.confirmPassword) {
+        alert("Las contraseñas no coinciden");
+        return;
+    }
+
+    try {
+      // Extraemos confirmPassword para no enviarlo al db.json
+      const { confirmPassword, ...userData } = form;
+      
+      // Llamada al servicio que hace el POST a /users
+      await AuthService.register(userData);
+      
+      alert("¡Registro exitoso! Los datos se han guardado en el db.json.");
+      
+      // Limpiamos el formulario
+      setForm({ nombreCompleto: '', email: '', telefono: '', password: '', confirmPassword: '' });
+      
+    } catch (err) {
+      alert("Error al registrar: " + err.message);
+    }
   };
 
   return (
     <div className="pagina-container">
       <Header />
-
       <main className="registro-main">
         <div className="registro-card">
-          <h2 className="registro-title">Ayúdanos a Encontrarlo</h2>
+          <div className="registro-header-icon">🐾</div>
+          <h2 className="registro-title">Crea tu Cuenta</h2>
+          <p className="registro-subtitle">Únete a Wawitas y ayuda a más mascotas.</p>
           
           <form className="registro-form" onSubmit={handleSubmit}>
-            
             <div className="form-group">
-              <label>¿Qué animalito es?</label>
+              <label>Nombre Completo</label>
               <input 
                 type="text" 
-                name="tipoAnimal" 
+                name="nombreCompleto" 
                 className="form-input" 
-                placeholder="Ej: Perro, Gato..." 
-                value={form.tipoAnimal}
-                onChange={handleChange}
+                placeholder="Ej: Juan Pérez"
+                value={form.nombreCompleto} 
+                onChange={handleChange} 
+                required 
               />
             </div>
 
             <div className="form-group">
-              <label>¿Dónde lo viste?</label>
+              <label>Correo Electrónico</label>
               <input 
-                type="text" 
-                name="ubicacion" 
+                type="email" 
+                name="email" 
                 className="form-input" 
-                placeholder="Ej: Parque Kennedy, Miraflores..." 
-                value={form.ubicacion}
-                onChange={handleChange}
+                placeholder="ejemplo@correo.com"
+                value={form.email} 
+                onChange={handleChange} 
+                required 
               />
             </div>
 
             <div className="form-group">
-              <label>¿Está herido?</label>
+              <label>Teléfono (Opcional)</label>
               <input 
-                type="text" 
-                name="estaHerido" 
+                type="tel" 
+                name="telefono" 
                 className="form-input" 
-                placeholder="Si / No / Cojea un poco..." 
-                value={form.estaHerido}
-                onChange={handleChange}
+                placeholder="987654321"
+                value={form.telefono} 
+                onChange={handleChange} 
               />
             </div>
 
             <div className="form-group">
-              <label>¿Cuántos viste?</label>
+              <label>Contraseña</label>
               <input 
-                type="text" 
-                name="cantidad" 
+                type="password" 
+                name="password" 
                 className="form-input" 
-                placeholder="Ej: 1, 2..." 
-                value={form.cantidad}
-                onChange={handleChange}
+                placeholder="••••••••"
+                value={form.password} 
+                onChange={handleChange} 
+                required 
               />
             </div>
 
             <div className="form-group">
-              <label>¿Tiene nombre? (Si lo sabes)</label>
+              <label>Confirmar Contraseña</label>
               <input 
-                type="text" 
-                name="nombre" 
+                type="password" 
+                name="confirmPassword" 
                 className="form-input" 
-                placeholder="Ej: Bobby" 
-                value={form.nombre}
-                onChange={handleChange}
+                placeholder="••••••••"
+                value={form.confirmPassword} 
+                onChange={handleChange} 
+                required 
               />
             </div>
 
             <div className="form-actions">
-              <button type="submit" className="btn-registrar-form">Registrar</button>
+              <button type="submit" className="btn-registrar-form">Registrarme</button>
             </div>
-
           </form>
         </div>
       </main>
-
       <Footer />
     </div>
   );
