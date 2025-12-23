@@ -1,0 +1,49 @@
+.evaluacion-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.evaluacion-header {
+    border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+.evaluacion-form .pregunta {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.pregunta label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+
+.pregunta select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.btn-evaluar {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-evaluar:hover {
+    background-color: #2980b9;
+}

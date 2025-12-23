@@ -11,6 +11,7 @@ import { LoginPage } from "./pages/LoginPage.jsx";
 // Importaciones de Componentes y Layout
 import { MainLayout } from "./layout/MainLayout.jsx";
 import { TuZona } from "./components/TuZona.jsx";
+import { EvaluacionAdoptante } from './components/EvaluacionAdoptante.jsx';
 
 const AppRouter = () => {
     return (
@@ -28,6 +29,8 @@ const AppRouter = () => {
 
                 {/* Perdidos: "/perdidos" */}
                 <Route path="perdidos" element={<PantallaPerdidos />} />
+
+                <Route path="adopcion" element={<EvaluacionAdoptante />} />
 
                 {/* 🛑 SOLUCIÓN: Agregamos la ruta "registrar" aquí para que use el Layout */}
                 <Route path="registrar" element={<PantallaRegistro />} />
