@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CountUp from '../utils/CountUp.jsx';
 import { Header } from '../components/organisms/header/Header.jsx';
 import { Footer } from '../components/organisms/footer/Footer.jsx';
+import DogService from '../services/DogService.jsx'; // Importamos el servicio
 import './PantallaInicio.css';
 
 export const PantallaInicio = () => {
+    const [lostCount, setLostCount] = useState(0); // Estado para el número real
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchLostDogsCount = async () => {
+            try {
+                const data = await DogService.getLostDogs();
+                // Obtenemos el total de perritos en la lista
+                setLostCount(data.length); 
+            } catch (err) {
+                console.error("Error obteniendo el conteo de perritos:", err);
+                setLostCount(0);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLostDogsCount();
+    }, []);
+
     return (
         <div className="inicio-container-principal">
             <Header />
@@ -73,7 +94,9 @@ export const PantallaInicio = () => {
                         <div className="stat-counter">
                             <div className="green-circle">
                                 <span className="number">
-                                    <CountUp to={55} duration={4} />+
+                                    {/* Si el número es 0 por carga o error, mostramos 0, sino el conteo real */}
+                                    {!loading && <CountUp to={lostCount} duration={3} />}
+                                    {loading ? '...' : '+'}
                                 </span>
                                 <span className="label">Perdidos</span>
                             </div>

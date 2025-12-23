@@ -1,23 +1,32 @@
 import apiClient from "./instance/apiClient.js";
 
-
 const DogService = {
-    /**
-     * Obtiene la lista de perros reportados como perdidos.
-     * @returns {Promise<Array>} - Array de objetos perro.
-     */
     getLostDogs: async () => {
         try {
-            // Llama al endpoint /lostDogs de tu backend/JSON Server
             const response = await apiClient.get('/lostDogs');
             return response.data;
         } catch (error) {
-            console.error('Error al obtener perros perdidos:', error.response ? error.response.data : error.message);
-            throw new Error('No se pudo cargar la lista de perros perdidos.');
+            throw new Error('No se pudo cargar la lista.');
         }
     },
 
-    // Aquí podrías añadir funciones como reportLostDog(dogData) si fuera necesario
+    reportLostDog: async (dogData) => {
+        try {
+            const response = await apiClient.post('/lostDogs', dogData);
+            return response.data;
+        } catch (error) {
+            throw new Error('No se pudo guardar el reporte.');
+        }
+    },
+
+    updateDogLocation: async (id, updatedData) => {
+        try {
+            const response = await apiClient.put(`/lostDogs/${id}`, updatedData);
+            return response.data;
+        } catch (error) {
+            throw new Error('No se pudo actualizar la ubicación.');
+        }
+    }
 };
 
 export default DogService;

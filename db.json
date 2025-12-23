@@ -3,27 +3,24 @@
     {
       "id": "1",
       "nombre": "Campaña de Vacunación 🏥",
-      "situacion": "evento",
-      "fotoUrl": "https://placedog.net/500/500?id=101",
-      "raza": "Informativo",
+      "situacion": "Salud",
       "descripcion": "Este domingo habrá vacunación gratuita en el Parque de la Reserva. ¡Lleva a tu mascota!",
+      "fotoUrl": "https://placedog.net/800/400?id=101",
       "fecha": "20/12/2025",
       "likes": 245,
       "comentarios": [
         {
           "user": "CarlosP",
-          "text": "¿Aceptan gatos también?",
-          "ubicacion": "Lima"
+          "text": "¿Aceptan gatos también?"
         }
       ]
     },
     {
       "id": "2",
       "nombre": "Milo busca hogar 🏠",
-      "situacion": "adopcion",
-      "fotoUrl": "https://placedog.net/500/500?id=12",
-      "raza": "Mestizo",
-      "descripcion": "Milo tiene 1 año y está listo para encontrar una familia definitiva. Muy dócil.",
+      "situacion": "Adopción",
+      "descripcion": "Milo tiene 1 año y está listo para encontrar una familia definitiva. Muy dócil y juguetón.",
+      "fotoUrl": "https://placedog.net/800/400?id=12",
       "fecha": "19/12/2025",
       "likes": 121,
       "comentarios": [
@@ -32,6 +29,67 @@
           "text": "Yo lo quisiera adoptar"
         }
       ]
+    },
+    {
+      "id": "746c",
+      "nombre": "Perritos Saludables",
+      "situacion": "Salud",
+      "descripcion": "Aprende a cuidar a tu mascota con asesoría de profesionales las 24 horas del día.",
+      "fotoUrl": "https://placedog.net/800/400?id=25",
+      "fecha": "22/12/2025",
+      "likes": 15,
+      "comentarios": []
+    },
+    {
+      "id": "803f",
+      "nombre": "Adopta perritos en nuestra Comunidad",
+      "situacion": "Adopción",
+      "descripcion": "Adoptalos y brindales amor siempre. Hay muchos esperando por ti.",
+      "fotoUrl": "https://placedog.net/800/400?id=blog",
+      "fecha": "22/12/2025",
+      "likes": 42,
+      "comentarios": []
+    },
+    {
+      "id": "9c0b",
+      "nombre": "Guía de Alimentación Balanceada",
+      "situacion": "Alimentación",
+      "descripcion": "Consejos sobre qué alimentos son seguros y cuáles evitar para tu perro.",
+      "fotoUrl": "https://placedog.net/800/400?id=33",
+      "fecha": "22/12/2025",
+      "likes": 8,
+      "comentarios": []
+    },
+    {
+      "id": "1a2b",
+      "nombre": "Nuevas leyes de protección animal",
+      "situacion": "Comunidad",
+      "descripcion": "Entérate de las nuevas normativas para dueños de mascotas en la ciudad.",
+      "fotoUrl": "https://placedog.net/800/400?id=44",
+      "fecha": "22/12/2025",
+      "likes": 30,
+      "comentarios": []
+    },
+    {
+      "id": "3c4d",
+      "nombre": "Cómo bañar a tu perro sin traumas",
+      "situacion": "Salud",
+      "descripcion": "Tips prácticos para que la hora del baño sea divertida y relajante.",
+      "fotoUrl": "https://placedog.net/800/400?id=55",
+      "fecha": "22/12/2025",
+      "likes": 12,
+      "comentarios": []
+    },
+    {
+      "id": "a329",
+      "nombre": "Aprende dietas para tu mascota",
+      "situacion": "Alimentacion",
+      "descripcion": "Aprende con profesionales como cocinarle la mejor dieta para tu cachorro.",
+      "fotoUrl": "https://placedog.net/800/400?id=blog",
+      "fecha": "22/12/2025",
+      "likes": 0,
+      "comentarios": [],
+      "raza": "General"
     }
   ],
   "lostDogs": [
@@ -41,7 +99,11 @@
       "imageUrl": "https://placedog.net/500/500?id=10",
       "location": "Surco, Parque de la Amistad",
       "breed": "Poodle Toy",
-      "description": "Se escapó de casa el lunes. Tiene un collar rojo."
+      "description": "Se escapó de casa el lunes. Tiene un collar rojo.",
+      "coords": {
+        "lat": -12.1352,
+        "lng": -76.9761
+      }
     },
     {
       "id": "2",
@@ -49,7 +111,11 @@
       "imageUrl": "https://placedog.net/500/500?id=14",
       "location": "Pueblo Libre, Plaza de la Bandera",
       "breed": "Pastor Alemán",
-      "description": "Lleva un arnés azul. Es muy dócil pero asustadiza."
+      "description": "Lleva un arnés azul. Es muy dócil pero asustadiza.",
+      "coords": {
+        "lat": -12.0621,
+        "lng": -77.0658
+      }
     },
     {
       "id": "3",
@@ -57,7 +123,11 @@
       "imageUrl": "https://placedog.net/500/500?id=30",
       "location": "San Borja, Av. San Luis",
       "breed": "Beagle",
-      "description": "No tiene collar. Se asusta con los ruidos fuertes de cohetes."
+      "description": "No tiene collar. Se asusta con los ruidos fuertes.",
+      "coords": {
+        "lat": -12.1054,
+        "lng": -76.9922
+      }
     },
     {
       "id": "4",
@@ -65,7 +135,11 @@
       "imageUrl": "https://placedog.net/500/500?id=22",
       "location": "Miraflores, Parque Kennedy",
       "breed": "Golden Retriever",
-      "description": "Visto cerca del área de juegos. Tiene microchip."
+      "description": "Visto cerca del área de juegos. Tiene microchip.",
+      "coords": {
+        "lat": -12.1211,
+        "lng": -77.0297
+      }
     },
     {
       "id": "5",
@@ -73,7 +147,11 @@
       "imageUrl": "https://placedog.net/500/500?id=45",
       "location": "Chorrillos, Playa Agua Dulce",
       "breed": "Labrador",
-      "description": "Perro color canela, muy juguetón. Collar verde."
+      "description": "Perro color canela, muy juguetón. Collar verde.",
+      "coords": {
+        "lat": -12.1751,
+        "lng": -77.0308
+      }
     },
     {
       "id": "6",
@@ -81,7 +159,11 @@
       "imageUrl": "https://placedog.net/500/500?id=60",
       "location": "La Molina, Av. Raúl Ferrero",
       "breed": "Schnauzer",
-      "description": "Corte de pelo reciente. Responde con entusiasmo a su nombre."
+      "description": "Corte de pelo reciente. Responde a su nombre.",
+      "coords": {
+        "lat": -12.0833,
+        "lng": -76.9417
+      }
     },
     {
       "id": "7",
@@ -89,7 +171,11 @@
       "imageUrl": "https://placedog.net/500/500?id=81",
       "location": "Lince, Parque del Bombero",
       "breed": "Chow Chow",
-      "description": "Lengua azulada característica. Muy peludo y algo desconfiado."
+      "description": "Lengua azulada característica. Muy peludo.",
+      "coords": {
+        "lat": -12.0836,
+        "lng": -77.0351
+      }
     },
     {
       "id": "8",
@@ -97,7 +183,11 @@
       "imageUrl": "https://placedog.net/500/500?id=92",
       "location": "San Isidro, El Olivar",
       "breed": "Siberian Husky",
-      "description": "Ojos de diferente color (uno azul, uno café). Collar de cuero."
+      "description": "Ojos de diferente color. Collar de cuero.",
+      "coords": {
+        "lat": -12.0991,
+        "lng": -77.0354
+      }
     },
     {
       "id": "9",
@@ -105,7 +195,11 @@
       "imageUrl": "https://placedog.net/500/500?id=103",
       "location": "Magdalena, Malecón Castagnola",
       "breed": "Cocker Spaniel",
-      "description": "Orejas largas, color café oscuro. Lleva placa de contacto."
+      "description": "Orejas largas, color café oscuro.",
+      "coords": {
+        "lat": -12.0931,
+        "lng": -77.0628
+      }
     },
     {
       "id": "10",
@@ -113,7 +207,11 @@
       "imageUrl": "https://placedog.net/500/500?id=115",
       "location": "Barranco, Puente de los Suspiros",
       "breed": "Dálmata",
-      "description": "Blanco con manchas negras muy definidas. Delgado."
+      "description": "Blanco con manchas negras. Delgado.",
+      "coords": {
+        "lat": -12.1489,
+        "lng": -77.0225
+      }
     },
     {
       "id": "11",
@@ -121,7 +219,11 @@
       "imageUrl": "https://placedog.net/500/500?id=126",
       "location": "Jesús María, Campo de Marte",
       "breed": "Bulldog Francés",
-      "description": "Pequeño, color atigrado. Necesita medicación diaria."
+      "description": "Pequeño, color atigrado.",
+      "coords": {
+        "lat": -12.0681,
+        "lng": -77.0416
+      }
     },
     {
       "id": "12",
@@ -129,7 +231,24 @@
       "imageUrl": "https://placedog.net/500/500?id=137",
       "location": "San Miguel, Parque de las Leyendas",
       "breed": "Boxer",
-      "description": "Tiene una mancha blanca en el pecho. Collar marrón de nylon."
+      "description": "Mancha blanca en el pecho. Collar marrón.",
+      "coords": {
+        "lat": -12.0722,
+        "lng": -77.0869
+      }
+    },
+    {
+      "id": "89c3",
+      "name": "Pepito",
+      "breed": "Frenchie",
+      "location": "Breña, Av. Brasil 660",
+      "description": "Se escapó en la sede Cibertec!",
+      "imageUrl": "https://placedog.net/500/500",
+      "date": "21/12/2025",
+      "coords": {
+        "lat": -12.065155367749691,
+        "lng": -77.04655446576608
+      }
     }
   ],
   "users": [

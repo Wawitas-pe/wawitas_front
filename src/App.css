@@ -1,40 +1,67 @@
 /* src/App.css */
 
-/* Aseguramos que el contenedor principal ocupe toda la altura */
-.App {
+/* Contenedor principal que maneja el Sticky Footer */
+.app-layout-container {
   min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
-  /* El color de fondo ya viene de index.css, pero por seguridad: */
-  background-color: #FFF8E7; 
+  background-color: #FFF8E7;
+  position: relative; /* Para que los elementos absolutos se guíen de aquí */
 }
 
-/* Estilos para el logo del footer */
+/* El contenido crece para empujar al footer al final */
+.main-content-wrapper {
+  flex: 1;
+}
+
+/* BOTÓN FLOTANTE: Siempre visible sobre el contenido y el footer */
+.floating-report-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 2500; /* Por encima de todo */
+  background-color: var(--color-green);
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.floating-report-btn:hover {
+  transform: scale(1.05);
+  background-color: #347a37; /* Un verde un poco más oscuro */
+}
+
+/* Estilos para el logo del footer (tus estilos originales) */
 .footer-logo {
-  max-width: 150px; /* Tamaño por defecto para pantallas grandes */
+  max-width: 150px;
   height: auto;
-  transition: max-width 0.3s ease; /* Transición suave al cambiar de tamaño */
+  transition: max-width 0.3s ease;
 }
 
-/* Media query para pantallas medianas (tablets) */
 @media (max-width: 768px) {
   .footer-logo {
-    max-width: 120px; /* Tamaño reducido para tablets */
+    max-width: 120px;
+  }
+  .floating-report-btn {
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    font-size: 14px;
   }
 }
 
-/* Media query para pantallas pequeñas (móviles) */
 @media (max-width: 480px) {
   .footer-logo {
-    max-width: 100px; /* Tamaño más pequeño para móviles */
+    max-width: 100px;
   }
 }
-
-/* Opcional: Si quieres centrar todo el contenido en pantallas muy grandes */
-/* .App {
-  max-width: 1440px;
-  margin: 0 auto;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05);
-} 
-*/

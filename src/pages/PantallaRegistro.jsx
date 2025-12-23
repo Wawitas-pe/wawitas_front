@@ -6,11 +6,10 @@ import './PantallaRegistro.css';
 
 export const PantallaRegistro = () => {
   const [form, setForm] = useState({
-    nombreCompleto: '',
+    nombres: '',
+    apellidos: '',
     email: '',
-    telefono: '',
-    password: '',
-    confirmPassword: ''
+    password: ''
   });
 
   const handleChange = (e) => {
@@ -21,22 +20,18 @@ export const PantallaRegistro = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if(form.password !== form.confirmPassword) {
-        alert("Las contraseñas no coinciden");
-        return;
-    }
-
     try {
-      // Extraemos confirmPassword para no enviarlo al db.json
-      const { confirmPassword, ...userData } = form;
+      const userData = {
+        nombreCompleto: `${form.nombres} ${form.apellidos}`,
+        email: form.email,
+        password: form.password,
+        rol: "usuario"
+      };
       
-      // Llamada al servicio que hace el POST a /users
       await AuthService.register(userData);
       
-      alert("¡Registro exitoso! Los datos se han guardado en el db.json.");
-      
-      // Limpiamos el formulario
-      setForm({ nombreCompleto: '', email: '', telefono: '', password: '', confirmPassword: '' });
+      alert("¡Registro exitoso! Ahora puedes iniciar sesión.");
+      setForm({ nombres: '', apellidos: '', email: '', password: '' });
       
     } catch (err) {
       alert("Error al registrar: " + err.message);
@@ -50,20 +45,35 @@ export const PantallaRegistro = () => {
         <div className="registro-card">
           <div className="registro-header-icon">🐾</div>
           <h2 className="registro-title">Crea tu Cuenta</h2>
-          <p className="registro-subtitle">Únete a Wawitas y ayuda a más mascotas.</p>
+          <p className="registro-subtitle">Únete a la comunidad de Wawitas.</p>
           
           <form className="registro-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Nombre Completo</label>
-              <input 
-                type="text" 
-                name="nombreCompleto" 
-                className="form-input" 
-                placeholder="Ej: Juan Pérez"
-                value={form.nombreCompleto} 
-                onChange={handleChange} 
-                required 
-              />
+            <div className="form-row">
+                <div className="form-group">
+                <label>Nombres</label>
+                <input 
+                    type="text" 
+                    name="nombres" 
+                    className="form-input" 
+                    placeholder="Ingresa tus nombres"
+                    value={form.nombres} 
+                    onChange={handleChange} 
+                    required 
+                />
+                </div>
+
+                <div className="form-group">
+                <label>Apellidos</label>
+                <input 
+                    type="text" 
+                    name="apellidos" 
+                    className="form-input" 
+                    placeholder="Ingresa tus apellidos"
+                    value={form.apellidos} 
+                    onChange={handleChange} 
+                    required 
+                />
+                </div>
             </div>
 
             <div className="form-group">
@@ -80,18 +90,6 @@ export const PantallaRegistro = () => {
             </div>
 
             <div className="form-group">
-              <label>Teléfono (Opcional)</label>
-              <input 
-                type="tel" 
-                name="telefono" 
-                className="form-input" 
-                placeholder="987654321"
-                value={form.telefono} 
-                onChange={handleChange} 
-              />
-            </div>
-
-            <div className="form-group">
               <label>Contraseña</label>
               <input 
                 type="password" 
@@ -99,19 +97,6 @@ export const PantallaRegistro = () => {
                 className="form-input" 
                 placeholder="••••••••"
                 value={form.password} 
-                onChange={handleChange} 
-                required 
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Confirmar Contraseña</label>
-              <input 
-                type="password" 
-                name="confirmPassword" 
-                className="form-input" 
-                placeholder="••••••••"
-                value={form.confirmPassword} 
                 onChange={handleChange} 
                 required 
               />

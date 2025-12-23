@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import PostService from '../services/PostService.jsx';
 import AuthService from '../services/AuthService.jsx';
 import { Header } from '../components/organisms/header/Header.jsx';
 import { Footer } from '../components/organisms/footer/Footer.jsx';
 import { LoginModal } from '../components/molecules/LoginModal.jsx';
+import { PostModal } from '../components/molecules/PostModal.jsx';
 import './AyudaEncontrarlo.css';
 import TextType from "../components/TextType.jsx";
 
@@ -52,85 +53,42 @@ const CommentSection = React.memo(({ post, addComment, onRestrictedAction }) => 
     );
 });
 
-const PostModal = ({ isVisible, onClose, onPublish }) => {
-    const [formData, setFormData] = useState({ nombre: '', situacion: 'consejo', descripcion: '', fotoUrl: '', raza: 'General' });
-    if (!isVisible) return null;
+// Componente de Tendencias Dinámico
+const TrendsSidebar = ({ posts }) => {
+    const topTrends = useMemo(() => {
+        // 1. Contar ocurrencias de cada categoría
+        const counts = posts.reduce((acc, post) => {
+            const cat = post.situacion || 'General';
+            acc[cat] = (acc[cat] || 0) + 1;
+            return acc;
+        }, {});
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const finalFoto = formData.fotoUrl.trim() || 'https://placedog.net/800/400?id=blog';
-        onPublish({ ...formData, fotoUrl: finalFoto });
-        setFormData({ nombre: '', situacion: 'consejo', descripcion: '', fotoUrl: '', raza: 'General' });
-        onClose();
-    };
-
-    return (
-        <div className="modal-overlay">
-            <div className="modal-card">
-                <button className="close-icon-btn" onClick={onClose}>&times;</button>
-                <div className="modal-header-custom">
-                    <h2>📝 Nueva Entrada al Blog</h2>
-                    <p>Comparte historias o consejos con la comunidad.</p>
-                </div>
-                <form onSubmit={handleSubmit} className="modal-form-custom">
-                    <div className="input-group">
-                        <label>Título de la entrada</label>
-                        <input type="text" placeholder="Ej: Mi primera adopción" value={formData.nombre} onChange={(e) => setFormData({...formData, nombre: e.target.value})} required />
-                    </div>
-                    <div className="input-group">
-                        <label>Categoría</label>
-                        <select value={formData.situacion} onChange={(e) => setFormData({...formData, situacion: e.target.value})}>
-                            <option value="consejo">💡 Consejo</option>
-                            <option value="exito">📖 Historia de Éxito</option>
-                            <option value="evento">📅 Evento</option>
-                            <option value="donacion">🤝 Solidaridad</option>
-                        </select>
-                    </div>
-                    <div className="input-group">
-                        <label>Contenido</label>
-                        <textarea placeholder="Escribe aquí..." value={formData.descripcion} onChange={(e) => setFormData({...formData, descripcion: e.target.value})} required></textarea>
-                    </div>
-                    <div className="input-group">
-                        <label>URL de Imagen (Opcional)</label>
-                        <input type="url" placeholder="https://..." value={formData.fotoUrl} onChange={(e) => setFormData({...formData, fotoUrl: e.target.value})} />
-                    </div>
-                    <button type="submit" className="modal-submit-btn">Publicar en el Blog</button>
-                </form>
-            </div>
-        </div>
-    );
-};
-
-const TrendsSidebar = () => {
-    const trends = [
-        { category: "Salud Animal", tag: "#TipsDeHidratación", count: "1.2k" },
-        { category: "Comunidad", tag: "#WawitasFelices", count: "856" },
-        { category: "Eventos", tag: "#VacunaciónLima", count: "640" },
-        { category: "Historias", tag: "#AdoptaUnSenior", count: "420" },
-    ];
+        // 2. Convertir a array, ordenar de mayor a menor y tomar los 4 primeros
+        return Object.entries(counts)
+            .map(([category, count]) => ({
+                category,
+                tag: `#${category.replace(/\s+/g, '')}`,
+                count
+            }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 4);
+    }, [posts]);
 
     return (
         <aside className="trends-sidebar">
             <div className="trends-container">
-                <h3 className="trends-title">Tendencias para ti</h3>
-                {trends.map((trend, index) => (
-                    <div key={index} className="trend-item">
-                        <span className="trend-category">Tendencia en {trend.category}</span>
-                        <p className="trend-tag">{trend.tag}</p>
-                        <span className="trend-count">{trend.count} lecturas</span>
-                    </div>
-                ))}
-            </div>
-            <div className="who-to-follow">
-                <h3 className="trends-title">Quién seguir</h3>
-                <div className="follow-item">
-                    <img src="https://placedog.net/40/40?id=1" alt="Refugio" />
-                    <div className="follow-info">
-                        <p>Refugio Las Patitas</p>
-                        <span>@patitas_ong</span>
-                    </div>
-                    <button className="follow-btn">Seguir</button>
-                </div>
+                <h3 className="trends-title">Tendencias actuales</h3>
+                {topTrends.length > 0 ? (
+                    topTrends.map((trend, index) => (
+                        <div key={index} className="trend-item">
+                            <span className="trend-category">Tendencia en {trend.category}</span>
+                            <p className="trend-tag">{trend.tag}</p>
+                            <span className="trend-count">{trend.count} {trend.count === 1 ? 'post' : 'posts'} publicados</span>
+                        </div>
+                    ))
+                ) : (
+                    <p className="loading-text" style={{fontSize: '0.8rem'}}>Aún no hay tendencias...</p>
+                )}
             </div>
         </aside>
     );
@@ -151,11 +109,8 @@ export const AyudaEncontrarlo = () => {
 
     const ejecutarAccionProtegida = (accion) => {
         const user = AuthService.getCurrentUser();
-        if (user) {
-            accion();
-        } else {
-            setIsLoginModalOpen(true);
-        }
+        if (user) accion();
+        else setIsLoginModalOpen(true);
     };
 
     const handleNewPost = async (newPostData) => {
@@ -164,8 +119,10 @@ export const AyudaEncontrarlo = () => {
                 ...newPostData, 
                 fecha: new Date().toLocaleDateString('es-ES'), 
                 likes: 0, 
-                comentarios: [] 
+                comentarios: [],
+                raza: "General" 
             });
+            // Al agregar el post al estado, TrendsSidebar se actualizará solo
             setPosts([created, ...posts]);
         } catch (e) { alert("Error al publicar"); }
     };
@@ -180,6 +137,8 @@ export const AyudaEncontrarlo = () => {
         setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: count } : p));
         await PostService.updateLikes(postId, count);
     }, []);
+
+    const heroTextLines = ["¿Necesitas ayuda?", "¡Estamos aquí para ayudarte!"];
 
     return (
         <div className="pagina-container">
@@ -197,11 +156,9 @@ export const AyudaEncontrarlo = () => {
                                     <img src={post.fotoUrl} alt="blog" onError={(e) => e.target.src = 'https://placedog.net/800/400'} />
                                 </div>
                                 <div className="post-content-area">
-                                    <span className={`post-status-badge status-${post.situacion}`}>
-                                        {(post.situacion || 'BLOG').toUpperCase()}
-                                    </span>
+                                    <span className="post-status-badge">{(post.situacion || 'BLOG').toUpperCase()}</span>
                                     <h3 className="blog-post-title">{post.nombre}</h3>
-                                    <p className="post-detail">📅 {post.fecha} • 🏷️ {post.raza}</p>
+                                    <p className="post-detail">📅 {post.fecha}</p>
                                     <p className="blog-post-excerpt">{post.descripcion}</p>
                                 </div>
                                 <div className="post-actions">
@@ -213,7 +170,8 @@ export const AyudaEncontrarlo = () => {
                         ))
                     }
                 </main>
-                <TrendsSidebar />
+                {/* Pasamos los posts al sidebar para calcular tendencias */}
+                <TrendsSidebar posts={posts} />
             </div>
             <button className="floating-publish-btn" onClick={() => ejecutarAccionProtegida(() => setIsModalOpen(true))}>✍️</button>
             <PostModal isVisible={isModalOpen} onClose={() => setIsModalOpen(false)} onPublish={handleNewPost} />

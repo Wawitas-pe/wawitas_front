@@ -1,14 +1,12 @@
-/* --- ESTILOS EXCLUSIVOS DE PANTALLA PERDIDOS --- */
 .perdidos-page-wrapper {
     margin: 0;
     padding: 0;
     width: 100%;
-    overflow-x: hidden; /* Elimina la barra de deslizar extra */
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
 }
 
-/* Forzamos el color del header solo en esta página */
 .perdidos-page-wrapper .navbar {
     background-color: #FFF8E7 !important;
 }
@@ -16,7 +14,7 @@
 .hero-ayuda {
     text-align: center;
     padding: 60px 20px;
-    background-color: #FFF8E7; /* Color crema original */
+    background-color: #FFF8E7;
     border-bottom: 2px solid #d4c4a8;
 }
 
@@ -27,7 +25,6 @@
     min-height: 1.5em;
 }
 
-/* --- DISEÑO MURAL --- */
 .ayuda-main-content {
     flex: 1;
     width: 100%;
@@ -56,7 +53,6 @@
     flex: 1;
 }
 
-/* --- CARDS (ANUNCIOS) --- */
 .dog-card {
     background: #fffdf0;
     padding: 15px;
@@ -103,6 +99,16 @@
     font-family: 'Courier New', Courier, monospace;
 }
 
+/* Ajuste para la ubicación corta */
+.dog-location {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 10px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .contact-button {
     width: 100%;
     padding: 10px;
@@ -114,7 +120,6 @@
     font-weight: bold;
 }
 
-/* --- FOOTER (Ajuste para border-radius) --- */
 .perdidos-page-wrapper .footer-black {
     margin-top: 0 !important;
 }

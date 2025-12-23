@@ -6,6 +6,12 @@ import { DetailModal } from '../components/molecules/DetailModal.jsx';
 import './PantallaPerdidos.css';
 import TextType from "../components/TextType.jsx";
 
+const obtenerUbiCorta = (ubi) => {
+    if (!ubi) return "Ubicación no disponible";
+    const partes = ubi.split(',');
+    return partes.length >= 2 ? `${partes[0].trim()}, ${partes[1].trim()}` : ubi;
+};
+
 const DogCard = ({ dog, onOpenDetail }) => (
     <div className="dog-card">
         <img
@@ -16,8 +22,7 @@ const DogCard = ({ dog, onOpenDetail }) => (
         />
         <div className="dog-info">
             <h3 className="dog-name">{dog.name}</h3>
-            <p className="dog-location">📍 {dog.location}</p>
-            {/* Se activa la función al hacer clic */}
+            <p className="dog-location">📍 {obtenerUbiCorta(dog.location)}</p>
             <button className="contact-button" onClick={() => onOpenDetail(dog)}>
                 Ver Detalles / Contactar
             </button>
@@ -28,8 +33,6 @@ const DogCard = ({ dog, onOpenDetail }) => (
 export const PantallaPerdidos = () => {
     const [dogs, setDogs] = useState([]);
     const [loading, setLoading] = useState(true);
-    
-    // Estados para el detalle
     const [selectedDog, setSelectedDog] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -52,26 +55,28 @@ export const PantallaPerdidos = () => {
         setIsModalOpen(true);
     };
 
+    const updateDogInList = (updatedDog) => {
+        setDogs(dogs.map(d => d.id === updatedDog.id ? updatedDog : d));
+        setSelectedDog(updatedDog);
+    };
+
     const heroTextLines = ["¿Necesitas ayuda?", "¡Estamos aquí para ayudarte!"];
 
     return (
         <div className="perdidos-page-wrapper">
             <Header />
-
             <section className="hero-ayuda">
                 <h1 className="ayuda-title">
                     <TextType text={heroTextLines} typingSpeed={70} pauseDuration={1500} loop={true} showCursor={true} />
                 </h1>
                 <p>Mural de reportes de la comunidad para encontrar a nuestras wawitas.</p>
             </section>
-
             <main className="ayuda-main-content">
                 <h2 className="mural-title">Perros Reportados Perdidos Recientemente</h2>
                 {loading ? (
                     <div className="loading-container"><p>Cargando reportes... 🐾</p></div>
                 ) : (
                     <div className="cards-grid">
-                        {/* Se pasa la función al componente DogCard */}
                         {dogs.map(dog => (
                             <DogCard key={dog.id} dog={dog} onOpenDetail={handleOpenDetail} />
                         ))}
@@ -79,12 +84,11 @@ export const PantallaPerdidos = () => {
                 )}
                 <Footer />
             </main>
-
-            {/* Modal que muestra la info del db.json */}
             <DetailModal 
                 isVisible={isModalOpen} 
                 dog={selectedDog} 
                 onClose={() => setIsModalOpen(false)} 
+                onUpdate={updateDogInList}
             />
         </div>
     );
