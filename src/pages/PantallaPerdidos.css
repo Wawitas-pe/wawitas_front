@@ -99,7 +99,6 @@
     font-family: 'Courier New', Courier, monospace;
 }
 
-/* Ajuste para la ubicación corta */
 .dog-location {
     font-size: 0.9rem;
     color: #555;
@@ -120,6 +119,41 @@
     font-weight: bold;
 }
 
+.btn-reportar-mascota {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 9999;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-reportar-mascota:hover {
+    transform: scale(1.1);
+    background-color: #c0392b;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+}
+
 .perdidos-page-wrapper .footer-black {
     margin-top: 0 !important;
+}
+
+@media (max-width: 768px) {
+    .btn-reportar-mascota {
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
 }

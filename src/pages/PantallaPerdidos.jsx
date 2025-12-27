@@ -3,6 +3,7 @@ import DogService from '../services/DogService.jsx';
 import { Footer } from '../components/organisms/footer/Footer.jsx';
 import { Header } from '../components/organisms/header/Header.jsx';
 import { DetailModal } from '../components/molecules/DetailModal.jsx';
+import { ReportModal } from '../components/molecules/ReportModal.jsx';
 import './PantallaPerdidos.css';
 import TextType from "../components/TextType.jsx";
 
@@ -34,7 +35,8 @@ export const PantallaPerdidos = () => {
     const [dogs, setDogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedDog, setSelectedDog] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchDogs = async () => {
@@ -52,7 +54,7 @@ export const PantallaPerdidos = () => {
 
     const handleOpenDetail = (dog) => {
         setSelectedDog(dog);
-        setIsModalOpen(true);
+        setIsDetailModalOpen(true);
     };
 
     const updateDogInList = (updatedDog) => {
@@ -70,6 +72,12 @@ export const PantallaPerdidos = () => {
                     <TextType text={heroTextLines} typingSpeed={70} pauseDuration={1500} loop={true} showCursor={true} />
                 </h1>
                 <p>Mural de reportes de la comunidad para encontrar a nuestras wawitas.</p>
+                <button 
+                    className="btn-reportar-mascota"
+                    onClick={() => setIsReportModalOpen(true)}
+                >
+                    📢 Reportar Mascota Perdida
+                </button>
             </section>
             <main className="ayuda-main-content">
                 <h2 className="mural-title">Perros Reportados Perdidos Recientemente</h2>
@@ -85,10 +93,14 @@ export const PantallaPerdidos = () => {
                 <Footer />
             </main>
             <DetailModal 
-                isVisible={isModalOpen} 
+                isVisible={isDetailModalOpen} 
                 dog={selectedDog} 
-                onClose={() => setIsModalOpen(false)} 
+                onClose={() => setIsDetailModalOpen(false)} 
                 onUpdate={updateDogInList}
+            />
+            <ReportModal 
+                isVisible={isReportModalOpen} 
+                onClose={() => setIsReportModalOpen(false)} 
             />
         </div>
     );
