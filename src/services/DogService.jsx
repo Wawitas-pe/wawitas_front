@@ -1,18 +1,32 @@
 import apiClient from "./instance/apiClient.js";
 
+let URL_PREFIX = '/api/dogs';
 const DogService = {
+
     getLostDogs: async () => {
         try {
-            const response = await apiClient.get('/lostDogs');
+            const response = await apiClient.get(URL_PREFIX+'/lost');
             return response.data;
+            // eslint-disable-next-line no-unused-vars
         } catch (error) {
             throw new Error('No se pudo cargar la lista.');
         }
     },
 
+    getLostDetails: async (id) => {
+        try {
+            const response = await apiClient.get(URL_PREFIX+`/details/${id}`,id);
+            return response.data;
+            // eslint-disable-next-line no-unused-vars
+        } catch (error) {
+            throw new Error('No se pudo cargar la lista.');
+        }
+    },
+
+
     reportLostDog: async (dogData) => {
         try {
-            const response = await apiClient.post('/lostDogs', dogData);
+            const response = await apiClient.post(URL_PREFIX+'/new', dogData);
             return response.data;
         } catch (error) {
             throw new Error('No se pudo guardar el reporte.');

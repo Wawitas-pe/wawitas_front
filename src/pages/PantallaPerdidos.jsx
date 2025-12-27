@@ -16,14 +16,14 @@ const obtenerUbiCorta = (ubi) => {
 const DogCard = ({ dog, onOpenDetail }) => (
     <div className="dog-card">
         <img
-            src={dog.imageUrl}
-            alt={`Foto de ${dog.name}`}
+            src={dog.fotoUrl}
+            alt={`Foto de ${dog.nombre}`}
             className="dog-image"
             onError={(e) => e.target.src = 'https://placedog.net/500/500'}
         />
         <div className="dog-info">
-            <h3 className="dog-name">{dog.name}</h3>
-            <p className="dog-location">📍 {obtenerUbiCorta(dog.location)}</p>
+            <h3 className="dog-name">{dog.nombre}</h3>
+            <p className="dog-location">📍 {obtenerUbiCorta(dog.ultimaDireccion)}</p>
             <button className="contact-button" onClick={() => onOpenDetail(dog)}>
                 Ver Detalles / Contactar
             </button>
@@ -52,9 +52,16 @@ export const PantallaPerdidos = () => {
         fetchDogs();
     }, []);
 
-    const handleOpenDetail = (dog) => {
-        setSelectedDog(dog);
-        setIsDetailModalOpen(true);
+    const handleOpenDetail = async (dog) => {
+        try {
+            const details = await DogService.getLostDetails(dog.id);
+            setSelectedDog(details);
+            setIsModalOpen(true);
+        } catch (error) {
+            console.error("Error al obtener detalles:", error);
+            setSelectedDog(dog);
+            setIsModalOpen(true);
+        }
     };
 
     const updateDogInList = (updatedDog) => {

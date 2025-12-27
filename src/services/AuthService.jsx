@@ -1,40 +1,27 @@
 import apiClient from "./instance/apiClient.js";
 
+let URL_PREFIX = '/api/auth';
 const AuthService = {
+
     login: async (credentials) => {
+
+        // eslint-disable-next-line no-useless-catch
         try {
-            const response = await apiClient.get(`/users?email=${credentials.email}`);
-            const users = response.data;
-
-            if (users.length === 0) {
-                throw new Error('El correo electrónico no está registrado.');
-            }
-
-            const user = users[0];
-
-            if (user.password !== credentials.password) {
-                throw new Error('La contraseña es incorrecta.');
-            }
-
-            localStorage.setItem("user", JSON.stringify({
-                id: user.id,
-                nombre: user.nombreCompleto,
-                rol: user.rol || "usuario"
-            }));
-
-            return user;
+            const response = await apiClient.post(URL_PREFIX+'/login', credentials);
+            return response.data;
         } catch (error) {
             throw error;
         }
     },
 
     register: async (userData) => {
+
+        // eslint-disable-next-line no-useless-catch
         try {
             const newUser = {
-                ...userData,
-                rol: "usuario"
+                ...userData
             };
-            const response = await apiClient.post('/users', newUser);
+            const response = await apiClient.post(URL_PREFIX+'/register', newUser);
             return response.data;
         } catch (error) {
             throw error;
@@ -43,6 +30,7 @@ const AuthService = {
 
     logout: () => {
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
         window.location.reload();
     },
 
