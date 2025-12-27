@@ -22,7 +22,7 @@ const AppRouter = () => {
                 <Route index element={<PantallaInicio />} />
 
                 {/* Ayuda: "/ayuda" */}
-                <Route path="ayuda" element={<Blog />} />
+                <Route path="blog" element={<Blog />} />
 
                 {/* Tu Zona: "/zona" */}
                 <Route path="zona" element={<TuZona />} />

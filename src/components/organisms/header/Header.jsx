@@ -47,7 +47,7 @@ export const Header = () => {
             <nav className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
                 <Link to="/" className={`nav-item ${getActiveClass('/')}`}>Home</Link>
                 <Link to="/zona" className={`nav-item ${getActiveClass('/zona')}`}>Tu Zona</Link>
-                <Link to="/ayuda" className={`nav-item ${getActiveClass('/ayuda')}`}>Blog Comunitario</Link>
+                <Link to="/blog" className={`nav-item ${getActiveClass('/blog')}`}>Blog Comunitario</Link>
                 <Link to="/perdidos" className={`nav-item ${getActiveClass('/perdidos')}`}>Perdidos</Link>
                 <Link to="/adopcion" className={`nav-item ${getActiveClass('/adopcion')}`}>Test-Adopcion</Link>
             </nav>
