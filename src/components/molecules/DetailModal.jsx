@@ -4,7 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './DetailModal.css';
 import DogService from '../../services/DogService.jsx';
-import { LoginModal } from './LoginModal.jsx'; // Asegúrate de importar tu modal de Login
+import { LoginModal } from './LoginModal.jsx';
 
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -57,7 +57,20 @@ export const DetailModal = ({ isVisible, dog, onClose, onUpdate }) => {
         }
     };
 
-    const position = tempCoords ? [tempCoords.lat, tempCoords.lng] : (dog.coords ? [dog.coords.lat, dog.coords.lng] : [-12.0463, -77.0427]);
+    const handleContactClick = () => {
+        if (dog.telefono) {
+            const message = `Hola, vi el reporte de ${dog.nombre} en Wawitas y tengo información.`;
+            const url = `https://wa.me/51${dog.telefono}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        } else {
+            alert("El número de contacto no está disponible.");
+        }
+    };
+
+    // Adaptación para usar latitud/longitud del backend
+    const position = tempCoords 
+        ? [tempCoords.lat, tempCoords.lng] 
+        : (dog.latitud && dog.longitud ? [dog.latitud, dog.longitud] : [-12.0463, -77.0427]);
 
     const MapEvents = () => {
         useMapEvents({
@@ -81,8 +94,9 @@ export const DetailModal = ({ isVisible, dog, onClose, onUpdate }) => {
         try {
             const updatedDog = {
                 ...dog,
-                location: tempAddress || dog.location,
-                coords: tempCoords || dog.coords
+                ultimaDireccion: tempAddress || dog.ultimaDireccion,
+                latitud: tempCoords ? tempCoords.lat : dog.latitud,
+                longitud: tempCoords ? tempCoords.lng : dog.longitud
             };
             const data = await DogService.updateDogLocation(dog.id, updatedDog);
             onUpdate(data);
@@ -93,6 +107,12 @@ export const DetailModal = ({ isVisible, dog, onClose, onUpdate }) => {
         }
     };
 
+    const formatDate = (dateString) => {
+        if (!dateString) return "Fecha desconocida";
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return new Date(dateString).toLocaleDateString('es-ES', options);
+    };
+
     return (
         <>
             <div className="modal-overlay" onClick={handleOverlayClick}>
@@ -100,15 +120,18 @@ export const DetailModal = ({ isVisible, dog, onClose, onUpdate }) => {
                     <button className="close-btn" onClick={onClose}>&times;</button>
                     <div className="detail-content">
                         <div className="detail-image-section">
-                            <img src={dog.imageUrl} alt={dog.name} className="detail-image" />
+                            <img src={dog.fotoUrl} alt={dog.nombre} className="detail-image" />
                         </div>
                         <div className="detail-info-section">
-                            <h2>Detalles de {dog.name}</h2>
-                            <p><strong>Raza:</strong> {dog.breed}</p>
-                            <p><strong>Descripción:</strong> {dog.description || "Sin descripción."}</p>
+                            <h2>Detalles de {dog.nombre}</h2>
+                            <p><strong>Raza:</strong> {dog.raza}</p>
+                            <p><strong>Descripción:</strong> {dog.descripcion || "Sin descripción."}</p>
+                            <p><strong>Dueño:</strong> {dog.nombrePropietario || "No especificado"}</p>
+                            <p><strong>Reportado el:</strong> {formatDate(dog.fechaReporte)}</p>
+                            
                             <p className="detail-location-text">
                                 <strong>{editMode ? "Nuevo punto detectado:" : "Último avistamiento:"}</strong><br/>
-                                {tempAddress || dog.location}
+                                {tempAddress || dog.ultimaDireccion}
                             </p>
                             <div className="detail-map-container">
                                 <MapContainer center={position} zoom={16} style={{ height: '100%', width: '100%' }}>
@@ -130,13 +153,16 @@ export const DetailModal = ({ isVisible, dog, onClose, onUpdate }) => {
                                 </div>
                             )}
 
-                            {!editMode && <button className="btn-contact-owner">Contactar vía WhatsApp 📱</button>}
+                            {!editMode && (
+                                <button className="btn-contact-owner" onClick={handleContactClick}>
+                                    Contactar vía WhatsApp 📱
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Modal de Login que aparece si no hay sesión al presionar el botón */}
             <LoginModal 
                 isVisible={isLoginModalVisible} 
                 onClose={() => setIsLoginModalVisible(false)} 

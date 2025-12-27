@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 // Importaciones de Páginas
-import { AyudaEncontrarlo } from './pages/AyudaEncontrarlo.jsx';
+import { Blog } from './pages/Blog.jsx';
 import { PantallaInicio } from "./pages/PantallaInicio.jsx";
 import { PantallaPerdidos } from "./pages/PantallaPerdidos.jsx";
 import { PantallaRegistro } from "./pages/PantallaRegistro.jsx"; // IMPORTANTE: Añadir esta
@@ -22,7 +22,7 @@ const AppRouter = () => {
                 <Route index element={<PantallaInicio />} />
 
                 {/* Ayuda: "/ayuda" */}
-                <Route path="ayuda" element={<AyudaEncontrarlo />} />
+                <Route path="ayuda" element={<Blog />} />
 
                 {/* Tu Zona: "/zona" */}
                 <Route path="zona" element={<TuZona />} />

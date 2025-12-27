@@ -1,11 +1,12 @@
 // src/services/PostService.jsx
 import apiClient from './instance/apiClient.js';
 
+let URL_PREFIX = '/api/post';
 const PostService = {
     // GET: Obtener todas las publicaciones
     getAllPosts: async () => {
         try {
-            const response = await apiClient.get('/posts');
+            const response = await apiClient.get(URL_PREFIX+'/posts');
             return response.data; // Array de posts
         } catch (error) {
             console.error('Error al obtener publicaciones:', error);

@@ -6,7 +6,7 @@ import { Footer } from '../components/organisms/footer/Footer.jsx';
 import { LoginModal } from '../components/molecules/LoginModal.jsx';
 import { PostModal } from '../components/molecules/PostModal.jsx';
 import { PixelArtDog } from '../components/molecules/PixelArtDog.jsx'; // <--- IMPORTACIÓN NUEVA
-import './AyudaEncontrarlo.css';
+import './Blog.css';
 
 // --- COMPONENTES AUXILIARES ---
 const LikeButton = ({ post, toggleLike, onRestrictedAction }) => {
@@ -87,7 +87,7 @@ const TrendsSidebar = ({ posts }) => {
     );
 };
 
-export const AyudaEncontrarlo = () => {
+export const Blog = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
