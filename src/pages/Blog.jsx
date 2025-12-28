@@ -209,8 +209,7 @@ export const Blog = () => {
                                         style={{ backgroundColor: CATEGORIA_COLORS[post.categoria] || '#ccc' }}
                                     >
                                         {(post.categoria || 'GENERAL').toUpperCase()}
-                                    </span>
-                                    
+                                    </span>                                  
                                     <h3 className="blog-post-title">{post.titulo}</h3>
                                     
                                     <div className="post-meta">

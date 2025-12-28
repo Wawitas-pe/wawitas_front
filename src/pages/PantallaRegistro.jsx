@@ -6,8 +6,8 @@ import './PantallaRegistro.css';
 
 export const PantallaRegistro = () => {
   const [form, setForm] = useState({
-    nombres: '',
-    apellidos: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: ''
   });
@@ -22,10 +22,10 @@ export const PantallaRegistro = () => {
     
     try {
       const userData = {
-        nombreCompleto: `${form.nombres} ${form.apellidos}`,
+        firstName: form.firstName,
+        lastName : form.lastName,
         email: form.email,
-        password: form.password,
-        rol: "usuario"
+        password: form.password
       };
       
       await AuthService.register(userData);
@@ -53,10 +53,10 @@ export const PantallaRegistro = () => {
                 <label>Nombres</label>
                 <input 
                     type="text" 
-                    name="nombres" 
+                    name="firstName" 
                     className="form-input" 
                     placeholder="Ingresa tus nombres"
-                    value={form.nombres} 
+                    value={form.firstName} 
                     onChange={handleChange} 
                     required 
                 />
@@ -66,10 +66,10 @@ export const PantallaRegistro = () => {
                 <label>Apellidos</label>
                 <input 
                     type="text" 
-                    name="apellidos" 
+                    name="lastName" 
                     className="form-input" 
                     placeholder="Ingresa tus apellidos"
-                    value={form.apellidos} 
+                    value={form.lastName} 
                     onChange={handleChange} 
                     required 
                 />

@@ -26,7 +26,7 @@ const RecenterMap = ({ coords }) => {
 
 export const AbuseReportModal = ({ isVisible, onClose }) => {
     const [coords, setCoords] = useState([-12.0463, -77.0427]); // Lima por defecto
-    const [preview, setPreview] = useState(null);
+    const [fotoUrl, setFotoUrl] = useState(""); // Cambiado de preview a fotoUrl
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -40,13 +40,6 @@ export const AbuseReportModal = ({ isVisible, onClose }) => {
 
     if (!isVisible) return null;
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setPreview(URL.createObjectURL(file));
-        }
-    };
-
     const MapEvents = () => {
         useMapEvents({
             click: (e) => {
@@ -58,14 +51,14 @@ export const AbuseReportModal = ({ isVisible, onClose }) => {
 
     const handleConfirmAndSubmit = async () => {
         setLoading(true);
-        
         const user = JSON.parse(localStorage.getItem('user'));
         
         const reportData = {
             usuario_reporta_id: user ? user.id : 0,
-            perro_id: null, // Opcional según tu SP
+            perro_id: null, 
             fecha: new Date().toISOString(),
-            foto_evidencia: preview || "https://placedog.net/500/500", // Aquí deberías subir la imagen real
+            // Enviamos la URL escrita o la imagen por defecto
+            foto_evidencia: fotoUrl || "https://placedog.net/500/500", 
             latitud: coords[0],
             longitud: coords[1]
         };
@@ -73,6 +66,8 @@ export const AbuseReportModal = ({ isVisible, onClose }) => {
         try {
             await DogService.reportAbuse(reportData);
             alert("Reporte enviado correctamente. Gracias por tu valentía.");
+            // Limpiar estado antes de cerrar
+            setFotoUrl("");
             onClose();
         } catch (error) {
             alert("Error al enviar reporte: " + error.message);
@@ -120,11 +115,49 @@ export const AbuseReportModal = ({ isVisible, onClose }) => {
                     </div>
 
                     <div className="evidence-section">
-                        <label className="upload-btn">
-                            📸 Subir Foto de Evidencia
-                            <input type="file" accept="image/*" onChange={handleFileChange} hidden />
-                        </label>
-                        {preview && <img src={preview} alt="Evidencia" className="evidence-preview" />}
+                        <label>URL de Evidencia Fotográfica:</label>
+                        <input 
+                            type="text" 
+                            className="url-input-abuse"
+                            placeholder="🔗 Pega el enlace de la imagen aquí..."
+                            value={fotoUrl}
+                            onChange={(e) => setFotoUrl(e.target.value)}
+                            style={{
+                                width: '100%',
+                                padding: '10px',
+                                marginTop: '5px',
+                                borderRadius: '5px',
+                                border: '1px solid #ccc'
+                            }}
+                        />
+                        
+                        {fotoUrl && (
+                            <div className="preview-container" style={{ marginTop: '10px', position: 'relative' }}>
+                                <img 
+                                    src={fotoUrl} 
+                                    alt="Evidencia" 
+                                    className="evidence-preview" 
+                                    style={{ maxWidth: '100%', borderRadius: '8px' }}
+                                    onError={(e) => e.target.style.display = 'none'}
+                                />
+                                <button 
+                                    type="button"
+                                    onClick={() => setFotoUrl("")}
+                                    style={{
+                                        position: 'absolute',
+                                        top: '5px',
+                                        right: '5px',
+                                        background: 'red',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '50%',
+                                        width: '25px',
+                                        height: '25px',
+                                        cursor: 'pointer'
+                                    }}
+                                >×</button>
+                            </div>
+                        )}
                     </div>
 
                     <div className="abuse-actions">

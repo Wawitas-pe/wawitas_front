@@ -25,8 +25,12 @@ const RecenterMap = ({ coords }) => {
 };
 
 export const ReportModal = ({ isVisible, onClose, onReportSuccess }) => {
-    const [form, setForm] = useState({ nombre: '', raza: '', descripcion: '', imagen: null });
-    const [preview, setPreview] = useState(null);
+    const [form, setForm] = useState({ 
+        nombre: '', 
+        raza: '', 
+        descripcion: '', 
+        fotoUrl: '' 
+    });
     const [address, setAddress] = useState("");
     const [suggestions, setSuggestions] = useState([]);
     const [coordinates, setCoordinates] = useState([-12.0463, -77.0427]);
@@ -35,12 +39,8 @@ export const ReportModal = ({ isVisible, onClose, onReportSuccess }) => {
         if (e.target.className === 'modal-overlay') onClose();
     };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setForm({ ...form, imagen: file });
-            setPreview(URL.createObjectURL(file));
-        }
+    const handleUrlChange = (e) => {
+        setForm({ ...form, fotoUrl: e.target.value });
     };
 
     const handleSearch = async (text) => {
@@ -69,7 +69,6 @@ export const ReportModal = ({ isVisible, onClose, onReportSuccess }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
         const user = JSON.parse(localStorage.getItem('user'));
         const userId = user ? user.id : 0;
 
@@ -77,29 +76,28 @@ export const ReportModal = ({ isVisible, onClose, onReportSuccess }) => {
             const nuevoReporte = {
                 userId: userId,
                 nombre: form.nombre,
+                raza: form.raza,
                 descripcion: form.descripcion,
-                fotoUrl: preview || "https://placedog.net/500/500",
+                fotoUrl: form.fotoUrl || "https://placedog.net/500/500",
                 ultimaDireccion: address,
                 ultimaLatitud: coordinates[0],
-                ultimaLongitud: coordinates[1],
-                raza: form.raza
+                ultimaLongitud: coordinates[1]
             };
 
+            // Enviar a la DB
             await DogService.newLostDog(nuevoReporte);
             
-            // Limpiar formulario
-            setForm({ nombre: '', raza: '', descripcion: '', imagen: null });
-            setPreview(null);
+            // Limpiar estados
+            setForm({ nombre: '', raza: '', descripcion: '', fotoUrl: '' });
             setAddress("");
             
-            onClose();
+            // CERRAR MODAL Y RECARGAR LISTA
+            onClose(); 
+            if (onReportSuccess) onReportSuccess();
             
-            // Avisar al padre que recargue la lista
-            if (onReportSuccess) {
-                onReportSuccess();
-            }
+            alert("¡Reporte publicado con éxito! 🐾");
         } catch (error) { 
-            alert("Error al reportar: " + error.message); 
+            alert("Error al guardar: " + error.message); 
         }
     };
 
@@ -126,9 +124,31 @@ export const ReportModal = ({ isVisible, onClose, onReportSuccess }) => {
                     </div>
 
                     <div className="form-group">
-                        <label>Subir Foto (Opcional)</label>
-                        <input type="file" accept="image/*" onChange={handleFileChange} className="file-input" />
-                        {preview && <img src={preview} alt="Vista previa" className="image-preview-report" />}
+                        <label>URL de la Foto</label>
+                        <input 
+                            type="text" 
+                            placeholder="🔗 Pega el enlace de la imagen aquí..." 
+                            value={form.fotoUrl} 
+                            onChange={handleUrlChange} 
+                            className="url-input" 
+                        />
+                        {form.fotoUrl && (
+                            <div className="image-preview-wrapper" style={{ marginTop: '10px', position: 'relative' }}>
+                                <img 
+                                    src={form.fotoUrl} 
+                                    alt="Vista previa" 
+                                    className="image-preview-report" 
+                                    style={{ width: '100%', borderRadius: '8px' }}
+                                    onError={(e) => e.target.style.display = 'none'} 
+                                />
+                                <button 
+                                    type="button" 
+                                    className="remove-img-btn"
+                                    style={{ position: 'absolute', top: 5, right: 5, background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', borderRadius: '50%', cursor: 'pointer' }} 
+                                    onClick={() => setForm({...form, fotoUrl: ''})}
+                                >×</button>
+                            </div>
+                        )}
                     </div>
 
                     <div className="form-group" style={{ position: 'relative' }}>

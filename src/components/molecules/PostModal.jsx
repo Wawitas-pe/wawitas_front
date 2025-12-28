@@ -16,11 +16,10 @@ export const CreatePostWidget = ({ onPublish, onRestrictedAction }) => {
         titulo: '', 
         categoria: 'General', 
         contenido: '', 
-        imagen: null,
+        imagenUrl: '', // Cambiado de imagen (file) a imagenUrl (string)
         fechaEvento: '',
         lugarEvento: ''
     });
-    const [preview, setPreview] = useState(null);
 
     const user = JSON.parse(localStorage.getItem('user'));
 
@@ -30,12 +29,9 @@ export const CreatePostWidget = ({ onPublish, onRestrictedAction }) => {
         });
     };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setFormData({ ...formData, imagen: file });
-            setPreview(URL.createObjectURL(file));
-        }
+    // Maneja el cambio de la URL y actualiza la vista previa automáticamente
+    const handleUrlChange = (e) => {
+        setFormData({ ...formData, imagenUrl: e.target.value });
     };
 
     const handleCancel = () => {
@@ -44,11 +40,10 @@ export const CreatePostWidget = ({ onPublish, onRestrictedAction }) => {
             titulo: '', 
             categoria: 'General', 
             contenido: '', 
-            imagen: null, 
+            imagenUrl: '', 
             fechaEvento: '', 
             lugarEvento: '' 
         });
-        setPreview(null);
     };
 
     const handleSubmit = (e) => {
@@ -59,8 +54,8 @@ export const CreatePostWidget = ({ onPublish, onRestrictedAction }) => {
             titulo: formData.titulo,
             descripcion: formData.contenido,
             categoria: formData.categoria,
-            // Si hay preview (imagen subida), la usamos. Si no, enviamos null o string vacío.
-            fotoUrl: preview ? preview : null, 
+            // Enviamos la URL directamente
+            fotoUrl: formData.imagenUrl || null, 
             fechaEvento: formData.categoria === 'Evento' && formData.fechaEvento ? new Date(formData.fechaEvento).toISOString() : null,
             lugarEvento: formData.categoria === 'Evento' ? formData.lugarEvento : null,
             refugioId: user && user.rol === 'refugio' ? user.id : null 
@@ -124,25 +119,39 @@ export const CreatePostWidget = ({ onPublish, onRestrictedAction }) => {
                     )}
 
                     <div className="composer-footer">
-                        <div className="media-upload">
-                            <label htmlFor="file-upload" className="image-upload-btn">
-                                📷 Foto
-                            </label>
-                            <input id="file-upload" type="file" accept="image/*" onChange={handleFileChange} hidden />
-                        </div>
-                        
-                        <div className="action-buttons">
-                            <button type="button" className="cancel-btn" onClick={handleCancel}>Cancelar</button>
-                            <button type="submit" className="publish-btn">Publicar</button>
+                        <div className="media-upload" style={{ width: '100%' }}>
+                            <input 
+                                type="text" 
+                                className="url-input"
+                                placeholder="🔗 Pega la URL de la imagen (jpg, png...)" 
+                                value={formData.imagenUrl}
+                                onChange={handleUrlChange} 
+                                style={{
+                                    width: '100%',
+                                    padding: '8px',
+                                    borderRadius: '8px',
+                                    border: '1px solid #ddd'
+                                }}
+                            />
                         </div>
                     </div>
 
-                    {preview && (
+                    {/* Vista previa automática si hay algo escrito en imagenUrl */}
+                    {formData.imagenUrl && (
                         <div className="image-preview-container">
-                            <img src={preview} alt="Preview" />
-                            <button type="button" onClick={() => {setPreview(null); setFormData({...formData, imagen: null})}}>×</button>
+                            <img 
+                                src={formData.imagenUrl} 
+                                alt="Preview" 
+                                onError={(e) => e.target.style.display = 'none'} // Oculta si la URL es inválida
+                            />
+                            <button type="button" onClick={() => setFormData({...formData, imagenUrl: ''})}>×</button>
                         </div>
                     )}
+
+                    <div className="action-buttons" style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                        <button type="button" className="cancel-btn" onClick={handleCancel}>Cancelar</button>
+                        <button type="submit" className="publish-btn">Publicar</button>
+                    </div>
                 </form>
             )}
         </div>
