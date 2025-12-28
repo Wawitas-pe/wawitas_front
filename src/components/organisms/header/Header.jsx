@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import AuthService from '../../../services/AuthService';
 import './Header.css';
 import { LoginModal } from "../../molecules/LoginModal.jsx";
+import logo from '../../../assets/logo.webp'; // Importación de la imagen local
 
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,7 +34,7 @@ export const Header = () => {
             <div className="logo-section">
                 <Link to="/" title="Volver al Inicio">
                     <img
-                        src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
+                        src={logo} // Uso de la variable importada
                         alt="Logo Happy Pet"
                         className="logo-img"
                     />
@@ -47,7 +48,7 @@ export const Header = () => {
             <nav className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
                 <Link to="/" className={`nav-item ${getActiveClass('/')}`}>Home</Link>
                 <Link to="/zona" className={`nav-item ${getActiveClass('/zona')}`}>Tu Zona</Link>
-                <Link to="/blog" className={`nav-item ${getActiveClass('/blog')}`}>Blog Comunitario</Link>
+                <Link to="/ayuda" className={`nav-item ${getActiveClass('/ayuda')}`}>Blog Comunitario</Link>
                 <Link to="/perdidos" className={`nav-item ${getActiveClass('/perdidos')}`}>Perdidos</Link>
                 {/*<Link to="/adopcion" className={`nav-item ${getActiveClass('/adopcion')}`}>Test-Adopcion</Link>*/}
             </nav>

@@ -69,7 +69,6 @@ export const TuZona = () => {
                     </div>
                 </aside>
             </div>
-            <Footer />
         </div>
     );
 };
