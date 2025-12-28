@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, useJsApiLoader, HeatmapLayer } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, HeatmapLayer, Marker } from '@react-google-maps/api';
 
 const containerStyle = { 
     width: '100%', 
@@ -9,7 +9,7 @@ const containerStyle = {
 
 const libraries = ['visualization'];
 
-export const SimulatedMap = ({ title, initialCenter, isMainMap, puntosExternos }) => {
+export const SimulatedMap = ({ title, initialCenter, puntosExternos, miUbicacionActual }) => {
     const [center, setCenter] = useState({ lat: initialCenter[0], lng: initialCenter[1] });
     const [heatmapData, setHeatmapData] = useState([]);
 
@@ -18,12 +18,11 @@ export const SimulatedMap = ({ title, initialCenter, isMainMap, puntosExternos }
         libraries: libraries
     });
 
-    // Actualizar centro cuando se hace click en la barra lateral
+    // Sincroniza el centro del mapa cuando cambia la ubicación o la selección
     useEffect(() => {
         setCenter({ lat: initialCenter[0], lng: initialCenter[1] });
     }, [initialCenter]);
 
-    // Cargar puntos en el mapa de calor
     useEffect(() => {
         if (isLoaded && window.google) {
             if (puntosExternos && puntosExternos.length > 0) {
@@ -45,7 +44,7 @@ export const SimulatedMap = ({ title, initialCenter, isMainMap, puntosExternos }
                     <GoogleMap
                         mapContainerStyle={containerStyle}
                         center={center}
-                        zoom={14}
+                        zoom={17} // Zoom alto para ver calles exactas
                         options={{ 
                             disableDefaultUI: false, 
                             zoomControl: true,
@@ -57,6 +56,36 @@ export const SimulatedMap = ({ title, initialCenter, isMainMap, puntosExternos }
                                 data={heatmapData} 
                                 options={{ radius: 30, opacity: 0.8 }}
                             />
+                        )}
+
+                        {miUbicacionActual && (
+                            <>
+                                {/* Círculo de sombra (aura de precisión) */}
+                                <Marker
+                                    position={{ lat: miUbicacionActual[0], lng: miUbicacionActual[1] }}
+                                    icon={{
+                                        path: window.google.maps.SymbolPath.CIRCLE,
+                                        fillColor: '#4285F4',
+                                        fillOpacity: 0.2,
+                                        scale: 35,
+                                        strokeWeight: 0
+                                    }}
+                                />
+                                {/* Punto Azul Central */}
+                                <Marker
+                                    position={{ lat: miUbicacionActual[0], lng: miUbicacionActual[1] }}
+                                    icon={{
+                                        path: window.google.maps.SymbolPath.CIRCLE,
+                                        fillColor: '#4285F4',
+                                        fillOpacity: 1,
+                                        strokeColor: 'white',
+                                        strokeWeight: 2,
+                                        scale: 8,
+                                    }}
+                                    title="Mi ubicación exacta"
+                                    zIndex={1000}
+                                />
+                            </>
                         )}
                     </GoogleMap>
                 ) : (
