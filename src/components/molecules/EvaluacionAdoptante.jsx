@@ -5,7 +5,7 @@ export const EvaluacionAdoptante = ({ solicitudId, usuarioNombre, perroNombre })
     const [respuestas, setRespuestas] = useState({});
     const [enviando, setEnviando] = useState(false);
 
-   const preguntas = [
+    const preguntas = [
         { id: 'frecuenciaCasa', texto: '¿Con qué frecuencia alguien está en casa durante el día?' },
         { id: 'espacioExterior', texto: '¿Con qué frecuencia el hogar queda vacío por más de 6 horas seguidas?' },
         { id: 'viajesFrecuentes', texto: '¿Con qué frecuencia estás disponible los fines de semana?' },
@@ -16,11 +16,11 @@ export const EvaluacionAdoptante = ({ solicitudId, usuarioNombre, perroNombre })
     ];
 
     const opciones = [
-        { label: 'Muy a menudo', sub: '8 HORAS', pts: 20 },
-        { label: 'A menudo', sub: '6-8 HORAS', pts: 15 },
-        { label: 'A veces', sub: '4-6 HORAS', pts: 10 },
-        { label: 'Rara vez', sub: '2-4 HORAS', pts: 5 },
-        { label: 'Nunca', sub: 'MENOS DE 2H', pts: 0 }
+        { label: 'Muy a menudo', sub: '', pts: 20 },
+        { label: 'A menudo', sub: '', pts: 15 },
+        { label: 'A veces', sub: '', pts: 10 },
+        { label: 'Rara vez', sub: '', pts: 5 },
+        { label: 'Nunca', sub: '', pts: 0 }
     ];
 
     const handleChange = (preguntaId, puntos) => {
