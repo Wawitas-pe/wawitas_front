@@ -6,12 +6,11 @@ import { Blog } from './pages/Blog.jsx';
 import { PantallaInicio } from "./pages/PantallaInicio.jsx";
 import { PantallaPerdidos } from "./pages/PantallaPerdidos.jsx";
 import { PantallaRegistro } from "./pages/PantallaRegistro.jsx"; // IMPORTANTE: Añadir esta
-import { LoginPage } from "./pages/LoginPage.jsx";
 
 // Importaciones de Componentes y Layout
 import { MainLayout } from "./layout/MainLayout.jsx";
 import { TuZona } from "./components/TuZona.jsx";
-import { EvaluacionAdoptante } from './components/EvaluacionAdoptante.jsx';
+import { EvaluacionAdoptante } from './pages/EvaluacionAdoptante.jsx';
 
 const AppRouter = () => {
     return (
@@ -38,7 +37,6 @@ const AppRouter = () => {
             </Route>
 
             {/* 2. RUTAS SIN HEADER/FOOTER */}
-            <Route path="login" element={<LoginPage />} />
             
             {/* Error 404 */}
             <Route path="*" element={<div style={{padding: "100px", textAlign: "center"}}><h2>404</h2><p>Página no encontrada</p></div>} />

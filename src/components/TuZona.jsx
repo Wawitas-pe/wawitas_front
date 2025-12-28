@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Header } from '../components/organisms/header/Header.jsx';
-import { Footer } from '../components/organisms/footer/Footer.jsx';
-import { SimulatedMap } from './SimulatedMap'; 
-import PostService from '../services/PostService.jsx'; 
-import './TuZona.css'; 
+import { SimulatedMap } from './SimulatedMap';
+import AuthService from '../services/AuthService.jsx';
+import { LoginModal } from './molecules/LoginModal.jsx';
+import './TuZona.css';
+import DogService from "../services/DogService.jsx";
 
 export const TuZona = () => {
+    const navigate = useNavigate();
     const [mapCenter, setMapCenter] = useState([-12.0464, -77.0428]);
     const [puntosReales, setPuntosReales] = useState([]);
     const [userCoords, setUserCoords] = useState(null);
-    
-    // Estados del Formulario (Simplificado)
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+    // Estados del Formulario
     const [direccionAvistamiento, setDireccionAvistamiento] = useState('');
     const [nombrePerro, setNombrePerro] = useState('');
-    
-    // Estado para el Pop-up
+
+    // Estado para el Pop-up de confirmación
     const [showConfirm, setShowConfirm] = useState(false);
     const [tempData, setTempData] = useState(null);
 
@@ -24,61 +28,100 @@ export const TuZona = () => {
         { id: 7, nombre: "Breña", coords: [-12.0587, -77.0529], icon: "🏠" }
     ];
 
-    // PASO 1: Geocodificación y Apertura de Pop-up
-    const iniciarReporte = () => {
-        if (!direccionAvistamiento || !nombrePerro) return alert("Por favor completa el nombre y la dirección");
+    // Verificar autenticación
+    useEffect(() => {
+        const user = AuthService.getCurrentUser();
+        if (!user) {
+            setIsLoginModalOpen(true);
+        }
+    }, []);
 
-        const geocoder = new window.google.maps.Geocoder();
-        geocoder.geocode({ address: direccionAvistamiento }, (results, status) => {
-            if (status === "OK") {
-                const lat = results[0].geometry.location.lat();
-                const lng = results[0].geometry.location.lng();
-                
-                setTempData({
-                    user_id: 1, // IMPORTANTE: Asegúrate de que este ID sea válido en tu DB
-                    nombre_perro: nombrePerro,
-                    direccion_texto: results[0].formatted_address,
-                    latitud: lat,
-                    longitud: lng
-                });
-                setShowConfirm(true);
-            } else {
-                alert("No encontramos la dirección. Intenta ser más específico.");
-            }
-        });
+    const handleLoginClose = () => {
+        setIsLoginModalOpen(false);
+        const user = AuthService.getCurrentUser();
+        if (!user) {
+            navigate('/');
+        }
     };
 
-    // PASO 2: Confirmación y Envío Real
+    const iniciarReporte = () => {
+        if (!direccionAvistamiento || !nombrePerro) {
+            return alert("Por favor completa el nombre y la dirección");
+        }
+
+        // Simulación de Geocoding (puedes integrarlo con una API si lo necesitas)
+        // Por ahora, usaremos una confirmación simple.
+        const user = AuthService.getCurrentUser();
+        setTempData({
+            user_id: user ? user.id : 0,
+            nombre_perro: nombrePerro,
+            direccion_texto: direccionAvistamiento,
+            // Coordenadas simuladas o de un geocoder
+            latitud: mapCenter[0] + (Math.random() - 0.5) * 0.01,
+            longitud: mapCenter[1] + (Math.random() - 0.5) * 0.01,
+        });
+        setShowConfirm(true);
+    };
+
     const confirmarEnvio = async () => {
         try {
-            // Ajusta estos nombres de campos según lo que reciba exactamente tu API
-            const postData = {
-                userId: tempData.user_id,
-                title: `Avistamiento: ${tempData.nombre_perro}`,
+            const sightingData = {
+                fecha: new Date().toISOString(),
+                direccion: tempData.direccion_texto,
+                fotoEvidencia: null, // No se maneja en esta versión
                 latitud: tempData.latitud,
-                longitud: tempData.longitud,
-                description: `Perrito visto en ${tempData.direccion_texto}`
+                longitud: tempData.longitud
             };
 
-            const response = await PostService.createPost(postData);
+            await DogService.registerSighting(sightingData);
             
-            // Si el backend responde bien, agregamos al mapa de calor local
             setPuntosReales(prev => [...prev, { lat: tempData.latitud, lng: tempData.longitud }]);
             setMapCenter([tempData.latitud, tempData.longitud]);
             
-            // Reset
             setDireccionAvistamiento('');
             setNombrePerro('');
             setShowConfirm(false);
             alert("¡Avistamiento registrado!");
         } catch (error) {
             console.error("Error detallado:", error);
-            alert("Error al conectar con el servidor. Revisa la consola (F12).");
+            alert("Error al conectar con el servidor.");
         }
     };
 
+    const handleMyLocationClick = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const coords = [position.coords.latitude, position.coords.longitude];
+                    setUserCoords(coords);
+                    setMapCenter(coords);
+                },
+                (error) => {
+                    console.error("Error GPS:", error);
+                    if (error.code === error.PERMISSION_DENIED) {
+                        alert("Has denegado el acceso a tu ubicación.");
+                    } else {
+                        alert("No pudimos obtener tu ubicación.");
+                    }
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        } else {
+            alert("Tu navegador no soporta geolocalización.");
+        }
+    };
+
+    const cargarUbicaciones = async () => {
+        try {
+            const data = await DogService.getLostCoords();
+            const coords = data
+                .filter(post => post.latitud && post.longitud)
+                .map(post => ({ lat: parseFloat(post.latitud), lng: parseFloat(post.longitud) }));
+            setPuntosReales(coords);
+        } catch (error) { console.error("Error API al cargar", error); }
+    };
+
     useEffect(() => {
-        // RECUPERAR UBICACIÓN DEL USUARIO (PUNTO AZUL)
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(
                 (position) => {
@@ -86,19 +129,9 @@ export const TuZona = () => {
                     setUserCoords(coords);
                 },
                 (error) => console.error("Error GPS:", error),
-                { enableHighAccuracy: true }
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
         }
-
-        const cargarUbicaciones = async () => {
-            try {
-                const data = await PostService.getAllPosts(); 
-                const coords = data
-                    .filter(post => post.latitud && post.longitud)
-                    .map(post => ({ lat: parseFloat(post.latitud), lng: parseFloat(post.longitud) }));
-                setPuntosReales(coords);
-            } catch (error) { console.error("Error API al cargar", error); }
-        };
         cargarUbicaciones();
     }, []);
 
@@ -144,18 +177,18 @@ export const TuZona = () => {
                         />
                         <input 
                             type="text" 
-                            placeholder="¿Dónde está? (Calle, número, distrito)" 
+                            placeholder="¿Dónde lo viste? (Calle, distrito)" 
                             value={direccionAvistamiento}
                             onChange={(e) => setDireccionAvistamiento(e.target.value)}
                             className="report-input"
                         />
                         <button onClick={iniciarReporte} className="btn-reportar">
-                            Ubicar en Mapa
+                            Registrar
                         </button>
                     </div>
 
                     <div className="locations-list">
-                        <div className="location-item" onClick={() => userCoords && setMapCenter(userCoords)}>
+                        <div className="location-item" onClick={handleMyLocationClick}>
                             <span className="location-icon">🔵</span>
                             <h4>Mi ubicación actual</h4>
                         </div>
@@ -168,6 +201,11 @@ export const TuZona = () => {
                     </div>
                 </aside>
             </div>
+
+            <LoginModal 
+                isVisible={isLoginModalOpen} 
+                onClose={handleLoginClose} 
+            />
         </div>
     );
 };

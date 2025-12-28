@@ -4,8 +4,10 @@ import AuthService from '../services/AuthService.jsx';
 import { Header } from '../components/organisms/header/Header.jsx';
 import { Footer } from '../components/organisms/footer/Footer.jsx';
 import { LoginModal } from '../components/molecules/LoginModal.jsx';
-import { CreatePostWidget } from '../components/molecules/PostModal.jsx'; // Importamos el nuevo widget
+import { CreatePostWidget } from '../components/molecules/PostModal.jsx';
 import { PixelArtDog } from '../components/molecules/PixelArtDog.jsx';
+import { AbuseReportModal } from '../components/molecules/AbuseReportModal.jsx'; // Importamos el nuevo modal
+
 import './Blog.css';
 
 // --- COMPONENTES AUXILIARES ---
@@ -109,6 +111,7 @@ export const Blog = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [isAbuseModalOpen, setIsAbuseModalOpen] = useState(false); // Estado para el modal de abuso
     const [filterCategory, setFilterCategory] = useState(null);
 
     const loadPosts = async () => {
@@ -178,7 +181,6 @@ export const Blog = () => {
             </div>
             <div className="forum-layout">
                 <main className="forum-feed">
-                    {/* WIDGET DE CREACIÓN DE POST (Estilo Facebook/X) */}
                     <CreatePostWidget 
                         onPublish={handleNewPost} 
                         onRestrictedAction={ejecutarAccionProtegida} 
@@ -193,7 +195,7 @@ export const Blog = () => {
                                         {post.categoria === 'Evento' && <div className="event-badge">📅 EVENTO</div>}
                                     </div>
                                 )}
-                                
+
                                 {/* Si es evento y no tiene foto, mostramos el badge en el contenido */}
                                 {post.categoria === 'Evento' && !post.foto_Url && (
                                     <div style={{padding: '20px 20px 0'}}>
@@ -244,9 +246,22 @@ export const Blog = () => {
                 <TrendsSidebar posts={posts} onFilter={handleFilter} activeFilter={filterCategory} />
             </div>
             
-            {/* En tu Blog.jsx simplemente lo llamas así: */}
             <PixelArtDog onRestrictedAction={ejecutarAccionProtegida} />
             
+            {/* BOTÓN FLOTANTE DE EMERGENCIA */}
+            <button
+                className="floating-emergency-btn" 
+                onClick={() => ejecutarAccionProtegida(() => setIsAbuseModalOpen(true))}
+                title="Reportar Abuso / Emergencia"
+            >
+                🚨
+            </button>
+
+            <AbuseReportModal 
+                isVisible={isAbuseModalOpen} 
+                onClose={() => setIsAbuseModalOpen(false)} 
+            />
+
             <LoginModal isVisible={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
             <Footer />
         </div>

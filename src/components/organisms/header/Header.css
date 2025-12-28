@@ -1,102 +1,211 @@
 /* --- HEADER STYLES --- */
+:root {
+  --header-bg: #ffffff;
+  --header-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --primary-green: #3C8D40;
+  --primary-hover: #2e7031;
+  --text-color: #333;
+  --accent-color: #e74c3c;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 5%;
-  background-color: transparent; /* O blanco si prefieres */
-  position: relative;
-  z-index: 100;
+  background-color: var(--header-bg);
+  box-shadow: var(--header-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
 .logo-section {
   display: flex;
   align-items: center;
-  min-width: 0; 
 }
 
 .logo-img { 
-  width: 50px;
+  width: 55px;
   height: auto;
   display: block;
   object-fit: contain;
-  transition: width 0.3s ease;
+  transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.1) rotate(-5deg);
 }
 
 /* Enlaces de Navegación */
 .nav-links {
   display: flex;
-  gap: 30px;
+  gap: 40px;
   align-items: center;
 }
 
 .nav-item {
   text-decoration: none;
-  color: #333;
+  color: var(--text-color);
   font-weight: 600;
-  font-size: 1rem;
-  transition: color 0.2s;
+  font-size: 1.05rem;
+  position: relative;
+  padding: 5px 0;
+  transition: color 0.3s ease;
 }
 
-.nav-item:hover, .nav-item.active {
-  color: #000;
-  border-bottom: 2px solid #3C8D40; /* Línea verde al pasar el mouse */
+.nav-item::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--primary-green);
+  transition: width 0.3s ease;
+  border-radius: 2px;
 }
 
-/* Botón Registrar del Header */
+.nav-item:hover {
+  color: var(--primary-green);
+}
+
+.nav-item:hover::after, .nav-item.active::after {
+  width: 100%;
+}
+
+.nav-item.active {
+  color: var(--primary-green);
+}
+
+/* Acciones del Header (Usuario / Login) */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-nav-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: #f9f9f9;
+  padding: 5px 15px;
+  border-radius: 30px;
+  border: 1px solid #eee;
+}
+
+.welcome-text {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.welcome-text strong {
+  color: var(--primary-green);
+}
+
+/* Botones */
 .header-btn {
-  /* Hereda estilos de btn-green global si existe, o definimos aquí */
-  background-color: #3C8D40;
-  color: white;
   border: none;
   padding: 10px 25px;
-  border-radius: 20px;
-  font-weight: bold;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.2s;
-  white-space: nowrap;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-.header-btn:hover { transform: scale(1.05); }
 
-/* Botón Hamburguesa (Oculto en PC) */
+.btn-green {
+  background-color: var(--primary-green);
+  color: white;
+}
+
+.btn-green:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(60, 141, 64, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #666;
+  border: 1px solid #ddd;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+}
+
+.btn-secondary:hover {
+  background-color: #fff0f0;
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* Botón Hamburguesa */
 .menu-toggle {
   display: none;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   background: none;
   border: none;
   cursor: pointer;
+  color: var(--text-color);
 }
 
 /* --- RESPONSIVE HEADER --- */
-@media (max-width: 768px) {
-  .logo-img {
-    width: 40px;
+@media (max-width: 900px) {
+  .navbar {
+    padding: 15px 20px;
   }
 
   .menu-toggle {
-    display: block; /* Mostrar hamburguesa en móvil */
-    order: 3; /* Ponerlo a la derecha */
+    display: block;
+    order: 3;
   }
 
-  .header-btn {
-    display: none; /* Opcional: Ocultar botón registrar en móvil para ahorrar espacio o moverlo al menú */
+  .header-actions {
+    display: none; /* Se moverá dentro del menú desplegable si es necesario, o se oculta */
   }
+  
+  /* Si el usuario está logueado, mostramos un avatar pequeño o algo similar en móvil, 
+     pero por simplicidad, aquí ocultamos las acciones y las mostramos en el menú desplegable */
 
-  /* Menú desplegable en móvil */
   .nav-links {
-    display: none; /* Oculto por defecto */
-    flex-direction: column;
     position: absolute;
-    top: 70px;
+    top: 100%;
     left: 0;
     width: 100%;
-    background-color: #FFF8E7; /* Mismo color de fondo */
-    padding: 20px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    gap: 15px;
+    background-color: white;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    gap: 25px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); /* Oculto */
+    transition: clip-path 0.4s ease-in-out;
   }
 
   .nav-links.open {
-    display: flex; /* Mostrar cuando está abierto */
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); /* Visible */
+  }
+
+  .nav-item {
+    font-size: 1.2rem;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+  }
+  
+  .nav-item:hover {
+    background-color: #f9f9f9;
+  }
+
+  /* Mostrar botón de login dentro del menú móvil */
+  .nav-links .mobile-auth-btn {
+    display: block;
+    margin-top: 15px;
+    width: 80%;
+    padding: 12px;
+    text-align: center;
   }
 }

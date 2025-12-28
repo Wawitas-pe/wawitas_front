@@ -9,6 +9,21 @@ const apiClient = axios.create({
     },
 });
 
+// INTERCEPTOR DE PETICIÓN (REQUEST): Inyecta el token antes de enviar
+apiClient.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// INTERCEPTOR DE RESPUESTA (RESPONSE): Maneja el login y errores globales
 apiClient.interceptors.response.use(
     (response) => {
         if (response.config.url.includes('/login')) {

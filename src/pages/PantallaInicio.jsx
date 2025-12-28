@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import CountUp from '../utils/CountUp.jsx';
 import { Header } from '../components/organisms/header/Header.jsx';
 import { Footer } from '../components/organisms/footer/Footer.jsx';
@@ -34,100 +35,94 @@ export const PantallaInicio = () => {
             <Header />
 
             <main className="inicio-main-content">
+                {/* --- HERO SECTION --- */}
                 <section className="hero-section">
                     <div className="hero-text">
-                        <h1 className="hero-title">WAWITAS</h1>
+                        <h1 className="hero-title">
+                            Uniendo Corazones, <br />
+                            <span>Rescatando Familias</span>
+                        </h1>
                         <p className="hero-description">
-                            Uniendo corazones para que ninguna mascota se quede sin hogar. 
-                            Nuestra plataforma conecta reportes de mascotas perdidas, 
-                            consejos de cuidado y una comunidad lista para ayudar.
+                            Tu comunidad para reportar mascotas perdidas, encontrar ayuda y promover el bienestar animal. Cada acción cuenta para que una wawita vuelva a casa.
                         </p>
+                        <div className="hero-cta-buttons">
+                            <Link to="/perdidos" className="btn btn-primary">Ver Mascotas Perdidas</Link>
+                            <Link to="/blog" className="btn btn-secondary">Leer el Blog</Link>
+                        </div>
                     </div>
-
                     <div className="hero-image-container">
-                        <div className="mustard-blob"></div>
-                        <img
-                            src={pugImg}
-                            alt="Mascota principal"
-                            className="hero-dogs"
-                        />
+                        <div className="blob-background"></div>
+                        <img src={pugImg} alt="Perrito Pug sonriendo" className="hero-main-dog" />
                     </div>
                 </section>
 
-                <section className="tips-section">
-                    <div className="tip-card">
-                        <div className="tip-icon">🐾</div>
-                        <div>
-                            <h3>Guía de Bienestar Animal</h3>
-                            <p>Descubre consejos expertos para mejorar la calidad de vida de tu mejor amigo.</p>
+                {/* --- SERVICES/FEATURES SECTION --- */}
+                <section className="features-section">
+                    <div className="feature-card">
+                        <div className="feature-img-wrapper">
+                            <img src={golden} alt="Reportes" className="feature-img" />
                         </div>
+                        <h3>Reportes y Alertas</h3>
+                        <p>Publica una alerta de mascota perdida y notifica a la comunidad en tu zona al instante.</p>
+                        <Link to="/perdidos" className="feature-link">Reportar ahora →</Link>
+                    </div>
+                    <div className="feature-card">
+                        <div className="feature-img-wrapper">
+                            <img src={profdog} alt="Adopción" className="feature-img" />
+                        </div>
+                        <h3>Adopción Responsable</h3>
+                        <p>Encuentra a tu compañero ideal y dale una segunda oportunidad a una vida que lo necesita.</p>
+                        <Link to="/adopcion" className="feature-link">Buscar mascota →</Link>
+                    </div>
+                    <div className="feature-card">
+                        <div className="feature-img-wrapper">
+                            <img src={bulldog} alt="Blog" className="feature-img" />
+                        </div>
+                        <h3>Blog Comunitario</h3>
+                        <p>Aprende sobre cuidados, lee historias de éxito y comparte tus experiencias con otros.</p>
+                        <Link to="/blog" className="feature-link">Ir al blog →</Link>
                     </div>
                 </section>
 
-                <section className="stats-bar-wrapper">
-                    <div className="stats-bar">
-                        <div className="stat-item">
-                            <h2>Mascotas</h2>
-                            <p>Trabajamos cada día para que cada wawita regrese a casa sana y salva.</p>
-                            <img src={golden} alt="Icono salud" className="stat-icon" />
-                        </div>
-
-                        <div className="divider"></div>
-
-                        <div className="stat-item">
-                            <h2>Bienestar</h2>
-                            <p>Fomentamos la salud integral sin importar la raza o edad de tu mascota.</p>
-                            <img src={bulldog} alt="Icono salud" className="stat-icon" />
-                        </div>
-
-                        <div className="divider"></div>
-
-                        <div className="stat-item yellow-card-integrated">
-                            <img src={profdog} alt="Mascota Senior" className="yellow-card-img" />
-                            <h3 className='Textone'>Segunda Oportunidad</h3>
-                            <p className='Textone'>Nuestros amigos senior esperan por un hogar lleno de amor.</p>
-                        </div>
-
-                        <div className="divider"></div>
-
-                        <div className="stat-counter">
-                            <div className="green-circle">
-                                <span className="number">
-                                    {!loading && <CountUp to={lostCount} duration={3} />}
-                                    {loading ? '...' : '+'}
-                                </span>
-                                <span className="label">Perdidos</span>
-                            </div>
-                        </div>
+                {/* --- STATS SECTION --- */}
+                <section className="stats-section">
+                    <div className="stat-item">
+                        <span className="stat-number">
+                            {!loading && <CountUp to={lostCount} duration={3} />}
+                            {loading && '...'}
+                        </span>
+                        <span className="stat-label">Mascotas Buscadas</span>
+                    </div>
+                    <div className="stat-item">
+                        <span className="stat-number">
+                            <CountUp to={124} duration={3} />
+                        </span>
+                        <span className="stat-label">Reencuentros Exitosos</span>
+                    </div>
+                    <div className="stat-item">
+                        <span className="stat-number">
+                            <CountUp to={5000} duration={4} />+
+                        </span>
+                        <span className="stat-label">Miembros en la Comunidad</span>
                     </div>
                 </section>
 
-                <section className="about-section">
-                    <h2 className="section-title">NUESTRA MISIÓN</h2>
-                    <div className="about-grid">
-                        <div className="about-img-left">
-                            <img src={poster} alt="Mascota rescatada" />
+                {/* --- MISSION/ABOUT SECTION --- */}
+                <section className="mission-section">
+                    <div className="mission-grid">
+                        <div className="mission-images">
+                            <img src={poster} alt="Poster mascota" className="mission-img-1" />
+                            <img src={inicio} alt="Comunidad" className="mission-img-2" />
                         </div>
-                        <div className="about-content-right">
-                            <div className="about-img-right">
-                                <img src={inicio} alt="Comunidad ayudando" />
-                            </div>
-                            <div className="about-text">
-                                <h2>Ellos merecen un final feliz</h2>
-                                
-                                <p>
-                                    Wawitas nació de una necesidad profunda y urgente: centralizar la ayuda animal en un solo ecosistema digital eficiente. En un mundo donde los reportes de mascotas perdidas suelen dispersarse y perderse entre miles de publicaciones en redes sociales, nuestra plataforma surge como un faro de esperanza organizado. Entendemos que cada minuto cuenta cuando un miembro de la familia no regresa a casa, y por ello hemos diseñado un espacio donde la comunidad y la tecnología trabajan en perfecta sintonía para maximizar las posibilidades de un reencuentro.
-                                </p>
-
-                                <p>
-                                    Creemos firmemente que la tecnología no debe ser fría, sino humana, actuando como el puente más fuerte y resistente entre una mascota desorientada y los brazos de su familia. A través de herramientas de geolocalización, bases de datos actualizadas en tiempo real y sistemas de alerta inteligentes, transformamos la angustia de la búsqueda en una estrategia comunitaria de rescate. No somos solo una aplicación; somos una red de seguridad diseñada para proteger a quienes no tienen voz pero nos brindan su amor incondicional.
-                                </p>
-
-                                <p>
-                                    Nuestra misión va más allá de un simple registro de extravíos. Nos esforzamos por fomentar una cultura de bienestar y responsabilidad, donde cada "wawita" sea valorada como un ser sintiente que merece respeto y cuidados dignos. Al unir a rescatistas, voluntarios, refugios y dueños en una sola comunidad activa, estamos construyendo un futuro donde ninguna mascota tenga que enfrentar la soledad de las calles y donde cada historia de extravío tenga el cierre que todos anhelamos: un regreso seguro al calor del hogar.
-                                </p>
-
-                            </div>
+                        <div className="mission-content">
+                            <span className="mission-tagline">Nuestra Misión</span>
+                            <h2>No solo son mascotas, son familia.</h2>
+                            <p>
+                                Wawitas nació para centralizar la ayuda animal en un solo ecosistema digital. Transformamos la angustia de la búsqueda en una estrategia comunitaria de rescate, usando la tecnología como un puente entre una mascota desorientada y su familia.
+                            </p>
+                            <p>
+                                Fomentamos una cultura de bienestar y responsabilidad, donde cada "wawita" es valorada. Unimos a rescatistas, voluntarios y dueños para construir un futuro donde ninguna mascota enfrente la soledad de las calles.
+                            </p>
                         </div>
                     </div>
                 </section>

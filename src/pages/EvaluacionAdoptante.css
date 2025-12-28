@@ -1,0 +1,184 @@
+.evaluacion-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f7f6;
+}
+
+.evaluacion-main-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+}
+
+.evaluacion-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    padding: 40px;
+    width: 100%;
+    max-width: 1100px;
+    position: relative;
+    border: 1px solid #e8e8e8;
+}
+
+.evaluacion-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.evaluacion-header h2 {
+    font-size: 2.8rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-weight: 900;
+}
+
+.evaluacion-header p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.test-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.test-table th {
+    padding: 15px 10px;
+    text-align: center;
+    border-bottom: 2px solid #e0e0e0;
+    color: #34495e;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.pregunta-row {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+.pregunta-row:hover {
+    background-color: #fafcff;
+}
+
+.pregunta-texto {
+    padding: 20px;
+    font-size: 1rem;
+    color: #2c3e50;
+    font-weight: 500;
+    width: 45%;
+}
+
+.radio-cell {
+    text-align: center;
+    padding: 15px;
+    cursor: pointer;
+}
+
+/* --- ESTILOS PARA RADIO BUTTONS PERSONALIZADOS --- */
+.custom-radio-wrapper {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #bdc3c7;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.radio-circle {
+    width: 0;
+    height: 0;
+    background-color: #27ae60;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.custom-radio-wrapper.selected {
+    border-color: #27ae60;
+}
+
+.custom-radio-wrapper.selected .radio-circle {
+    width: 18px;
+    height: 18px;
+}
+
+.radio-cell:hover .custom-radio-wrapper {
+    transform: scale(1.1);
+    border-color: #27ae60;
+}
+
+.btn-container {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.btn-evaluar-verde {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 18px 60px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(39, 174, 96, 0.3);
+}
+
+.btn-evaluar-verde:hover {
+    background-color: #219150;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5);
+}
+
+@media (max-width: 768px) {
+    .test-table, .test-table thead, .test-table tbody, .test-table th, .test-table td, .test-table tr {
+        display: block;
+    }
+    
+    .test-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    .pregunta-row {
+        margin-bottom: 25px;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    
+    .pregunta-texto {
+        width: 100%;
+        padding: 0 0 15px 0;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 10px;
+    }
+    
+    .radio-cell {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 5px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+    
+    .radio-cell:last-child {
+        border-bottom: none;
+    }
+    
+    .radio-cell::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #555;
+    }
+}

@@ -3,14 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import AuthService from '../../../services/AuthService';
 import './Header.css';
 import { LoginModal } from "../../molecules/LoginModal.jsx";
-import logo from '../../../assets/logo.webp'; // Importación de la imagen local
+import logo from '../../../assets/logo.webp';
 
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const location = useLocation();
 
-    // Verificamos si hay sesión activa usando el AuthService
     const user = AuthService.getCurrentUser();
 
     const toggleMenu = () => {
@@ -19,6 +18,12 @@ export const Header = () => {
 
     const handleLoginClick = () => {
         setIsLoginModalOpen(true);
+        setIsMenuOpen(false); // Cerrar menú al abrir modal
+    };
+
+    const handleLogout = () => {
+        AuthService.logout();
+        setIsMenuOpen(false);
     };
 
     const getActiveClass = (path) => {
@@ -34,7 +39,7 @@ export const Header = () => {
             <div className="logo-section">
                 <Link to="/" title="Volver al Inicio">
                     <img
-                        src={logo} // Uso de la variable importada
+                        src={logo}
                         alt="Logo Happy Pet"
                         className="logo-img"
                     />
@@ -42,31 +47,42 @@ export const Header = () => {
             </div>
 
             <button className="menu-toggle" onClick={toggleMenu}>
-                ☰
+                {isMenuOpen ? '✕' : '☰'}
             </button>
 
             <nav className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
-                <Link to="/" className={`nav-item ${getActiveClass('/')}`}>Home</Link>
-                <Link to="/zona" className={`nav-item ${getActiveClass('/zona')}`}>Tu Zona</Link>
-                <Link to="/ayuda" className={`nav-item ${getActiveClass('/ayuda')}`}>Blog Comunitario</Link>
-                <Link to="/perdidos" className={`nav-item ${getActiveClass('/perdidos')}`}>Perdidos</Link>
-                {/*<Link to="/adopcion" className={`nav-item ${getActiveClass('/adopcion')}`}>Test-Adopcion</Link>*/}
+                <Link to="/" className={`nav-item ${getActiveClass('/')}`} onClick={() => setIsMenuOpen(false)}>Home</Link>
+                <Link to="/blog" className={`nav-item ${getActiveClass('/blog')}`} onClick={() => setIsMenuOpen(false)}>Blog</Link>
+                <Link to="/perdidos" className={`nav-item ${getActiveClass('/perdidos')}`} onClick={() => setIsMenuOpen(false)}>Perdidos</Link>
+                <Link to="/zona" className={`nav-item ${getActiveClass('/zona')}`} onClick={() => setIsMenuOpen(false)}>Tu Zona</Link>
+
+                
+                {/* Botones visibles solo en móvil dentro del menú */}
+                <div className="mobile-only-actions" style={{display: window.innerWidth <= 900 ? 'block' : 'none', width: '100%', textAlign: 'center'}}>
+                    {user ? (
+                        <>
+                            <p style={{marginBottom: '10px', color: '#666'}}>Hola, <strong>{user.nombre}</strong></p>
+                            <button className="header-btn btn-secondary" onClick={handleLogout} style={{width: '80%'}}>Cerrar Sesión</button>
+                        </>
+                    ) : (
+                        <button className="header-btn btn-green" onClick={handleLoginClick} style={{width: '80%'}}>Iniciar Sesión</button>
+                    )}
+                </div>
             </nav>
 
+            {/* Acciones visibles en Desktop */}
             <div className="header-actions">
                 {user ? (
-                    /* Si el usuario inició sesión, mostramos su nombre y botón de salir */
                     <div className="user-nav-info">
                         <span className="welcome-text">Hola, <strong>{user.nombre}</strong> 🐾</span>
                         <button 
                             className="btn-secondary header-btn logout-btn" 
-                            onClick={() => AuthService.logout()}
+                            onClick={handleLogout}
                         >
-                            Cerrar Sesión
+                            Salir
                         </button>
                     </div>
                 ) : (
-                    /* Si no hay sesión, el botón Iniciar Sesión ocupa el lugar principal */
                     <button
                         className="btn-green header-btn"
                         onClick={handleLoginClick}

@@ -20,7 +20,9 @@ export const SimulatedMap = ({ title, initialCenter, puntosExternos, miUbicacion
 
     // Sincroniza el centro del mapa cuando cambia la ubicación o la selección
     useEffect(() => {
-        setCenter({ lat: initialCenter[0], lng: initialCenter[1] });
+        if (initialCenter) {
+            setCenter({ lat: initialCenter[0], lng: initialCenter[1] });
+        }
     }, [initialCenter]);
 
     useEffect(() => {
@@ -37,9 +39,9 @@ export const SimulatedMap = ({ title, initialCenter, puntosExternos, miUbicacion
     if (loadError) return <div className="error-map">Error cargando Google Maps</div>;
 
     return (
-        <div className="map-card-full">
-            <h3 className="map-title-overlay">{title}</h3>
-            <div className="map-wrapper-full">
+        <div className="map-card-full" style={{ width: '100%', height: '100%' }}>
+            {title && <h3 className="map-title-overlay">{title}</h3>}
+            <div className="map-wrapper-full" style={{ width: '100%', height: '100%' }}>
                 {isLoaded ? (
                     <GoogleMap
                         mapContainerStyle={containerStyle}

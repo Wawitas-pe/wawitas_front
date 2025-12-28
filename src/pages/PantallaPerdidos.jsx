@@ -7,6 +7,8 @@ import { ReportModal } from '../components/molecules/ReportModal.jsx';
 import './PantallaPerdidos.css';
 import TextType from "../components/TextType.jsx";
 
+const PLACEHOLDER_DOG = 'https://images.vexels.com/media/users/3/222619/isolated/preview/0327c5a099b1981f4dac342b302eb4cc-pastor-aleman-sentado-silueta-perro.png';
+
 const obtenerUbiCorta = (ubi) => {
     if (!ubi) return "Ubicación no disponible";
     const partes = ubi.split(',');
@@ -16,10 +18,10 @@ const obtenerUbiCorta = (ubi) => {
 const DogCard = ({ dog, onOpenDetail }) => (
     <div className="dog-card">
         <img
-            src={dog.fotoUrl}
+            src={dog.fotoUrl || PLACEHOLDER_DOG}
             alt={`Foto de ${dog.nombre}`}
             className="dog-image"
-            onError={(e) => e.target.src = 'https://placedog.net/500/500'}
+            onError={(e) => e.target.src = PLACEHOLDER_DOG}
         />
         <div className="dog-info">
             <h3 className="dog-name">{dog.nombre}</h3>

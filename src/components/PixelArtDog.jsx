@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { EvaluacionAdoptante } from './EvaluacionAdoptante';
+import { EvaluacionAdoptante } from '../pages/EvaluacionAdoptante.jsx';
 import './PixelArtDog.css';
 
 export const PixelArtDog = ({ post }) => {

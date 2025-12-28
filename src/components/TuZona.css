@@ -1,216 +1,94 @@
-/* --- Estructura para fijar el Footer al fondo --- */
-.inicio-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Ocupa todo el alto de la pantalla */
-    background-color: #f5f5f5;
-}
-
-.main-content-wrapper {
-    flex: 1; /* Crece para ocupar el espacio sobrante y empuja al footer */
-    display: flex;
-    flex-direction: column;
-}
-
-/* --- Estilos del Hero y Texto Animado --- */
-.tu-zona-hero {
-    background: linear-gradient(135deg, #e0f7fa, #bbdefb);
-    padding: 60px 20px 40px;
-    text-align: center;
-    overflow: hidden;
-}
-
-.tu-zona-hero h1 {
-    font-size: 3.5em;
-    color: #0d47a1;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.hero-subtitle {
-    font-size: 1.2em;
-    color: #444;
-    max-width: 800px;
-    margin: 0 auto 30px;
-}
-
-/* --- Estilos del Contenedor de Mapas --- */
-.tu-zona-map-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 40px 20px;
-    background-color: #f5f5f5;
-    flex: 1; /* Asegura que el área de mapas use el espacio disponible */
-}
-
-/* --- Estilos de la Card de Mapa Individual --- */
-.map-card {
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    text-align: center;
-    transition: transform 0.3s ease;
-    flex-grow: 1; 
-    display: flex;
-    flex-direction: column;
-}
-
-.small-map {
-    max-width: 300px;
-}
-
-.main-map {
-    max-width: 550px;
-}
-
-.map-title {
-    color: #2c3e50;
-    font-size: 1.4em;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #ecf0f1;
-    padding-bottom: 8px;
-}
-
-.map-description {
-    font-size: 0.9em;
-    color: #7f8c8d;
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px dashed #ecf0f1;
-}
-
-/* --- Contenedor del Mapa (Leaflet) --- */
-.map-container-leaflet {
-    height: 350px;
-    width: 100%;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.leaflet-map {
-    height: 100%;
-    width: 100%;
-}
-
-/* --- Estilos de la Petición de Ubicación (Overlay) --- */
-.location-prompt, .loading-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-    background-color: rgba(255, 255, 255, 0.95);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    text-align: center;
-}
-
-.locate-button {
-    background-color: #f39c12;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-size: 1.1em;
-    font-weight: bold;
-    margin-top: 15px;
-    transition: background-color 0.3s ease;
-}
-
-.locate-button:hover {
-    background-color: #e67e22;
-}
-
-/* --- Animación de Carga (Spinner) --- */
-.loading-spinner {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-    margin-bottom: 15px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* --- Responsividad --- */
-@media (max-width: 1024px) {
-    .tu-zona-map-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .main-map, .small-map {
-        width: 90%; 
-        max-width: none;
-    }
-}
-
-
+/* Contenedor principal de la página */
 .tuzona-dashboard {
-    height: 100vh;
     display: flex;
     flex-direction: column;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    overflow: hidden; /* Evita scroll en la página principal */
 }
 
+/* Layout que divide mapa y sidebar */
 .dashboard-layout {
     display: flex;
-    flex: 1; /* Ocupa el espacio entre header y footer */
-    overflow: hidden; /* Evita scroll en toda la página */
+    flex: 1; /* Ocupa el espacio restante después del header */
+    min-height: 0; /* Truco para que flexbox funcione bien en contenedores con altura definida */
 }
 
+/* Contenedor del mapa */
 .map-view {
-    flex: 3; /* 75% de la pantalla */
-    padding: 20px;
-    background: #f0f2f5;
+    flex: 1; /* Ocupa todo el espacio posible */
+    position: relative; /* Necesario para que el mapa se posicione correctamente */
 }
 
+/* El mapa en sí (el div que genera Leaflet/Google Maps) */
+.map-view .leaflet-container {
+    height: 100%;
+    width: 100%;
+}
+
+/* Sidebar */
 .sidebar-locations {
-    flex: 1; /* 25% de la pantalla */
+    width: 350px;
     background: white;
-    border-left: 1px solid #ddd;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    z-index: 10;
+    overflow-y: auto; /* Permite scroll si el contenido es mucho */
+}
+
+.sidebar-header {
     padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.report-form {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.report-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.btn-reportar {
+    width: 100%;
+    padding: 12px;
+    background-color: #3C8D40;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.locations-list {
+    padding: 10px;
 }
 
 .location-item {
     display: flex;
     align-items: center;
     padding: 15px;
-    margin-bottom: 10px;
     border-radius: 10px;
     cursor: pointer;
-    background: #f8f9fa;
-    transition: all 0.3s ease;
+    transition: background-color 0.2s;
 }
 
 .location-item:hover {
-    background: #eef2f7;
-    transform: translateX(5px);
-}
-
-.location-item.active {
-    background: #e3f2fd;
-    border: 1px solid #2196f3;
+    background-color: #f0f2f5;
 }
 
 .location-icon {
@@ -218,181 +96,67 @@
     margin-right: 15px;
 }
 
-/* Ajuste para que el Google Map ocupe todo su contenedor */
-.map-card, .map-wrapper {
-    height: 100%;
-}
-
-.tuzona-dashboard {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.dashboard-layout {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-    background-color: #f5f5f5;
-}
-
-.map-view {
-    flex: 3;
-    padding: 20px;
-    position: relative;
-}
-
-.sidebar-locations {
-    flex: 1;
-    background: white;
-    border-left: 1px solid #e0e0e0;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-}
-
-.sidebar-header {
-    padding: 25px 20px;
-    border-bottom: 1px solid #eee;
-    background: #fafafa;
-}
-
-.sidebar-header h2 { color: #0d47a1; margin: 0; }
-
-.locations-list { padding: 10px; }
-
-.location-item {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 8px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-    border: 1px solid transparent;
-}
-
-.location-item:hover { background: #f0f7ff; }
-
-.location-item.active {
-    background: #e3f2fd;
-    border-color: #2196f3;
-}
-
-.location-icon { font-size: 1.4rem; margin-right: 15px; }
-
-.location-info h4 { margin: 0; font-size: 1rem; color: #333; }
-.location-info p { margin: 0; font-size: 0.8rem; color: #777; }
-
-.map-card-full { height: 100%; width: 100%; position: relative; }
-.map-wrapper-full { height: 100%; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 15px; overflow: hidden; }
-
-.map-title-overlay {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    z-index: 10;
-    background: white;
-    padding: 10px 20px;
-    border-radius: 30px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+.location-item h4 {
+    margin: 0;
     font-size: 1rem;
-}
-.search-input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    margin-bottom: 15px;
-    font-size: 14px;
-}
-
-.report-form {
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.report-input {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-}
-
-.qty-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 13px;
-}
-
-.report-input-qty {
-    width: 50px;
-    padding: 5px;
-}
-
-.btn-reportar {
-    background-color: #ff6b6b;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-.btn-reportar:hover {
-    background-color: #ee5253;
 }
 
 /* Modal de Confirmación */
 .modal-overlay {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.6);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 5000;
 }
 
 .confirm-modal {
     background: white;
-    padding: 25px;
+    padding: 30px;
     border-radius: 15px;
-    max-width: 400px;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-
-.address-text {
-    font-style: italic;
-    color: #666;
-    background: #f0f0f0;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 10px 0;
+    width: 90%;
+    max-width: 400px;
 }
 
 .modal-buttons {
-    display: flex;
-    gap: 10px;
     margin-top: 20px;
+    display: flex;
+    gap: 15px;
 }
 
-.btn-confirmar {
-    background: #2ecc71;
-    color: white; border: none; padding: 10px 20px;
-    border-radius: 5px; cursor: pointer; flex: 1;
+.btn-cancelar, .btn-confirmar {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .btn-cancelar {
-    background: #e74c3c;
-    color: white; border: none; padding: 10px 20px;
-    border-radius: 5px; cursor: pointer; flex: 1;
+    background-color: #eee;
+}
+
+.btn-confirmar {
+    background-color: #3C8D40;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .dashboard-layout {
+        flex-direction: column;
+    }
+    
+    .sidebar-locations {
+        width: 100%;
+        height: auto; /* Altura automática en móvil */
+        max-height: 50vh; /* Límite para que no ocupe toda la pantalla */
+    }
+
+    .map-view {
+        flex: 1; /* Ocupa el espacio restante */
+    }
 }

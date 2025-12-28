@@ -9,6 +9,8 @@ import { LoginModal } from './LoginModal.jsx';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
+const PLACEHOLDER_DOG = 'https://images.vexels.com/media/users/3/222619/isolated/preview/0327c5a099b1981f4dac342b302eb4cc-pastor-aleman-sentado-silueta-perro.png';
+
 let DefaultIcon = L.icon({
     iconUrl: icon,
     shadowUrl: iconShadow,
@@ -120,7 +122,12 @@ export const DetailModal = ({ isVisible, dog, onClose, onUpdate }) => {
                     <button className="close-btn" onClick={onClose}>&times;</button>
                     <div className="detail-content">
                         <div className="detail-image-section">
-                            <img src={dog.fotoUrl} alt={dog.nombre} className="detail-image" />
+                            <img 
+                                src={dog.fotoUrl || PLACEHOLDER_DOG} 
+                                alt={dog.nombre} 
+                                className="detail-image" 
+                                onError={(e) => e.target.src = PLACEHOLDER_DOG}
+                            />
                         </div>
                         <div className="detail-info-section">
                             <h2>Detalles de {dog.nombre}</h2>
