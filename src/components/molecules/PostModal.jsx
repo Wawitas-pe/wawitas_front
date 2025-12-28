@@ -59,10 +59,11 @@ export const CreatePostWidget = ({ onPublish, onRestrictedAction }) => {
             titulo: formData.titulo,
             descripcion: formData.contenido,
             categoria: formData.categoria,
-            fotoUrl: preview || 'https://placedog.net/800/400?id=blog',
+            // Si hay preview (imagen subida), la usamos. Si no, enviamos null o string vacío.
+            fotoUrl: preview ? preview : null, 
             fechaEvento: formData.categoria === 'Evento' && formData.fechaEvento ? new Date(formData.fechaEvento).toISOString() : null,
             lugarEvento: formData.categoria === 'Evento' ? formData.lugarEvento : null,
-            refugioId: user && user.rol === 'refugio' ? user.id : null // Asumiendo que el ID del usuario es el mismo del refugio si tiene ese rol
+            refugioId: user && user.rol === 'refugio' ? user.id : null 
         };
 
         onPublish(newPost);
