@@ -1,61 +1,75 @@
-import React from 'react';
-// Rutas ajustadas según tu estructura de carpetas
-import { Footer } from '../components/organisms/footer/Footer.jsx';
+import React, { useState, useEffect } from 'react';
 import { Header } from '../components/organisms/header/Header.jsx';
+import { Footer } from '../components/organisms/footer/Footer.jsx';
 import { SimulatedMap } from './SimulatedMap'; 
-import '../pages/PantallaInicio.css';
+import PostService from '../services/PostService.jsx'; 
 import './TuZona.css'; 
 
-// Coordenadas de Lima, Perú
-const LIMA_CENTER = [-12.0464, -77.0428]; 
-const BRENHA_CENTER = [-12.0528, -77.0467]; 
-const LIMA_CENTRO_CENTER = [-12.0503, -77.0378]; 
-
 export const TuZona = () => {
+    const [mapCenter, setMapCenter] = useState([-12.0464, -77.0428]);
+    const [puntosReales, setPuntosReales] = useState([]);
+
+    const distritos = [
+        { id: 1, nombre: "Tu Zona (Centro de Lima)", coords: [-12.0489, -77.0365], icon: "📍" },
+        { id: 2, nombre: "San Miguel", coords: [-12.0758, -77.0902], icon: "🏘️" },
+        { id: 3, nombre: "Santiago de Surco", coords: [-12.1453, -76.9936], icon: "🏢" },
+        { id: 4, nombre: "La Molina", coords: [-12.0786, -76.9112], icon: "🏢" },
+        { id: 5, nombre: "San Isidro", coords: [-12.1037, -77.0341], icon: "🏢" },
+        { id: 6, nombre: "San Juan de Miraflores", coords: [-12.1629, -76.9648], icon: "🏢" },
+        { id: 7, nombre: "Breña", coords: [-12.0587, -77.0529], icon: "🏠" }
+    ];
+
+    useEffect(() => {
+        const cargarUbicaciones = async () => {
+            try {
+                const data = await PostService.getAllPosts(); 
+                const coords = data
+                    .filter(post => post.latitud && post.longitud)
+                    .map(post => ({ lat: post.latitud, lng: post.longitud }));
+                setPuntosReales(coords);
+            } catch (error) {
+                console.error("Error al conectar con el API", error);
+            }
+        };
+        cargarUbicaciones();
+    }, []);
+
     return (
-        <div className="inicio-container">
-            
+        <div className="tuzona-dashboard">
             <Header />
-            
-            {/* Este div envuelve el contenido central para empujar el footer */}
-            <div className="main-content-wrapper">
-                {/* --- HERO SECTION --- */}
-                <section className="hero-split-text tu-zona-hero">
-                    <h1 className="main-title">
-                        ¡Están más cerca de lo que crees!
-                    </h1>
-                    <p className="hero-subtitle">
-                        Explora los mapas de calor para encontrar la mayor concentración de reportes de mascotas perdidas y en adopción cerca de ti.
-                    </p>
-                </section>
-                
-                {/* --- SECCIÓN DE MAPAS --- */}
-                <main className="tu-zona-map-container">
-                    {/* 1. Breña */}
+            <div className="dashboard-layout">
+                <main className="map-view">
                     <SimulatedMap 
-                        title="📍 Breña, Lima" 
-                        initialCenter={BRENHA_CENTER}
-                        isMainMap={false}
-                    />
-                    
-                    {/* 2. Tu Ubicación Actual */}
-                    <SimulatedMap 
-                        title="📌 Tu Ubicación Actual" 
-                        initialCenter={LIMA_CENTER}
+                        title="Explorador de Mascotas Perdidas" 
+                        initialCenter={mapCenter}
                         isMainMap={true}
-                    />
-                    
-                    {/* 3. Lima Centro */}
-                    <SimulatedMap 
-                        title="🗺️ Lima Centro" 
-                        initialCenter={LIMA_CENTRO_CENTER}
-                        isMainMap={false}
+                        puntosExternos={puntosReales} 
                     />
                 </main>
+
+                <aside className="sidebar-locations">
+                    <div className="sidebar-header">
+                        <h2>Ubicaciones</h2>
+                        <p>Selecciona un distrito para centrar el mapa</p>
+                    </div>
+                    <div className="locations-list">
+                        {distritos.map((d) => (
+                            <div 
+                                key={d.id} 
+                                className={`location-item ${mapCenter[0] === d.coords[0] ? 'active' : ''}`}
+                                onClick={() => setMapCenter(d.coords)}
+                            >
+                                <span className="location-icon">{d.icon}</span>
+                                <div className="location-info">
+                                    <h4>{d.nombre}</h4>
+                                    <p>Ver reportes activos</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </aside>
             </div>
-
             <Footer />
-
         </div>
     );
 };
