@@ -26,7 +26,7 @@ export const PixelArtDog = ({ onRestrictedAction }) => {
             <div className="pixel-dog-fixed" onClick={handleDogClick}>
                 <div className="pixel-bubble-fixed">¡Adóptame!</div>
                 <img 
-                    src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZ3bmZueGZ3bmZueGZ3bmZueGZ3bmZueGZ3bmZueGZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/3o7WIEVjXL8EH3O1mE/giphy.gif" 
+                    src="https://i.pinimg.com/originals/ef/47/a2/ef47a2526fd70c2af475776196069aab.gif"
                     alt="Pixel Dog" 
                     className="pixel-dog-img-fixed"
                 />

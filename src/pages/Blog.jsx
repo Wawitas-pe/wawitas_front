@@ -187,10 +187,20 @@ export const Blog = () => {
                     {loading ? <p className="loading-text">Cargando historias... 🐾</p> : 
                         filteredPosts.map(post => (
                             <div key={post.post_Id} className={`blog-card ${post.categoria === 'Evento' ? 'event-card' : ''}`}>
-                                <div className="blog-header-image">
-                                    <img src={post.foto_Url} alt="blog" onError={(e) => e.target.src = 'https://placedog.net/800/400'} />
-                                    {post.categoria === 'Evento' && <div className="event-badge">📅 EVENTO</div>}
-                                </div>
+                                {post.foto_Url && (
+                                    <div className="blog-header-image">
+                                        <img src={post.foto_Url} alt="blog" onError={(e) => e.target.style.display = 'none'} />
+                                        {post.categoria === 'Evento' && <div className="event-badge">📅 EVENTO</div>}
+                                    </div>
+                                )}
+                                
+                                {/* Si es evento y no tiene foto, mostramos el badge en el contenido */}
+                                {post.categoria === 'Evento' && !post.foto_Url && (
+                                    <div style={{padding: '20px 20px 0'}}>
+                                        <span className="event-badge" style={{position: 'static', display: 'inline-block'}}>📅 EVENTO</span>
+                                    </div>
+                                )}
+
                                 <div className="post-content-area">
                                     <span 
                                         className="post-status-badge" 
