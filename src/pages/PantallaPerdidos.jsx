@@ -56,11 +56,10 @@ export const PantallaPerdidos = () => {
         try {
             const details = await DogService.getLostDetails(dog.id);
             setSelectedDog(details);
-            setIsModalOpen(true);
+            setIsDetailModalOpen(true);
         } catch (error) {
-            console.error("Error al obtener detalles:", error);
             setSelectedDog(dog);
-            setIsModalOpen(true);
+            setIsDetailModalOpen(true);
         }
     };
 
@@ -97,8 +96,9 @@ export const PantallaPerdidos = () => {
                         ))}
                     </div>
                 )}
-                <Footer />
             </main>
+            <Footer />
+            
             <DetailModal 
                 isVisible={isDetailModalOpen} 
                 dog={selectedDog} 
