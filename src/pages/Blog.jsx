@@ -4,8 +4,8 @@ import AuthService from '../services/AuthService.jsx';
 import { Header } from '../components/organisms/header/Header.jsx';
 import { Footer } from '../components/organisms/footer/Footer.jsx';
 import { LoginModal } from '../components/molecules/LoginModal.jsx';
-import { PostModal } from '../components/molecules/PostModal.jsx';
-import { PixelArtDog } from '../components/molecules/PixelArtDog.jsx'; // <--- IMPORTACIÓN NUEVA
+import { CreatePostWidget } from '../components/molecules/PostModal.jsx'; // Importamos el nuevo widget
+import { PixelArtDog } from '../components/molecules/PixelArtDog.jsx';
 import './Blog.css';
 
 // --- COMPONENTES AUXILIARES ---
@@ -14,15 +14,15 @@ const LikeButton = ({ post, toggleLike, onRestrictedAction }) => {
     const handleToggle = () => {
         onRestrictedAction(() => {
             const newLikeStatus = !isLiked;
-            const newLikesCount = newLikeStatus ? (post.likes || 0) + 1 : (post.likes || 0) - 1;
-            toggleLike(post.id, newLikesCount);
+            const newLikesCount = newLikeStatus ? (post.cantidad_Likes || 0) + 1 : (post.cantidad_Likes || 0) - 1;
+            toggleLike(post.post_Id, newLikesCount);
             setIsLiked(newLikeStatus);
         });
     };
     return (
         <button className={`like-btn ${isLiked ? 'liked' : ''}`} onClick={handleToggle}>
             <span role="img" aria-label="like">{isLiked ? '❤️' : '🤍'}</span>
-            <span className="like-count">{post.likes || 0}</span>
+            <span className="like-count">{post.cantidad_Likes || 0}</span>
         </button>
     );
 };
@@ -54,10 +54,10 @@ const CommentSection = React.memo(({ post, addComment, onRestrictedAction }) => 
     );
 });
 
-const TrendsSidebar = ({ posts }) => {
+const TrendsSidebar = ({ posts, onFilter, activeFilter }) => {
     const topTrends = useMemo(() => {
         const counts = posts.reduce((acc, post) => {
-            const cat = post.situacion || 'General';
+            const cat = post.categoria || 'General';
             acc[cat] = (acc[cat] || 0) + 1;
             return acc;
         }, {});
@@ -74,30 +74,57 @@ const TrendsSidebar = ({ posts }) => {
     return (
         <aside className="trends-sidebar">
             <div className="trends-container">
-                <h3 className="trends-title">Tendencias actuales</h3>
+                <h3 className="trends-title">Explorar por Categorías</h3>
                 {topTrends.map((trend, index) => (
-                    <div key={index} className="trend-item">
-                        <span className="trend-category">Tendencia en {trend.category}</span>
-                        <p className="trend-tag">{trend.tag}</p>
+                    <div 
+                        key={index} 
+                        className={`trend-item ${activeFilter === trend.category ? 'active-filter' : ''}`}
+                        onClick={() => onFilter(trend.category)}
+                    >
+                        <span className="trend-category">Categoría</span>
+                        <p className="trend-tag">{trend.category}</p>
                         <span className="trend-count">{trend.count} posts</span>
                     </div>
                 ))}
+                {activeFilter && (
+                    <button className="clear-filter-btn" onClick={() => onFilter(null)}>
+                        ❌ Quitar filtro ({activeFilter})
+                    </button>
+                )}
             </div>
         </aside>
     );
 };
 
+const CATEGORIA_COLORS = {
+    'Adopción': '#FF6B6B',
+    'Educación': '#4ECDC4',
+    'Ayuda': '#FFE66D',
+    'Historias': '#FF9F43',
+    'Salud': '#54A0FF',
+    'Evento': '#A3CB38'
+};
+
 export const Blog = () => {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const [filterCategory, setFilterCategory] = useState(null);
+
+    const loadPosts = async () => {
+        setLoading(true);
+        try {
+            const data = await PostService.getAllPosts();
+            setPosts(data.sort((a, b) => b.post_Id - a.post_Id));
+        } catch (error) {
+            console.error("Error de conexión");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        PostService.getAllPosts()
-            .then(data => setPosts(data.sort((a, b) => b.id - a.id)))
-            .catch(() => console.error("Error de conexión"))
-            .finally(() => setLoading(false));
+        loadPosts();
     }, []);
 
     const ejecutarAccionProtegida = (accion) => {
@@ -108,27 +135,39 @@ export const Blog = () => {
 
     const handleNewPost = async (newPostData) => {
         try {
-            const created = await PostService.createPost({ 
-                ...newPostData, 
-                fecha: new Date().toLocaleDateString('es-ES'), 
-                likes: 0, 
-                comentarios: [],
-                raza: "General" 
-            });
-            setPosts([created, ...posts]);
+            await PostService.createPost(newPostData);
+            loadPosts(); 
         } catch (e) { alert("Error al publicar"); }
     };
 
     const addCommentToPost = useCallback(async (post, newComment) => {
         const updated = { ...post, comentarios: [...(post.comentarios || []), newComment] };
-        setPosts(prev => prev.map(p => p.id === post.id ? updated : p));
+        setPosts(prev => prev.map(p => p.post_Id === post.post_Id ? updated : p));
         await PostService.addComment(updated);
     }, []);
 
     const handleToggleLike = useCallback(async (postId, count) => {
-        setPosts(prev => prev.map(p => p.id === postId ? { ...p, likes: count } : p));
+        setPosts(prev => prev.map(p => p.post_Id === postId ? { ...p, cantidad_Likes: count } : p));
         await PostService.updateLikes(postId, count);
     }, []);
+
+    const handleFilter = (category) => {
+        setFilterCategory(category === filterCategory ? null : category);
+    };
+
+    const filteredPosts = filterCategory 
+        ? posts.filter(post => post.categoria === filterCategory)
+        : posts;
+
+    const formatDate = (dateString) => {
+        if (!dateString) return "";
+        return new Date(dateString).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+    };
+
+    const formatEventDate = (dateString) => {
+        if (!dateString) return "";
+        return new Date(dateString).toLocaleString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+    };
 
     return (
         <div className="pagina-container">
@@ -139,16 +178,42 @@ export const Blog = () => {
             </div>
             <div className="forum-layout">
                 <main className="forum-feed">
+                    {/* WIDGET DE CREACIÓN DE POST (Estilo Facebook/X) */}
+                    <CreatePostWidget 
+                        onPublish={handleNewPost} 
+                        onRestrictedAction={ejecutarAccionProtegida} 
+                    />
+
                     {loading ? <p className="loading-text">Cargando historias... 🐾</p> : 
-                        posts.map(post => (
-                            <div key={post.id} className="blog-card">
+                        filteredPosts.map(post => (
+                            <div key={post.post_Id} className={`blog-card ${post.categoria === 'Evento' ? 'event-card' : ''}`}>
                                 <div className="blog-header-image">
-                                    <img src={post.fotoUrl} alt="blog" onError={(e) => e.target.src = 'https://placedog.net/800/400'} />
+                                    <img src={post.foto_Url} alt="blog" onError={(e) => e.target.src = 'https://placedog.net/800/400'} />
+                                    {post.categoria === 'Evento' && <div className="event-badge">📅 EVENTO</div>}
                                 </div>
                                 <div className="post-content-area">
-                                    <span className="post-status-badge">{(post.situacion || 'BLOG').toUpperCase()}</span>
-                                    <h3 className="blog-post-title">{post.nombre}</h3>
-                                    <p className="post-detail">📅 {post.fecha}</p>
+                                    <span 
+                                        className="post-status-badge" 
+                                        style={{ backgroundColor: CATEGORIA_COLORS[post.categoria] || '#ccc' }}
+                                    >
+                                        {(post.categoria || 'GENERAL').toUpperCase()}
+                                    </span>
+                                    
+                                    <h3 className="blog-post-title">{post.titulo}</h3>
+                                    
+                                    <div className="post-meta">
+                                        <span className="post-author">✍️ {post.autor_Nombre}</span>
+                                        <span className="post-date">🕒 {formatDate(post.fecha_Publicacion)}</span>
+                                    </div>
+
+                                    {post.categoria === 'Evento' && (
+                                        <div className="event-details-box">
+                                            <p><strong>📍 Lugar:</strong> {post.lugar_Evento}</p>
+                                            <p><strong>⏰ Cuándo:</strong> {formatEventDate(post.fecha_Evento)}</p>
+                                            <p><strong>🏠 Organiza:</strong> {post.refugio_Nombre || post.autor_Nombre}</p>
+                                        </div>
+                                    )}
+
                                     <p className="blog-post-excerpt">{post.descripcion}</p>
                                 </div>
                                 <div className="post-actions">
@@ -159,14 +224,18 @@ export const Blog = () => {
                             </div>
                         ))
                     }
+                    {!loading && filteredPosts.length === 0 && (
+                        <div className="no-posts-message">
+                            <p>No hay publicaciones en esta categoría aún. ¡Sé el primero!</p>
+                            <button onClick={() => setFilterCategory(null)}>Ver todo</button>
+                        </div>
+                    )}
                 </main>
-                <TrendsSidebar posts={posts} />
+                <TrendsSidebar posts={posts} onFilter={handleFilter} activeFilter={filterCategory} />
             </div>
             
             <PixelArtDog />
             
-            <button className="floating-publish-btn" onClick={() => ejecutarAccionProtegida(() => setIsModalOpen(true))}>✍️</button>
-            <PostModal isVisible={isModalOpen} onClose={() => setIsModalOpen(false)} onPublish={handleNewPost} />
             <LoginModal isVisible={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
             <Footer />
         </div>

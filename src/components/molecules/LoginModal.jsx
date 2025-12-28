@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AuthService from '../../services/AuthService'; 
 import './LoginModal.css';
 
-export const LoginModal = ({ isVisible, onClose }) => {
+export const LoginModal = ({ isVisible, onClose, onLoginSuccess }) => {
     const [credentials, setCredentials] = useState({ email: '', password: '' });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -19,10 +19,13 @@ export const LoginModal = ({ isVisible, onClose }) => {
         setLoading(true);
 
         try {
-            const authResponse = await AuthService.login(credentials);
+            await AuthService.login(credentials);
             setCredentials({ email: '', password: '' });
             onClose();
-            window.location.reload();
+            
+            if (onLoginSuccess) {
+                onLoginSuccess();
+            }
         } catch (err) {
             setError(err.message || 'Credenciales incorrectas.');
         } finally {
