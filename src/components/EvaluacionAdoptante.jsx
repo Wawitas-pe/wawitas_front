@@ -7,18 +7,20 @@ export const EvaluacionAdoptante = ({ solicitudId, usuarioNombre, perroNombre })
 
     const preguntas = [
         { id: 'frecuenciaCasa', texto: '¿Con qué frecuencia alguien está en casa durante el día?' },
-        { id: 'espacioExterior', texto: '¿Tu vivienda tiene espacio exterior seguro (jardín, terraza, patio)?' },
-        { id: 'viajesFrecuentes', texto: '¿Con qué frecuencia viajas o pasas fines de semana fuera de casa?' },
-        { id: 'gastosVet', texto: '¿Estás dispuesto/a a asumir gastos veterinarios inesperados?' },
-        { id: 'compromisoVida', texto: '¿Estás de acuerdo: "Un perro es un compromiso para toda su vida (10-15 años)"?' }
+        { id: 'espacioExterior', texto: '¿Con qué frecuencia el hogar queda vacío por más de 6 horas seguidas?' },
+        { id: 'viajesFrecuentes', texto: '¿Con qué frecuencia estás disponible los fines de semana?' },
+        { id: 'gastosVets', texto: '¿Con qué frecuencia dispones de tiempo para pasear a un perro?' },
+        { id: 'compromisoVidassssss', texto: '¿Con qué frecuencia puedes atender necesidades inesperadas (enfermedad, emergencias)?' },
+        { id: 'compromisoVidassss', texto: '¿Con qué frecuencia mantienes rutinas de alimentación y paseo?' },
+        { id: 'compromisoVidas', texto: '¿Con qué frecuencia hay espacio suficiente para que un perro se mueva?' }
     ];
 
     const opciones = [
-        { label: 'Muy a menudo', sub: '8 HORAS', pts: 20 },
-        { label: 'A menudo', sub: '6-8 HORAS', pts: 15 },
-        { label: 'A veces', sub: '4-6 HORAS', pts: 10 },
-        { label: 'Rara vez', sub: '2-4 HORAS', pts: 5 },
-        { label: 'Nunca', sub: 'MENOS DE 2H', pts: 0 }
+        { label: 'Muy a menudo', sub: '', pts: 20 },
+        { label: 'A menudo', sub: '', pts: 15 },
+        { label: 'A veces', sub: '', pts: 10 },
+        { label: 'Rara vez', sub: '', pts: 5 },
+        { label: 'Nunca', sub: '', pts: 0 }
     ];
 
     const handleChange = (preguntaId, puntos) => {
@@ -31,7 +33,7 @@ export const EvaluacionAdoptante = ({ solicitudId, usuarioNombre, perroNombre })
         
         // Lógica de estado
         let status = 'no_apto';
-        if (scoreFinal >= 70) status = 'apto';
+        if (scoreFinal >= 90) status = 'apto';
         else if (scoreFinal >= 40) status = 'entrevista_pendiente';
 
         alert(`Resultado: ${status} (${scoreFinal} pts)`);
