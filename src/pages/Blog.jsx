@@ -163,7 +163,8 @@ export const Blog = () => {
                 <TrendsSidebar posts={posts} />
             </div>
             
-            <PixelArtDog />
+            {/* En tu Blog.jsx simplemente lo llamas así: */}
+            <PixelArtDog onRestrictedAction={ejecutarAccionProtegida} />
             
             <button className="floating-publish-btn" onClick={() => ejecutarAccionProtegida(() => setIsModalOpen(true))}>✍️</button>
             <PostModal isVisible={isModalOpen} onClose={() => setIsModalOpen(false)} onPublish={handleNewPost} />

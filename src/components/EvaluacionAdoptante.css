@@ -1,49 +1,132 @@
 .evaluacion-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    max-width: 500px;
-    margin: 20px auto;
+    background: #f4f1ea; /* Color crema de la imagen */
+    padding: 3rem;
+    border-radius: 30px;
+    max-width: 900px;
+    margin: 30px auto;
+    font-family: 'Arial Black', sans-serif;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.btn-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 2rem;
+    color: #888;
+    cursor: pointer;
 }
 
 .evaluacion-header {
-    border-bottom: 2px solid #f0f0f0;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-}
-
-.evaluacion-form .pregunta {
-    margin-bottom: 1.2rem;
-    display: flex;
-    flex-direction: column;
     text-align: left;
+    margin-bottom: 2rem;
 }
 
-.pregunta label {
-    font-weight: bold;
+.evaluacion-header h2 {
+    font-size: 2.5rem;
+    font-style: italic;
+    text-transform: uppercase;
     margin-bottom: 5px;
-    color: #2c3e50;
 }
 
-.pregunta select {
+.evaluacion-header p {
+    color: #555;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 1.1rem;
+}
+
+/* Estructura de Tabla/Matriz */
+.test-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+.column-header {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #333;
     padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-.btn-evaluar {
+.sub-header {
+    display: block;
+    font-size: 0.6rem;
+    color: #777;
+    text-transform: uppercase;
+}
+
+.pregunta-row td {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.pregunta-texto {
+    width: 40%;
+    font-size: 0.95rem;
+    color: #222;
+    line-height: 1.2;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 500;
+}
+
+/* Estilo del Radio Button Circular */
+.radio-cell {
+    text-align: center;
+    width: 12%;
+}
+
+.custom-radio {
+    appearance: none;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #fff;
+    background: #fff;
+    border-radius: 12px; /* Cuadrado redondeado como la imagen */
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.custom-radio:checked {
     background-color: #3498db;
+    border-color: #3498db;
+}
+
+.custom-radio:checked::after {
+    content: '✓';
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+}
+
+/* Botón Enviar estilo Imagen */
+.btn-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-evaluar-verde {
+    background-color: #3e8e41; /* Verde de la imagen */
     color: white;
     border: none;
-    padding: 12px;
-    width: 100%;
-    border-radius: 8px;
-    font-size: 1.1rem;
+    padding: 15px 100px;
+    border-radius: 50px;
+    font-size: 1.8rem;
+    font-weight: bold;
     cursor: pointer;
+    text-transform: uppercase;
     transition: 0.3s;
 }
 
-.btn-evaluar:hover {
-    background-color: #2980b9;
+.btn-evaluar-verde:hover {
+    background-color: #2e6b31;
+    transform: scale(1.02);
 }

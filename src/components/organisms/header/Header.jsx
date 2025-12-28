@@ -49,7 +49,7 @@ export const Header = () => {
                 <Link to="/zona" className={`nav-item ${getActiveClass('/zona')}`}>Tu Zona</Link>
                 <Link to="/blog" className={`nav-item ${getActiveClass('/blog')}`}>Blog Comunitario</Link>
                 <Link to="/perdidos" className={`nav-item ${getActiveClass('/perdidos')}`}>Perdidos</Link>
-                <Link to="/adopcion" className={`nav-item ${getActiveClass('/adopcion')}`}>Test-Adopcion</Link>
+                {/*<Link to="/adopcion" className={`nav-item ${getActiveClass('/adopcion')}`}>Test-Adopcion</Link>*/}
             </nav>
 
             <div className="header-actions">

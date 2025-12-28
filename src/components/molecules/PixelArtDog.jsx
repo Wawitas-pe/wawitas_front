@@ -2,9 +2,17 @@ import React, { useState } from 'react';
 import AuthService from '../../services/AuthService.jsx';
 import { EvaluacionAdoptante } from './EvaluacionAdoptante.jsx';
 
-export const PixelArtDog = () => {
+// Pasamos onRestrictedAction como prop para usar la lógica del Blog
+export const PixelArtDog = ({ onRestrictedAction }) => {
     const [showTest, setShowTest] = useState(false);
     const user = AuthService.getCurrentUser();
+
+    const handleDogClick = () => {
+        // Si hay login, ejecuta abrir el test. Si no, onRestrictedAction abre el login solo.
+        onRestrictedAction(() => {
+            setShowTest(true);
+        });
+    };
 
     const handleBackdropClick = (e) => {
         if (e.target.className === 'modal-overlay-adoptante') {
@@ -14,7 +22,8 @@ export const PixelArtDog = () => {
 
     return (
         <>
-            <div className="pixel-dog-fixed" onClick={() => setShowTest(true)}>
+            {/* Ahora el clic está protegido */}
+            <div className="pixel-dog-fixed" onClick={handleDogClick}>
                 <div className="pixel-bubble-fixed">¡Adóptame!</div>
                 <img 
                     src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJueGZ3bmZueGZ3bmZueGZ3bmZueGZ3bmZueGZ3bmZueGZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/3o7WIEVjXL8EH3O1mE/giphy.gif" 
