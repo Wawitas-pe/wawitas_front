@@ -3,6 +3,8 @@ import DogService from '../services/DogService.jsx';
 import { Footer } from '../components/organisms/footer/Footer.jsx';
 import { Header } from '../components/organisms/header/Header.jsx';
 import { DetailModal } from '../components/molecules/DetailModal.jsx';
+import { ReportModal } from '../components/molecules/ReportModal.jsx';
+import { LoginModal } from '../components/molecules/LoginModal.jsx';
 import './PantallaPerdidos.css';
 import TextType from "../components/TextType.jsx";
 
@@ -34,38 +36,66 @@ export const PantallaPerdidos = () => {
     const [dogs, setDogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedDog, setSelectedDog] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    
+    // Estado local para saber si el usuario está logueado y forzar re-render al cambiar
+    const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
+
+    // Función para cargar los datos (reutilizable)
+    const loadDogs = async () => {
+        setLoading(true);
+        try {
+            const data = await DogService.getLostDogs();
+            setDogs(data);
+        } catch (err) {
+            setDogs([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchDogs = async () => {
-            try {
-                const data = await DogService.getLostDogs();
-                setDogs(data);
-            } catch (err) {
-                setDogs([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchDogs();
+        loadDogs();
     }, []);
 
     const handleOpenDetail = async (dog) => {
         try {
             const details = await DogService.getLostDetails(dog.id);
             setSelectedDog(details);
-            setIsModalOpen(true);
+            setIsDetailModalOpen(true);
         } catch (error) {
             console.error("Error al obtener detalles:", error);
-            // Fallback: usar los datos básicos si falla la carga de detalles
             setSelectedDog(dog);
-            setIsModalOpen(true);
+            setIsDetailModalOpen(true);
+        }
+    };
+
+    const handleReportClick = () => {
+        // Leemos el estado actualizado o localStorage
+        const user = localStorage.getItem('user');
+        if (user) {
+            setIsReportModalOpen(true);
+        } else {
+            setIsLoginModalOpen(true);
         }
     };
 
     const updateDogInList = (updatedDog) => {
         setDogs(dogs.map(d => d.id === updatedDog.id ? updatedDog : d));
         setSelectedDog(updatedDog);
+    };
+
+    // Callback cuando se crea un reporte exitosamente
+    const handleReportSuccess = () => {
+        loadDogs(); // Recargamos la lista desde el servidor para traer los datos completos (dueño, fecha, etc)
+    };
+
+    // Callback cuando el login es exitoso
+    const handleLoginSuccess = () => {
+        setCurrentUser(JSON.parse(localStorage.getItem('user'))); // Actualizamos estado local
+        // Opcional: loadDogs() si el login cambiara lo que se ve en la lista
     };
 
     const heroTextLines = ["¿Necesitas ayuda?", "¡Estamos aquí para ayudarte!"];
@@ -78,6 +108,9 @@ export const PantallaPerdidos = () => {
                     <TextType text={heroTextLines} typingSpeed={70} pauseDuration={1500} loop={true} showCursor={true} />
                 </h1>
                 <p>Mural de reportes de la comunidad para encontrar a nuestras wawitas.</p>
+                <button className="btn-reportar" onClick={handleReportClick}>
+                    📢 Reportar Mascota Perdida
+                </button>
             </section>
             <main className="ayuda-main-content">
                 <h2 className="mural-title">Perros Reportados Perdidos Recientemente</h2>
@@ -93,10 +126,20 @@ export const PantallaPerdidos = () => {
                 <Footer />
             </main>
             <DetailModal 
-                isVisible={isModalOpen} 
+                isVisible={isDetailModalOpen} 
                 dog={selectedDog} 
-                onClose={() => setIsModalOpen(false)} 
+                onClose={() => setIsDetailModalOpen(false)} 
                 onUpdate={updateDogInList}
+            />
+            <ReportModal 
+                isVisible={isReportModalOpen} 
+                onClose={() => setIsReportModalOpen(false)} 
+                onReportSuccess={handleReportSuccess}
+            />
+            <LoginModal 
+                isVisible={isLoginModalOpen} 
+                onClose={() => setIsLoginModalOpen(false)} 
+                onLoginSuccess={handleLoginSuccess}
             />
         </div>
     );

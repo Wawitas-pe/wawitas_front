@@ -24,7 +24,7 @@ const RecenterMap = ({ coords }) => {
     return null;
 };
 
-export const ReportModal = ({ isVisible, onClose }) => {
+export const ReportModal = ({ isVisible, onClose, onReportSuccess }) => {
     const [form, setForm] = useState({ nombre: '', raza: '', descripcion: '', imagen: null });
     const [preview, setPreview] = useState(null);
     const [address, setAddress] = useState("");
@@ -69,20 +69,38 @@ export const ReportModal = ({ isVisible, onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user ? user.id : 0;
+
         try {
             const nuevoReporte = {
-                name: form.nombre,
-                breed: form.raza,
-                location: address,
-                description: form.descripcion,
-                imageUrl: preview || "https://placedog.net/500/500", // Si no hay imagen, usa la por defecto
-                date: new Date().toLocaleDateString('es-ES'),
-                coords: { lat: coordinates[0], lng: coordinates[1] }
+                userId: userId,
+                nombre: form.nombre,
+                descripcion: form.descripcion,
+                fotoUrl: preview || "https://placedog.net/500/500",
+                ultimaDireccion: address,
+                ultimaLatitud: coordinates[0],
+                ultimaLongitud: coordinates[1],
+                raza: form.raza
             };
-            await DogService.reportLostDog(nuevoReporte);
+
+            await DogService.newLostDog(nuevoReporte);
+            
+            // Limpiar formulario
+            setForm({ nombre: '', raza: '', descripcion: '', imagen: null });
+            setPreview(null);
+            setAddress("");
+            
             onClose();
-            window.location.reload();
-        } catch (error) { alert(error.message); }
+            
+            // Avisar al padre que recargue la lista
+            if (onReportSuccess) {
+                onReportSuccess();
+            }
+        } catch (error) { 
+            alert("Error al reportar: " + error.message); 
+        }
     };
 
     if (!isVisible) return null;
@@ -101,6 +119,18 @@ export const ReportModal = ({ isVisible, onClose }) => {
                         <label>Raza *</label>
                         <input type="text" value={form.raza} onChange={e => setForm({...form, raza: e.target.value})} placeholder="Ej: Cruzado" required />
                     </div>
+                    
+                    <div className="form-group">
+                        <label>Descripción *</label>
+                        <textarea value={form.descripcion} onChange={e => setForm({...form, descripcion: e.target.value})} placeholder="Detalles adicionales..." required></textarea>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Subir Foto (Opcional)</label>
+                        <input type="file" accept="image/*" onChange={handleFileChange} className="file-input" />
+                        {preview && <img src={preview} alt="Vista previa" className="image-preview-report" />}
+                    </div>
+
                     <div className="form-group" style={{ position: 'relative' }}>
                         <label>Ubicación *</label>
                         <input type="text" value={address} onChange={(e) => handleSearch(e.target.value)} placeholder="Busca o marca el mapa" required />
@@ -125,16 +155,6 @@ export const ReportModal = ({ isVisible, onClose }) => {
                         </MapContainer>
                     </div>
 
-                    <div className="form-group">
-                        <label>Subir Foto (Opcional)</label>
-                        <input type="file" accept="image/*" onChange={handleFileChange} className="file-input" />
-                        {preview && <img src={preview} alt="Vista previa" className="image-preview-report" />}
-                    </div>
-
-                    <div className="form-group">
-                        <label>Descripción (Opcional)</label>
-                        <textarea value={form.descripcion} onChange={e => setForm({...form, descripcion: e.target.value})} placeholder="Detalles adicionales..."></textarea>
-                    </div>
                     <button type="submit" className="btn-send-report">Publicar Reporte 🐾</button>
                 </form>
             </div>

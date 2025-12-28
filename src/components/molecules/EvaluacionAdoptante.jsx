@@ -5,12 +5,14 @@ export const EvaluacionAdoptante = ({ solicitudId, usuarioNombre, perroNombre })
     const [respuestas, setRespuestas] = useState({});
     const [enviando, setEnviando] = useState(false);
 
-    const preguntas = [
+   const preguntas = [
         { id: 'frecuenciaCasa', texto: '¿Con qué frecuencia alguien está en casa durante el día?' },
-        { id: 'espacioExterior', texto: '¿Tu vivienda tiene espacio exterior seguro (jardín, terraza, patio)?' },
-        { id: 'viajesFrecuentes', texto: '¿Con qué frecuencia viajas o pasas fines de semana fuera de casa?' },
-        { id: 'gastosVet', texto: '¿Estás dispuesto/a a asumir gastos veterinarios inesperados?' },
-        { id: 'compromisoVida', texto: '¿Estás de acuerdo: "Un perro es un compromiso para toda su vida (10-15 años)"?' }
+        { id: 'espacioExterior', texto: '¿Con qué frecuencia el hogar queda vacío por más de 6 horas seguidas?' },
+        { id: 'viajesFrecuentes', texto: '¿Con qué frecuencia estás disponible los fines de semana?' },
+        { id: 'gastosVets', texto: '¿Con qué frecuencia dispones de tiempo para pasear a un perro?' },
+        { id: 'compromisoVidassssss', texto: '¿Con qué frecuencia puedes atender necesidades inesperadas (enfermedad, emergencias)?' },
+        { id: 'compromisoVidassss', texto: '¿Con qué frecuencia mantienes rutinas de alimentación y paseo?' },
+        { id: 'compromisoVidas', texto: '¿Con qué frecuencia hay espacio suficiente para que un perro se mueva?' }
     ];
 
     const opciones = [

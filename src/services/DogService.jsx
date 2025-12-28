@@ -24,9 +24,9 @@ const DogService = {
     },
 
 
-    reportLostDog: async (dogData) => {
+    newLostDog: async (dogData) => {
         try {
-            const response = await apiClient.post(URL_PREFIX+'/new', dogData);
+            const response = await apiClient.post(URL_PREFIX+'/new-lost', dogData);
             return response.data;
         } catch (error) {
             throw new Error('No se pudo guardar el reporte.');
