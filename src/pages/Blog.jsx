@@ -234,7 +234,8 @@ export const Blog = () => {
                 <TrendsSidebar posts={posts} onFilter={handleFilter} activeFilter={filterCategory} />
             </div>
             
-            <PixelArtDog />
+            {/* En tu Blog.jsx simplemente lo llamas así: */}
+            <PixelArtDog onRestrictedAction={ejecutarAccionProtegida} />
             
             <LoginModal isVisible={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
             <Footer />

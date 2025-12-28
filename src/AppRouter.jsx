@@ -30,6 +30,7 @@ const AppRouter = () => {
                 {/* Perdidos: "/perdidos" */}
                 <Route path="perdidos" element={<PantallaPerdidos />} />
 
+                {/* test: "/adopcion" */}
                 <Route path="adopcion" element={<EvaluacionAdoptante />} />
 
                 {/* 🛑 SOLUCIÓN: Agregamos la ruta "registrar" aquí para que use el Layout */}
