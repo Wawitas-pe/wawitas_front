@@ -5,6 +5,7 @@
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
 .perdidos-page-wrapper .navbar {
@@ -16,6 +17,8 @@
     padding: 60px 20px;
     background-color: #FFF8E7;
     border-bottom: 2px solid #d4c4a8;
+    position: relative;
+    z-index: 5;
 }
 
 .ayuda-title {
@@ -46,12 +49,15 @@
 .ayuda-main-content {
     flex: 1;
     width: 100%;
-    padding: 50px 0 0 0;
+    padding: 50px 0 100px 0;
     background-color: #dcb68c;
     background-image: radial-gradient(#c29a6a 10%, transparent 10%);
     background-size: 20px 20px;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 1;
+    margin-bottom: -50px;
 }
 
 .mural-title {
@@ -66,9 +72,18 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 40px;
-    padding: 0 40px 100px 40px;
+    padding: 0 40px;
     justify-items: center;
     flex: 1;
+}
+
+.loading-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.2rem;
 }
 
 .dog-card {
@@ -117,7 +132,6 @@
     font-family: 'Courier New', Courier, monospace;
 }
 
-/* Ajuste para la ubicación corta */
 .dog-location {
     font-size: 0.9rem;
     color: #555;
@@ -138,6 +152,50 @@
     font-weight: bold;
 }
 
+.btn-reportar-mascota {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 999;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-reportar-mascota:hover {
+    transform: scale(1.1);
+    background-color: #c0392b;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+}
+
 .perdidos-page-wrapper .footer-black {
-    margin-top: 0 !important;
+    margin-top: auto !important;
+    width: 100%;
+    position: relative;
+    z-index: 3;
+}
+
+/* IMPORTANTE: Esto asegura que los modales estén por encima de todo */
+.detail-modal-overlay, 
+.report-modal-overlay {
+    z-index: 99999 !important;
+}
+
+@media (max-width: 768px) {
+    .btn-reportar-mascota {
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
 }

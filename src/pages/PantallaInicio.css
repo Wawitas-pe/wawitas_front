@@ -15,22 +15,17 @@
     border-radius: 20px;
     font-weight: bold;
     cursor: pointer;
-    
-    /* Propiedades para asegurar la visibilidad y el toque en móvil */
-    display: inline-block; /* Crucial para manejar padding y tamaño como bloque */
+    display: inline-block;
     position: relative; 
     z-index: 5;
-    
-    /* Transición Mínima */
     transition: background-color 0.2s; 
     white-space: nowrap;
 }
 
-/* El efecto HOVER y TRANSFORM solo para escritorio (a partir de 769px) */
 @media (min-width: 769px) {
     .btn-green:hover { 
-        transform: scale(1.05); /* El transform que podía causar problemas en touch */
-        transition: transform 0.2s; /* Aplicamos la transición solo aquí */
+        transform: scale(1.05); 
+        transition: transform 0.2s; 
     }
 }
 .btn-green:hover { transform: scale(1.05); }
@@ -44,7 +39,6 @@
     flex-wrap: wrap;
 }
 
-/* AJUSTE DEL LOGO */
 .logo-section {
     display: flex;
     align-items: center;
@@ -72,17 +66,14 @@
 }
 .nav-links a.active { font-weight: bold; }
 
-/* RESPONSIVE HEADER: En móvil ocultamos menú o lo adaptamos */
 @media (max-width: 768px) {
     .nav-links {
         display: none;
     }
-
     .logo-img {
         width: 35px !important;
         max-width: 35px;
     }
-
     .navbar {
         padding: 10px 5%;
     }
@@ -130,7 +121,6 @@
     align-items: center;
 }
 
-/* Mancha amarilla responsive */
 .mustard-blob {
     position: absolute;
     top: 0;
@@ -164,20 +154,19 @@
 }
 .tip-icon { font-size: 3rem; }
 
-/* --- STATS BAR (Barra Negra) --- */
+/* --- STATS BAR --- */
 .divider { width: 1px; height: 50px; background-color: #555; display: block; }
 .stats-bar-wrapper {
     padding: 0 5%;
     margin-bottom: 80px;
 }
 
-/* Barra de estadísticas (Stats Bar) */
 .stats-bar {
     background-color: #000;
     border-radius: 30px;
     color: white;
     display: flex;
-    align-items: center; /* Esto alinea los elementos verticalmente */
+    align-items: center; 
     justify-content: space-between;
     padding: 30px;
     position: relative;
@@ -185,26 +174,32 @@
     gap: 20px;
 }
 
-/* Elementos dentro de la barra de estadísticas */
 .stat-item {
     flex: 1;
     min-width: 150px;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra el contenido verticalmente */
-    align-items: center; /* Centra el contenido horizontalmente */
-    text-align: center; /* Centra el texto */
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
 }
 
-/* El contenedor de la tarjeta amarilla */
+/* CAMBIO SOLICITADO: Límite para el icono del bulldog */
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-top: 10px;
+}
+
 .yellow-card-integrated {
     background-color: #F2B94A;
     color: white;
-    height: 100%; /* Ocupa el 100% de la altura de la barra */
+    height: 100%; 
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra el contenido verticalmente */
-    align-items: center; /* Centra el contenido horizontalmente */
+    justify-content: center; 
+    align-items: center; 
     padding: 10px 15px;
     border-radius: 20px;
     text-align: center;
@@ -216,29 +211,25 @@
     z-index: 10;
 }
 
-/* Imagen dentro de la tarjeta amarilla */
 .yellow-card-img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px; /* Espaciado debajo de la imagen */
+    margin-bottom: 10px; 
 }
 
-/* Efecto Hover de la tarjeta amarilla */
 .yellow-card-integrated:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 30px rgba(242, 185, 74, 0.7);
-    z-index: 11; /* Asegura que la tarjeta que se agranda esté por encima */
+    z-index: 11; 
 }
 
-/* Ajuste para el número con + */
 .number {
-    font-size: 30px; /* Ajuste para mayor visibilidad */
+    font-size: 30px; 
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
-/* Contenedor del ícono circular verde */
 .green-circle {
     background-color: #3C8D40;
     width: 120px;
@@ -250,97 +241,30 @@
     justify-content: center;
 }
 
-/* Estilos para el texto en el número rescatado */
 .label {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 16px; /* Ajuste para que encaje mejor */
+    font-size: 16px; 
     text-align: center;
 }
 
-/* Ajustes para móviles */
 @media (max-width: 900px) {
     .stats-bar {
         flex-direction: column;
         text-align: center;
         padding-top: 30px;
     }
-
     .stat-item {
         width: 100%;
         border-bottom: 1px solid #333;
         padding-bottom: 20px;
     }
-
     .yellow-card-integrated {
         width: 100%;
         margin-top: 20px;
         height: auto;
     }
-
     .stat-counter { margin-top: 20px; }
-}
-
-/* AJUSTES MÓVILES ESPECÍFICOS PARA LA BARRA */
-@media (max-width: 900px) {
-    .stats-bar {
-        flex-direction: column;
-        text-align: center;
-        padding-top: 30px; 
-    }
     .divider { display: none; }
-    
-    .stat-item {
-        width: 100%;
-        border-bottom: 1px solid #333;
-        padding-bottom: 20px;
-    }
-    
-    .yellow-card-integrated {
-        width: 100%;
-        margin-top: 20px; 
-        height: auto; /* En móvil, la altura vuelve a ser automática */
-    }
-
-    .stat-counter { margin-top: 20px; }
-}
-
-.green-circle {
-    background-color: #3C8D40;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-/* --- INFO BOX (Pet's Old Text) --- */
-.info-box-section { padding: 0 5%; margin-bottom: 80px; }
-.info-box {
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    background-color: #FFF8E7;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-.info-title {
-    flex: 1;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border-right: 2px solid #ccc;
-    min-width: 120px;
-}
-.info-text { flex: 3; font-size: 0.9rem; color: #555; min-width: 200px; }
-.info-img { flex: 1; text-align: right; min-width: 100px; }
-.info-img img { border-radius: 10px; width: 100%; }
-
-@media (max-width: 768px) {
-    .info-title { border-right: none; border-bottom: 2px solid #ccc; padding-bottom: 10px; }
-    .info-box { text-align: center; }
 }
 
 /* --- NOSOTROS SECTION --- */
@@ -374,6 +298,14 @@
     flex-direction: column;
     gap: 20px;
 }
+
+/* CAMBIO SOLICITADO: Orden para párrafos de la misión */
+.about-text p {
+    margin-bottom: 20px;
+    line-height: 1.6;
+    text-align: justify;
+}
+
 .about-img-right img {
     width: 100%;
     border-radius: 30px;
@@ -416,14 +348,4 @@
     padding: 8px 15px;
     font-size: 0.7rem;
 }
-.label {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 20px;
-}
-.number{
-    font-size: 20px;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-}
-.Textone{
-    font-size: 25px;
-}
+.Textone { font-size: 25px; }
